@@ -19,7 +19,7 @@ tags:
   - name: 'M03: Bids'
   - name: 'M04: Notifications, Follows, Reviews'
   - name: 'M05: Admin Area and Reports'
-  - name: 'M06: Static pages'
+  - name: 'M06: Static/Home pages'
 
 paths:
 # M01: Authentication and Profile
@@ -892,14 +892,15 @@ paths:
                   value: '/users/{username}'
   
   
-# M06: Static pages
+# M06: Static/Home pages
+
   /contact-us:
     get:
       operationId: R601
       summary: 'R601: Contact Us'
       description: 'Contact Us page. Access: Pub'
       tags:
-        - 'M06: Static pages'
+        - 'M06: Static/Home pages'
       responses:
         '200':
           description: 'Ok. Show log-in UI'
@@ -909,7 +910,7 @@ paths:
       summary: 'R602: FAQ'
       description: 'Frequently Asked Questions Page. Access: PUB'
       tags:
-        - 'M06: Static pages'
+        - 'M06: Static/Home pages'
       responses:
         '200':
           description: 'Ok. Show log-in UI'
@@ -920,11 +921,21 @@ paths:
       summary: 'R603: About'
       description: 'About page. Access: PUB'
       tags:
-        - 'M06: Static pages'
+        - 'M06: Static/Home pages'
       responses:
         '200':
           description: 'Ok. Show log-in UI'
 
+  /:
+    get:
+      operationId: R604
+      summary: 'R604: Home page'
+      description: 'Home page. Access: PUB'
+      tags:
+        - 'M06: Static/Home pages'
+      responses:
+        '200':
+          description: 'Ok. Show log-in UI'
 
 
     
