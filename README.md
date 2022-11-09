@@ -6,7 +6,7 @@ This README describes how to setup the development environment for LBAW 2021/22.
 These instructions address the development with a local environment, i.e. on the machine (that can be a VM) **without using a Docker container for PHP or Laravel**.
 Containers are used for PostgreSQL and pgAdmin, though.
 
-The template was prepared to run on Ubuntu 21.10, but it should be fairly easy to follow and adapt for other operating systems.
+The template was prepared to run on Ubuntu 22.04, but it should be fairly easy to follow and adapt for other operating systems.
 
 - [LBAW's framework](#lbaws-framework)
   - [Introduction](#introduction)
@@ -31,14 +31,16 @@ The template was prepared to run on Ubuntu 21.10, but it should be fairly easy t
 
 To prepare you computer for development you need to install some software, namely PHP and the PHP package manager Composer.
 
-We recommend using an __Ubuntu__ distribution that ships PHP 8.0 (e.g Ubuntu 21.10). You may install the required software with:
+We recommend using an __Ubuntu__ distribution that ships PHP 8.1 (e.g Ubuntu 22.04). You may install the required software with:
 
 ```bash
-sudo apt install git composer php8.0 php8.0-mbstring php8.0-xml php8.0-pgsql
+sudo apt install git composer php8.1 php8.1-mbstring php8.1-xml php8.1-pgsql
 ```
 
 
-The following links provide instructions for installing [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/)
+The following links provide instructions for installing [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/).
+
+Please note that if you are using an ARM CPU, you need to explicitly build an AMD64 Docker image. Docker suppors multi-platform building. Create a multi-platform builder and adjust your `upload_image.sh` file to use it, as described in [this guide](https://docs.docker.com/build/building/multi-platform/).
 
 ## Setting up the Development repository
 
