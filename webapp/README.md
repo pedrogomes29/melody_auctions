@@ -2,11 +2,8 @@
 
 ## Introduction
 
-This README describes how to setup the development environment for LBAW 2021/22.
-These instructions address the development with a local environment, i.e. on the machine (that can be a VM) **without using a Docker container for PHP or Laravel**.
+This README describes how to setup the development environment for LBAW. These instructions address the development with a local environment, i.e. on the machine (that can be a VM) **without using a Docker container for PHP or Laravel**.
 Containers are used for PostgreSQL and pgAdmin, though.
-
-The template was prepared to run on Ubuntu 22.04, but it should be fairly easy to follow and adapt for other operating systems.
 
 - [LBAW's framework](#lbaws-framework)
   - [Introduction](#introduction)
@@ -29,18 +26,22 @@ The template was prepared to run on Ubuntu 22.04, but it should be fairly easy t
 
 ## Installing the Software Dependencies
 
-To prepare you computer for development you need to install some software, namely PHP and the PHP package manager Composer.
+To prepare you computer for development you need to install PHP >=v8.1 and Composer >=v2.
 
-We recommend using an __Ubuntu__ distribution that ships PHP 8.1 (e.g Ubuntu 22.04). You may install the required software with:
+We recommend using an __Ubuntu__ distribution that ships with these versions (e.g Ubuntu 22.04 or newer). You may install the required software with:
 
 ```bash
-sudo apt install git composer php8.1 php8.1-mbstring php8.1-xml php8.1-pgsql
+sudo apt update
+sudo apt install git composer php8.1 php8.1-mbstring php8.1-xml php8.1-pgsql php8.1-curl
 ```
 
+On MacOS, you can install them using [Homebrew](https://brew.sh/) and:
+```bash
+brew install php@8.1 composer
+```
 
-The following links provide instructions for installing [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/).
+If you use [Windows WSL](https://learn.microsoft.com/en-us/windows/wsl/install), please ensure you are also using Ubuntu 22.04 inside. Previous versions do not provide the requirements needed for this template, and then follow the Ubuntu instructions above.
 
-Please note that if you are using an ARM CPU, you need to explicitly build an AMD64 Docker image. Docker suppors multi-platform building. Create a multi-platform builder and adjust your `upload_image.sh` file to use it, as described in [this guide](https://docs.docker.com/build/building/multi-platform/).
 
 ## Setting up the Development repository
 
@@ -48,9 +49,9 @@ You should have your own repository and a copy of the demo repository in the sam
 Then, copy the contents of the demo repository to your own.
 
 ```bash
-# Clone the group repository (lbaw21XX), if not yet available locally
-# Notice that you need to substitute XX by your group's number
-git clone https://git.fe.up.pt/lbaw/lbaw21/lbaw21XX.git
+# Clone your group repository (replacing lbawYYXX, eg. lbaw2211), if not yet available locally
+# Notice that you need to substitute XX by your group's number and YY or YYYY as needed.
+git clone https://git.fe.up.pt/lbaw/lbawYYYY/lbawYYXX.git
 
 # clone the LBAW's project skeleton
 git clone https://git.fe.up.pt/lbaw/template-laravel.git
@@ -61,10 +62,10 @@ rm -rf template-laravel/.git
 mv template-laravel/README.md template-laravel/README_lbaw.md
 
 # go to your repository
-cd lbaw21XX
+cd lbawYYXX
 
-# make sure you are using the master branch
-git checkout master
+# make sure you are using the main branch
+git checkout main
 
 # copy all the demo files
 cp -r ../template-laravel/. .
@@ -72,7 +73,7 @@ cp -r ../template-laravel/. .
 # add the new files to your repository
 git add .
 git commit -m "Base Laravel structure"
-git push origin master
+git push origin main
 ```
 
 At this point you should have the project skeleton in your local machine and be ready to start working on it.
@@ -87,6 +88,8 @@ Afterwards, the command bellow will install all local dependencies, required for
 ```bash
 composer install
 ```
+
+If this fails, ensure you're using version 2 or above of Composer. If there are errors regarding missing extensions, make sure you uncomment them in your [php.ini file](https://www.php.net/manual/en/configuration.file.php).
 
 ## Working with PostgreSQL
 
@@ -264,7 +267,11 @@ php artisan config:clear
 
 ## Publishing your image
 
-You should keep your git master branch always functional and frequently build and deploy your code as a Docker image. LBAW's production machine will frequently pull all these images and make them available at http://lbaw21XX.lbaw.fe.up.pt/.
+The following links provide instructions for installing [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/).
+
+Please note that if you are using an ARM CPU, you need to explicitly build an AMD64 Docker image. Docker suppors multi-platform building. Create a multi-platform builder and adjust your `upload_image.sh` file to use it, as described in [this guide](https://docs.docker.com/build/building/multi-platform/).
+
+You should keep your git main branch functional and frequently build and deploy your code as a Docker image. LBAW's production machine will frequently pull all these images and make them available at http://lbawYYXX.lbaw.fe.up.pt/.
 
 **Always ensure your `.env` file is configured with your group's `db.fe.up.pt` credentials before building your docker image, by updating the DB section:**
 
@@ -272,9 +279,9 @@ You should keep your git master branch always functional and frequently build an
 DB_CONNECTION=pgsql
 DB_HOST=db.fe.up.pt
 DB_PORT=5432
-DB_SCHEMA=lbaw21XX
-DB_DATABASE=lbaw21XX
-DB_USERNAME=lbaw21XX
+DB_SCHEMA=lbawYYXX
+DB_DATABASE=lbawYYXX
+DB_USERNAME=lbawYYXX
 DB_PASSWORD=password
 ```
 
@@ -292,7 +299,7 @@ Once your Docker is authenticated, configure the `upload_image.sh` script with y
 Example configuration:
 
 ```bash
-IMAGE_NAME=git.fe.up.pt:5050/lbaw/lbaw2122/lbaw21XX # Replace with your group's image name
+IMAGE_NAME=git.fe.up.pt:5050/lbaw/lbawYYYY/lbawYYXX # Replace with your group's image name
 ```
 
 You can now build and upload the docker image by executing that script from the project root folder:
@@ -303,10 +310,12 @@ You can now build and upload the docker image by executing that script from the 
 
 There should be only one image per group. All team members should be able to update the image at any time, after they login with the Gitlab's registry.
 
-You can test locally the image by running:
+## Testing your image
 
-```
-docker run -it -p 8000:80 --name=lbaw21XX -e DB_DATABASE="lbaw21XX" -e DB_SCHEMA="lbaw21XX" -e DB_USERNAME="lbaw21XX" -e DB_PASSWORD="PASSWORD" git.fe.up.pt:5050/lbaw/lbaw2122/lbaw21XX # Replace with your group's image name
+After building it, you can test locally the image by running:
+
+```bash
+docker run -it -p 8000:80 --name=lbawYYXX -e DB_DATABASE="lbawYYXX" -e DB_SCHEMA="lbawYYXX" -e DB_USERNAME="lbawYYXX" -e DB_PASSWORD="PASSWORD" git.fe.up.pt:5050/lbaw/lbawYYYY/lbawYYXX # Replace with your group's image name
 ```
 
 The above command exposes your application on http://localhost:8000.
@@ -318,7 +327,7 @@ Your database configuration will be provided as an environment variable to your 
 While running your container, you can use another terminal to run a shell inside the container by executing:
 
 ```bash
-docker exec -it lbaw21XX bash
+docker exec -it lbawYYXX bash
 ```
 
 Inside the container you may, for example, see the content of the Web server logs by executing:
@@ -328,5 +337,5 @@ root@2804d54698c0:/# tail -f /var/log/nginx/error.log    # follow the errors
 root@2804d54698c0:/# tail -f /var/log/nginx/access.log   # follow the accesses
 ```
 
-You can stop the container with `ctrl+c` on the terminal running it, or with `docker stop lbaw21XX` on another terminal.
--- LBAW, 2021
+You can stop the container with `CTRL+C` on the terminal running it, or with `docker stop lbawYYXX` on another terminal.
+-- LBAW, 2022
