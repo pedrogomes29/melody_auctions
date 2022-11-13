@@ -11,18 +11,19 @@
 |
 */
 // Home
-Route::get('/', 'Auth\LoginController@home');
+Route::get('/', function(){
+    return view ('pages.index');
+})->name('index');
+
+Route::get('cards2', 'CardController@list');
 
 // Cards
 Route::get('cards', 'CardController@list');
 Route::get('cards/{id}', 'CardController@show');
 
 // API
-Route::put('api/cards', 'CardController@create');
-Route::delete('api/cards/{card_id}', 'CardController@delete');
-Route::put('api/cards/{card_id}/', 'ItemController@create');
-Route::post('api/item/{id}', 'ItemController@update');
-Route::delete('api/item/{id}', 'ItemController@delete');
+Route::get('api/auction','AuctionController@search_results');
+Route::get('api/user','AuthenticatedUserController@search_results');
 
 // Authentication
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
