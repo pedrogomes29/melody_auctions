@@ -551,7 +551,7 @@ insert into authenticated_users  (id, firstname, lastname, username,password, em
 insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance) values (2, 'Reece', 'Bainton', 'rbainton1','1234321' ,'rbainton1@unc.edu', ' ','melhor clarinetista português', '919119298',23423.0);
 insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance) values (3, 'Benedetta', 'Driutti', 'bdriutti2','lmaook1234' ,'bdriutti2@last.fm', ' ','vive a vida', '916135290', 1312.0);
 insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance) values (4, 'Leontine', 'Matteoli', 'lmatteoli3', 'xdlollmaokekw','lmatteoli3@wordpress.org',' ' ,'Tenho 100 instrumentos na minha garagem', '963413227', 21342.0);
-insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance) values (5, 'Eugenie', 'Saint', 'esaint4', 'gigachad493','esaint4@sphinn.com',' ' ,'Life is a wild ride', '921412112', 423423.0);
+insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance) values (5, 'Eugenie', 'Saint', 'esaint4', '$2a$12$Tck/qwhrL1o4ik7/VwvaKekwZu6lMWu9yl1E6gUELuiDjcT42DoQC','esaint4@sphinn.com',' ' ,'Life is a wild ride', '921412112', 423423.0);
 
 --reports_states 
 insert into reports_states (id, state) values (1, 'open');
