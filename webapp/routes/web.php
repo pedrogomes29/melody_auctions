@@ -30,3 +30,10 @@ Route::post('login', 'Auth\LoginController@login');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 Route::post('register', 'Auth\RegisterController@register');
+
+// Admin
+Route::get('admin/{admin_id}', 'AdminController@show');
+Route::get('admin/{admin_id}/auctions', 'AdminController@auctions');
+Route::get('admin/{admin_id}/auctions/{auctions_id}', 'AdminController@edit_auctions');
+Route::put('admin/{admin_id}/auctions/{auctions_id}', 'AdminController@edit_auction');
+Route::delete('admin/{admin_id}/auctions/{auctions_id}', 'AdminController@delete_auction');
