@@ -28,4 +28,5 @@ Route::group(['middleware'=>'admin'], function() {
 });
 //User Profile
 Route::get('user/{username}','UserProfileController@showUserProfile')->name('user');
-Route::get('user/{username}/edit','UserProfileController@showUserEditForm')->name('user.edit');
+Route::put('user/{username}','UserProfileController@updateUserProfile')->name('user.update');
+Route::put('user/{username}/balance','UserProfileController@updateUserBalance')->name('user.balance.update');

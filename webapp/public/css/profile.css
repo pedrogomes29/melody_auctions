@@ -14,10 +14,33 @@
     border: 0;
     border-radius:1em;
     background-color: #1da1f2;
+    margin:10px
 }
 #editprofile:hover{
     background-color: grey;
     color: #1D1C1A;
+}
+#add-balance{
+    margin:auto;
+    font-weight: bold;
+    color: #000000;
+    border: 0;
+    border-radius:1em;
+    background-color: #1da1f2;
+    margin:10px
+}
+#add-balance:hover{
+    background-color: grey;
+    color: #1D1C1A;
+}
+
+#balance{
+    display: flex;
+    margin:auto;
+    font-weight: bold;
+    color: #000000;
+    border: 0;
+    border-radius:1em;
 }
 
 .default_profilepic{

@@ -6,6 +6,7 @@ use App\Models\AuthenticatedUser;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -22,12 +23,12 @@ class RegisterController extends Controller
 
     use RegistersUsers;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
+    public function redirectTo()
+    {
+        $id = Auth::id();
+        $username = AuthenticatedUser::where('id',$id)->firstOrFail()->username;
+        return '/user/'.$username;
+    }
 
     /**
      * Create a new controller instance.
@@ -72,6 +73,7 @@ class RegisterController extends Controller
             'username' => $data['username'],
             'password' => bcrypt($data['password']),
             'contact' => $data['contact'],
+            'balance' => 0,
         ]);
     }
 }
