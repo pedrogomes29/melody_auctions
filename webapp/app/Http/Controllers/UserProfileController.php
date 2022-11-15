@@ -62,4 +62,18 @@ class UserProfileController extends Controller
             return redirect()->route('home');
         }
     }
+    public function deleteUserProfile($username)
+    {
+        $id = AuthenticatedUser::where('username',$username)->firstOrFail()->id;
+        if(Auth::id() == $id)
+        {
+            $user = AuthenticatedUser::where('username',$username)->firstOrFail();
+            $user->delete();
+            return redirect()->route('login');
+        }
+        else
+        {
+            return redirect()->route('home');
+        }
+    }
 }

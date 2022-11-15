@@ -28,7 +28,7 @@ main > header span {
   margin: 0 auto;
   padding: 1em;
   max-width: 20em;
-  border: 1px solid #d2afe7;
+  border: 1px solid #abd7eb;
 }
 #content > form .error {
   font-weight: bold;
@@ -97,3 +97,7 @@ input[type=email]:focus,
 input[type=password]:focus {
   border-color: #F47174 ;
 }
+textarea:focus {
+  border-color: #F47174 ;
+}
+
