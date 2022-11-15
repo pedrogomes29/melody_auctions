@@ -43,4 +43,11 @@ class AuctionController extends Controller
         $auctions = Auction::all();
         return $auctions;
     }
+
+    public function edit($id)
+    {
+        $auction = Auction::find($id);
+        return view('pages.auction_edit')->with('auction', $auction);
+    }
+
 }

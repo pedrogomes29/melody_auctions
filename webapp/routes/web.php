@@ -37,3 +37,6 @@ Route::get('admin/{admin_id}/auctions', 'AdminController@auctions');
 Route::get('admin/{admin_id}/auctions/{auctions_id}', 'AdminController@edit_auctions');
 Route::put('admin/{admin_id}/auctions/{auctions_id}', 'AdminController@edit_auction');
 Route::delete('admin/{admin_id}/auctions/{auctions_id}', 'AdminController@delete_auction');
+
+// Auctions
+Route::get('auction/{id}/edit', 'AuctionController@edit');

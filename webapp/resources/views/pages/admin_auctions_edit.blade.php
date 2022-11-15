@@ -12,7 +12,7 @@
         <label for="auctionDescription">Auction Description</label>
         <textarea  name="description" id="auctionDescription" cols="30" rows="10" >{{$auction->description}}</textarea> 
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Update</button>
     </form>
     <form action="/admin/{{$adminId}}/auctions/{{$auction->id}}" method="POST">
         {{ csrf_field() }}
