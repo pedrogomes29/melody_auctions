@@ -537,7 +537,7 @@ paths:
           description: 'Ok. View user auctions'
 
 # M03: Bids
-  /api/bid:
+  /api/auction/{id}/bid:
     post:
       operationId: R301
       summary: 'R301: Make bid'
@@ -551,8 +551,6 @@ paths:
             schema:
               type: object
               properties:
-                auctionid:
-                  type: integer
                 value:
                   type: number
               required:
