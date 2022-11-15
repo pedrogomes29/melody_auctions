@@ -32,11 +32,11 @@ Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('re
 Route::post('register', 'Auth\RegisterController@register');
 
 // Auctions
-Route::get('auction/{id}', 'AuctionController@show');
+Route::get('auction/{id}', 'AuctionController@show')->where('id', '[0-9]+');
 
 
 // Auctions
-Route::post('api/auction/{id}/bid', 'BidController@create');
+Route::post('api/auction/{id}/bid', 'BidController@create')->where('id', '[0-9]+');
 
 
 

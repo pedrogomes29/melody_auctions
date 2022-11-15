@@ -37,11 +37,15 @@ class AuctionController extends Controller
      * @param  \App\Models\Auction  $auction
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         $auction = Auction::find($id);
-        //$this->authorize('show', $auction);
-        return view('pages.auction', ['auction' => $auction]);
+        if($auction){
+            //$this->authorize('show', $auction);
+            return view('pages.auction', ['auction' => $auction]);
+        }else{
+            abort(404);
+        }
     }
 
     /**

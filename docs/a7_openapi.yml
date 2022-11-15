@@ -334,9 +334,19 @@ paths:
       description: 'Show the individual auction. Access: PUB'
       tags:
         - 'M02: Auctions'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the auction to get
+            
       responses:
         '200':
           description: 'Ok. Show view Auction UI'
+        '404':
+          description: 'Auction Not found'
 
     put:
       operationId: R204
@@ -544,6 +554,13 @@ paths:
       description: 'Authenticated user submits a bid. Access: USR'
       tags:
         - 'M03: Bids'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the auction to bid
       requestBody:
         required: true
         content:
@@ -551,17 +568,21 @@ paths:
             schema:
               type: object
               properties:
-                value:
+                value:         
                   type: number
+                  description: Bid value
+                _token:   
+                  type: string
+                  description: CSRF Token
               required:
-                - auctionid
                 - value
+                - _token
       
       responses:
-        '201':
-          description: 'Bid made successfully'
-        '500':
-          description: 'Failure'
+        '302':
+          description: 'Redirecting to Auction Page'
+        '404':
+          description: 'Auction Not Found'
   
   /user/{username}/bid:
     get:

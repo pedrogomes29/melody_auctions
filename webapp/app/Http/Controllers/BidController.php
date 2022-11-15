@@ -19,7 +19,7 @@ class BidController extends Controller
      * @param  Request request containing the description
      * @return Response
    */
-    public function create(Request $request, $id)
+    public function create(Request $request, int $id)
     {
         $bid = new Bid();
         $bid->authenticateduser_id = 1;
@@ -36,7 +36,17 @@ class BidController extends Controller
 
             
             $auction = Auction::find($bid->auction_id);
+            if (empty($auction)){
+                DB::rollBack();
+                abort(404);
+                return;
+            }
+
             $user = AuthenticatedUser::find($bid->authenticateduser_id);
+            if (empty($user)){
+                DB::rollBack();
+                abort(404);
+            }
 
             if($auction->owner_id === $bid->authenticateduser_id)
                 throw new PDOException('O utilizador nao pode dar bid na propria auction', 1 );
