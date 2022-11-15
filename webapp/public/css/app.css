@@ -156,6 +156,17 @@ input[type="password"]:focus {
     border-color: #9b4dca;
 }
 
-#hidden_dropdown.hide {
+p.dropdown-item.chosen {
     display: none;
+}
+
+#search_results .dropdown-menu.show {
+    display: inherit;
+    top: inherit;
+    left: inherit;
+}
+
+#search_results .dropdown-item:hover {
+    background-color: #d3d3d3;
+    cursor: pointer;
 }

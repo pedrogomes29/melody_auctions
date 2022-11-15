@@ -11,18 +11,15 @@
 |
 */
 // Home
-Route::get('/', function(){
-    return view ('pages.index');
-})->name('index');
+Route::view('/','pages.index')->name('index');
 
-Route::get('cards2', 'CardController@list');
 
-// Cards
-Route::get('cards', 'CardController@list');
-Route::get('cards/{id}', 'CardController@show');
+//Auctions
+Route::get('/auction','AuctionController@list');
 
 // API
-Route::get('api/auction','AuctionController@search_results');
+Route::get('api/auction_html','AuctionController@search_results_html');
+Route::get('api/auction_json','AuctionController@search_results_json');
 Route::get('api/user','AuthenticatedUserController@search_results');
 
 // Authentication
@@ -31,3 +28,5 @@ Route::post('login', 'Auth\LoginController@login');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 Route::post('register', 'Auth\RegisterController@register');
+
+
