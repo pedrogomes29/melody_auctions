@@ -8,13 +8,17 @@
 @section('content')
 <section class="profile">
     <header id="profile-name" >
-        <div id="username-delete">
             <h1 id="user-name">
                 &#64{{ $user->username }}
             </h1>
-            <button class="btn btn-danger">Delete Account</button>
-        </div>
     </header>
+    @if (Auth::user()->id == $user->id)
+        <form action="{{ route('user.delete', $user->username) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger">Delete Account</button>
+        </form>
+    @endif
     <section class="profile-sidebar">
         <!-- SIDEBAR USERPIC -->
         <div class="profile-userpic">

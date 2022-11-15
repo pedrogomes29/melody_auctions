@@ -30,3 +30,4 @@ Route::group(['middleware'=>'admin'], function() {
 Route::get('user/{username}','UserProfileController@showUserProfile')->name('user');
 Route::put('user/{username}','UserProfileController@updateUserProfile')->name('user.update');
 Route::put('user/{username}/balance','UserProfileController@updateUserBalance')->name('user.balance.update');
+Route::delete('user/{username}','UserProfileController@deleteUserProfile')->name('user.delete');
