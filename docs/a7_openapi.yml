@@ -100,8 +100,6 @@ paths:
       responses:
         '200':
           description: 'Ok. Show sign-up UI'
-
-  /user:
     post:
       operationId: R105
       summary: 'R105: Create user'
