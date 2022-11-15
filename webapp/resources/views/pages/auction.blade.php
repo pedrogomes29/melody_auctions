@@ -38,6 +38,17 @@
               {{ csrf_field() }}
 
             </div>
+            @if ($errors->has('bid_error'))
+              <div class="alert alert-danger" role="alert">
+                {{ $errors->first('bid_error') }}
+              </div>
+            @elseif ($errors->has('bid_success'))
+              <div class="alert alert-success" role="alert">
+                {{ $errors->first('bid_success') }}
+              </div>
+
+            @endif
+
             <input type="submit" value="Bid">
           <form>
         </section>

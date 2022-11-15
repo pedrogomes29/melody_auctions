@@ -49,28 +49,28 @@ class BidController extends Controller
             }
 
             if($auction->owner_id === $bid->authenticateduser_id)
-                throw new PDOException('O utilizador nao pode dar bid na propria auction', 1 );
+                throw new PDOException('Cannot bid on your own auction!', 1 );
             
 
             if ($user->balance < $bid->value)
-                throw new PDOException('Insuficient balance to bid that value', 1 );
+                throw new PDOException('Insuficient balance to bid that value!', 1 );
             
 
             if($auction->winner_id !== null)
-                throw new PDOException('Cannot bid on an auction already won', 1 );
+                throw new PDOException('Cannot bid on an auction already won!', 1 );
             
 
             $lastBid = Bid::where('auction_id', $bid->auction_id)->orderByDesc('value')->limit(1)->get()[0];
 
             if($lastBid->authenticateduser_id === $bid->authenticateduser_id)
-                throw new PDOException('Cannot bid on an auction that you are the last person to bid', 1 );
+                throw new PDOException('Cannot bid on an auction that you are the last person to bid!', 1 );
             
 
             if($auction->startprice > $bid->value)
-                throw new PDOException('The bid value must be greater than '.$auction->startprice , 1 );
+                throw new PDOException('The bid value must be greater than '.$auction->startprice.'!' , 1 );
             
             if ($auction->last_price !== null &&  $auction->last_price + $auction->mindiff > $bid->value)
-                throw new PDOException('The bid value must be greater than '.$auction->last_price + $auction->mindiff , 1 );
+                throw new PDOException('The bid value must be greater than '.$auction->last_price + $auction->mindiff.'!' , 1 );
             
 
             $bid->id = Bid::max('id') + 1;
@@ -79,12 +79,12 @@ class BidController extends Controller
             DB::commit();
         }catch(PDOException $e){
             error_log($e->getMessage());
-
+            
             DB::rollBack();
-        
+            return redirect()->back()->withErrors(['bid_error' => $e->getMessage()]);
         }
         
-        return redirect()->back();
+        return redirect()->back()->withErrors(['bid_success' => 'The bid was successfully made! :)']);
     }
 
     /**
