@@ -4,7 +4,7 @@
 <form method="POST" action="{{ route('login') }}">
     {{ csrf_field() }}
 
-    <label for="email">E-mail</label>
+    <label for="email">E-Mail</label>
     <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus>
     @if ($errors->has('email'))
         <span class="error">
@@ -19,10 +19,6 @@
             {{ $errors->first('password') }}
         </span>
     @endif
-
-    <label>
-        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-    </label>
 
     <button type="submit">
         Login

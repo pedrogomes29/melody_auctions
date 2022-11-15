@@ -11,19 +11,8 @@
 |
 */
 // Home
-Route::get('/', 'Auth\LoginController@home');
-
-// Cards
-Route::get('cards', 'CardController@list');
-Route::get('cards/{id}', 'CardController@show');
-
-// API
-Route::put('api/cards', 'CardController@create');
-Route::delete('api/cards/{card_id}', 'CardController@delete');
-Route::put('api/cards/{card_id}/', 'ItemController@create');
-Route::post('api/item/{id}', 'ItemController@update');
-Route::delete('api/item/{id}', 'ItemController@delete');
-
+Route::get('/', 'HomeController@show')->name('home');
+Route::get('home', 'HomePageController@show')->name('home');
 // Authentication
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
@@ -37,3 +26,6 @@ Route::post('/admin/logout', 'Auth\AdminLoginController@logout')->name('admin.lo
 Route::group(['middleware'=>'admin'], function() {
     Route::get('/admin/home', 'Admin\HomeController@index');
 });
+//User Profile
+Route::get('user/{username}','UserProfileController@showUserProfile')->name('user');
+Route::get('user/{username}/edit','UserProfileController@showUserEditForm')->name('user.edit');
