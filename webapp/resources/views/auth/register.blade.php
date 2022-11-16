@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('scripts')
+    <script type="text/javascript" src={{ asset('js/register.js') }} defer> </script>
+@endsection
 
 @section('content')
 <form method="POST" action="{{ route('register') }}">
