@@ -74,6 +74,7 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'contact' => $data['contact'],
             'balance' => 0,
+            'id'=> AuthenticatedUser::max('id') + 1,
         ]);
     }
 }
