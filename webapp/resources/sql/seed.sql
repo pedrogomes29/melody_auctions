@@ -1,10 +1,10 @@
-create schema if not exists lbaw_2211;
+create schema if not exists lbaw2211;
 
 -- ----------------------------------------------------------
 -- CREATE TABLES
 -- ----------------------------------------------------------
 
-SET search_path TO lbaw_2211;
+SET search_path TO lbaw2211;
 
 Drop table if exists admins cascade;
 
