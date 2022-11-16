@@ -1,0 +1,36 @@
+.profile{
+    background-color: #fff;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 100%;
+    color: #000000;
+}
+
+#balance{
+    background-color: #fff;
+    margin-bottom: 10px;
+    padding: 10px;
+    width: 100%;
+    color: #000000;
+    width: 25%;
+}
+
+.default_profilepic{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 1px solid #e1e8ed;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+
+.profile-sidebar{
+    margin: 0 auto;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+    color: #000000;
+    border: 1px solid #000000;
+    border-radius: 1em;
+}

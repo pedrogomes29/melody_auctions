@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+use App\Models\AuthenticatedUser;
 
 class LoginController extends Controller
 {
@@ -19,13 +21,12 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
-
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/cards';
+    public function redirectTo()
+    {
+        $id = Auth::id();
+        $username = AuthenticatedUser::where('id',$id)->firstOrFail()->username;
+        return '/user/'.$username;
+    }
 
     /**
      * Create a new controller instance.
@@ -37,12 +38,19 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function getUser(){
-        return $request->user();
+    protected function guard()
+    {
+     return Auth::guard('authenticateduser');
+    }
+    public function showLoginForm()
+    {
+        return view('auth.login');
     }
 
-    public function home() {
-        return redirect('login');
+    public function logout()
+    {
+        Auth::guard('authenticateduser')->logout();
+        return redirect('/login');
     }
 
 }

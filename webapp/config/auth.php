@@ -14,8 +14,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
-        'passwords' => 'users',
+        'guard' => 'authenticateduser',
+        'passwords' => 'authenticatedusers',
     ],
 
     /*
@@ -38,13 +38,21 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'authenticatedusers',
         ],
 
         'api' => [
             'driver' => 'token',
-            'provider' => 'users',
+            'provider' => 'authenticatedusers',
             'hash' => false,
+        ],
+        'admin'  => [
+            'driver'  => 'session',
+            'provider' => 'admins',
+          ],
+        'authenticateduser'  => [
+            'driver'  => 'session',
+            'provider' => 'authenticatedusers',
         ],
     ],
 
@@ -70,7 +78,14 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
+        'admins' => [
+            'driver' => 'eloquent',
+            'model'  => App\Models\Admin::class,
+        ],
+        'authenticatedusers' => [
+            'driver' => 'eloquent',
+            'model'  => App\Models\AuthenticatedUser::class,
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -95,6 +110,18 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'admins' => [
+            'provider' => 'admins',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'authenticatedusers' => [
+            'provider' => 'authenticatedusers',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
