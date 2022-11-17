@@ -25,9 +25,9 @@
         <!-- SIDEBAR USERPIC -->
         <div id= "prof_pic" class="profile-userpic">
             @if ($user->photo)
-            <img src="{{ asset('storage/' . $user->photo) }}" class="profilepic" alt="User Image">
+            <img id="real_pic" class="pic"src="{{ asset('storage/' . $user->photo) }}" class="profilepic" alt="User Image">
             @else
-            <img src="{{ asset('default_image/default.jpg') }}"class="default_profilepic" alt="User Image">
+            <img id="default_pic" class="pic"src="{{ asset('default_image/default.jpg') }}"class="default_profilepic" alt="User Image">
             @endif
         </div>
         @if(Auth::id() == $user->id)
@@ -35,8 +35,8 @@
             <form action="{{ route('user.photo', $user->username) }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <label class="block mb-4">
-                    <span class="sr-only">Choose File</span>
-                    <input type="file" name="image"
+                    <span style="display:none" class="sr-only">Choose File</span>
+                    <input required onchange="previewImage(this);" style="display:none" id="imageUpload" type="file" name="image"
                         class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
                     @error('image')
                     <span class="text-red-600 text-sm">{{ $message }}</span>
@@ -124,7 +124,7 @@
     </section>
     @if(Auth::id() == $user->id)
         <div id="balance">
-            <h2>
+            <h2 id="current_balance">
                 Balance: {{ $user->balance }} $
             </h2>
             <button id="add-balance" class="btn btn-primary">Add Balance</button>
