@@ -76,4 +76,16 @@ class UserProfileController extends Controller
             return redirect()->route('home');
         }
     }
+    public function store(Request $request, $username)
+    {
+        $this->validate($request, [
+            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+        ]);
+        $image_path = $request->file('image')->store('image', 'public');
+        $user = AuthenticatedUser::where('username',$username)->firstOrFail();
+        $user->photo = $image_path;
+        $user->save();
+        session()->flash('success', 'Image Upload successfully');
+        return redirect()->route('user', ['username' => $user->username]);
+    }
 }

@@ -2,6 +2,7 @@
 @section('scripts')
     <script type="text/javascript" src={{ asset('js/generic_search_bar.js') }} defer> </script>
     <script type="text/javascript" src={{ asset('js/register.js') }} defer> </script>
+    <script type="text/javascript" src={{ asset('js/profile_pic.js') }} defer> </script>
 @endsection
 @section('styles')
     <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
@@ -22,13 +23,30 @@
     @endif
     <section class="profile-sidebar">
         <!-- SIDEBAR USERPIC -->
-        <div class="profile-userpic">
-            @if ($user->profile_picture)
-            <img src="{{ asset('storage/pics' . $user->profile_picture) }}" class="profilepic" alt="User Image">
+        <div id= "prof_pic" class="profile-userpic">
+            @if ($user->photo)
+            <img src="{{ asset('storage/' . $user->photo) }}" class="profilepic" alt="User Image">
             @else
             <img src="{{ asset('default_image/default.jpg') }}"class="default_profilepic" alt="User Image">
             @endif
         </div>
+        @if(Auth::id() == $user->id)
+        <div style="display:none" id="image_form"class="relative flex items-center min-h-screen justify-center overflow-hidden">
+            <form action="{{ route('user.photo', $user->username) }}" method="POST" enctype="multipart/form-data">
+                {{ csrf_field() }}
+                <label class="block mb-4">
+                    <span class="sr-only">Choose File</span>
+                    <input type="file" name="image"
+                        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+                    @error('image')
+                    <span class="text-red-600 text-sm">{{ $message }}</span>
+                    @enderror
+                </label>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+            
+        @endif
         <div class="profile-usertitle">
             <div class="profile-usertitle-name">
                 {{ $user->firstname }} {{ $user->lastname }}

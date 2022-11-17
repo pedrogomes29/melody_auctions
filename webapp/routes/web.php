@@ -31,3 +31,4 @@ Route::get('user/{username}','UserProfileController@showUserProfile')->name('use
 Route::put('user/{username}','UserProfileController@updateUserProfile')->name('user.update');
 Route::put('user/{username}/balance','UserProfileController@updateUserBalance')->name('user.balance.update');
 Route::delete('user/{username}','UserProfileController@deleteUserProfile')->name('user.delete');
+Route::post('user/{username}','UserProfileController@store')->name('user.photo');

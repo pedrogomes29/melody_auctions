@@ -34,3 +34,16 @@
     border: 1px solid #000000;
     border-radius: 1em;
 }
+.profile-userpic img{
+    float: none;
+    margin: 0 auto;
+    width: 175px;
+    height: 175px;
+    -webkit-border-radius: 50% !important;
+    -moz-border-radius: 50% !important;
+    border-radius: 50% !important;
+}
+
+#prof_pic:hover{
+    cursor: pointer;
+}
