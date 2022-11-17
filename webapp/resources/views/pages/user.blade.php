@@ -15,7 +15,7 @@
             </h1>
     </header>
     @if (Auth::user()->id == $user->id)
-        <form action="{{ route('user.delete', $user->username) }}" method="POST">
+        <form id="delete-user"action="{{ route('user.delete', $user->username) }}" method="POST">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-danger">Delete Account</button>
