@@ -20,6 +20,7 @@
         <section id="details">
           <img id="auction_img" class=".img-fluid mx-auto d-block" src="{{URL('/images/guitar.png')}}">
 
+          <h2>Description</h2>
           <p>
           {{ $auction->description }}
           </p>

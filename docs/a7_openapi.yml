@@ -607,22 +607,20 @@ paths:
         '200':
           description: 'List of bids'
           content:
-            application/json:
+            text/html:
               schema:
-                type: object
-                properties:
-                  bidder:
-                    type: string
-                    description: The bidder name.
-                    example: Quim Roscas 
-                  value:
-                    type: number
-                    description: The bid value.
-                    example: 100
-                  date:
-                    type: string
-                    description: The date of the bid.
-                    example: "2022-11-15 18:55:37"
+                format: html
+                example: '<a href="#" class="list-group-item list-group-item-action " aria-current="true">
+                            <div class="d-flex w-100 justify-content-between">
+
+                              <h5 class="mb-1">Eugenie Saint</h5>
+                              <small>2022-11-17 12:00:00.321</small>
+                            </div>
+                            <p class="mb-1">20€</p>
+                          </a>'
+        '404':
+          description: 'Auction Not Found'
+          
   
   /user/{username}/bid:
     get:
