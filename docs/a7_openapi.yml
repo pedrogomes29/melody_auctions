@@ -559,7 +559,7 @@ paths:
           name: id
           schema:
             type: integer
-          required: true
+          required: true 
           description: Numeric ID of the auction to bid
       requestBody:
         required: true
@@ -583,11 +583,51 @@ paths:
           description: 'Redirecting to Auction Page'
         '404':
           description: 'Auction Not Found'
+
+    get:
+      operationId: R302
+      summary: 'R302: View the auction past bids'
+      description: 'Show the historic of bids of an auction. Access: PUB'
+      tags:
+        - 'M03: Bids'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true 
+          description: Numeric ID of the auction to list bids
+        
+        - in: query
+          name: offset
+          type: integer
+          required: false
+      responses:
+        '200':
+          description: 'List of bids'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bidder:
+                    type: string
+                    description: The bidder name.
+                    example: Quim Roscas 
+                  value:
+                    type: number
+                    description: The bid value.
+                    example: 100
+                  date:
+                    type: string
+                    description: The date of the bid.
+                    example: "2022-11-15 18:55:37"
   
   /user/{username}/bid:
     get:
-      operationId: R302
-      summary: 'R302: View the list of bids made by a user'
+      operationId: R303
+      summary: 'R303: View the list of bids made by a user'
       description: 'View the bids of an authenticated user. Access: USR'
       tags:
         - 'M03: Bids'
@@ -595,16 +635,6 @@ paths:
         '200':
           description: 'Ok. Show view bids UI'     
 
-  /auction/{auctionid}/bid:
-    get:
-      operationId: R303
-      summary: 'R303: View the auction past bids'
-      description: 'Show the historic of bids of an auction. Access: PUB'
-      tags:
-        - 'M03: Bids'
-      responses:
-        '200':
-          description: 'Ok.'
 
 
 # M04: Notifications, Follows, Reviews

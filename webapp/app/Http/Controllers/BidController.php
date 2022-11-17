@@ -22,14 +22,14 @@ class BidController extends Controller
     public function create(Request $request, int $id)
     {
         $bid = new Bid();
-        $bid->authenticateduser_id = 1;
+        $bid->authenticateduser_id = 1; //TODO
         $bid->auction_id = $id;
         $bid->value = $request->input('value'); // input do post
 
         //$this->authorize('create', $bid);
 
         // nao é um admin
-        //TODO
+        //TODO passar isto para o authorize
         try{
             DB::beginTransaction();
             DB::statement('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE');

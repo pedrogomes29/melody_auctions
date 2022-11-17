@@ -17,4 +17,27 @@ class Auction extends Model
     {
         return $this->belongsTo(AuthenticatedUser::class);
     }
+
+    public function bids(){
+        return $this->hasMany(Bid::class);
+    }
+
+    public function bids_offset(int $offset){
+        return $this->bids()->getQuery()->offset($offset*10)->limit(10)->get();
+    }
+
+    /**
+     * Get the last bidder.
+     */
+    public function getLastBidder()
+    {
+        $bid = Bid::where('auction_id', $this->id)->orderByDesc('value')->limit(1)->first();
+        
+        if($bid === null)
+            return null;
+        error_log($bid->bidder);
+        return $bid->bidder;
+    }
+
+    
 }

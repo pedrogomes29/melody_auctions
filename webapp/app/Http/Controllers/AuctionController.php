@@ -48,6 +48,33 @@ class AuctionController extends Controller
         }
     }
 
+    public function bids(Request $request, $id){
+
+        $offset =$request->offset;
+        if($offset!==null){
+            // Validate if a string is a valid number
+
+            if(! preg_match('/^[0-9]+$/', $offset)){
+                abort(404);
+            }   
+        }
+
+        $auction = Auction::find($id);
+        if($auction==null){
+            abort(404);
+        }
+
+        $bids = [];
+        if($offset!==null){
+            $bids = $auction->bids_offset(intval($offset));
+        }else{
+            $bids =$auction->bids;
+        }
+        
+        error_log($bids);
+        return view('partials.bids', ['bids' => $bids]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

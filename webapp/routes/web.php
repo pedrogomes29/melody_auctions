@@ -35,8 +35,9 @@ Route::post('register', 'Auth\RegisterController@register');
 Route::get('auction/{id}', 'AuctionController@show')->where('id', '[0-9]+');
 
 
-// Auctions
+// bids
 Route::post('api/auction/{id}/bid', 'BidController@create')->where('id', '[0-9]+');
+Route::get('api/auction/{id}/bid', 'AuctionController@bids')->where('id', '[0-9]+');
 
 
 
