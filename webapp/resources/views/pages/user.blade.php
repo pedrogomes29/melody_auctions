@@ -3,6 +3,7 @@
     <script type="text/javascript" src={{ asset('js/generic_search_bar.js') }} defer> </script>
     <script type="text/javascript" src={{ asset('js/register.js') }} defer> </script>
     <script type="text/javascript" src={{ asset('js/profile_pic.js') }} defer> </script>
+    <script type="text/javascript" src={{ asset('js/add_balance.js') }} defer> </script>
 @endsection
 @section('styles')
     <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
@@ -11,7 +12,7 @@
 <section class="profile">
     <header id="profile-name" >
             <h1 id="user-name">
-                &#64{{ $user->username }}
+               <a id="username-at" href=""> &#64{{ $user->username }}</a>
             </h1>
     </header>
     @if (Auth::user()->id == $user->id)
@@ -125,15 +126,15 @@
     @if(Auth::id() == $user->id)
         <div id="balance">
             <h2 id="current_balance">
-                Balance: {{ $user->balance }} $
+                Balance:  <output id="actual_balance">{{$user->balance }}</output> $
             </h2>
             <button id="add-balance" class="btn btn-primary">Add Balance</button>
-            <form style="display:none" id="add-balance-form" action="{{ route('user.balance.update', $user->username) }}" method="POST">
-                {{ csrf_field() }}
+            <form style="display:none" id="add-balance-form" action="{{ route('user.balance', $user->username) }}" method="POST">
+                <meta name="csrf-token" content="{{ csrf_token() }}" />
                 @method('PUT')
                 <label for="balance">Amount</label>
                 <input type="number" name="balance" id="balance-input" placeholder="Balance" required min="1">
-                <button type="submit" class="btn btn-primary">Add</button>
+                <button id="add" type="submit" class="btn btn-primary">Add</button>
             </form>
             <script src={{ asset('js/edit.js') }}></script>
         </div>

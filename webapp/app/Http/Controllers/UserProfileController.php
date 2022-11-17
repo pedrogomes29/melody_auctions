@@ -49,17 +49,19 @@ class UserProfileController extends Controller
     }
     public function updateUserBalance(Request $request, $username)
     {
-        $id = AuthenticatedUser::where('username',$username)->firstOrFail()->id;
+        $data = $request->validate([
+            'balance' => 'required|numeric',
+        ]);
+        $id= AuthenticatedUser::where('username',$username)->firstOrFail()->id;
         $user = AuthenticatedUser::where('username',$username)->firstOrFail();
         if(Auth::id() == $id)
         {
-            $user->balance = $request->input('balance')+ $user->balance;
+            $data = request()->validate([
+                'balance' => 'required|numeric',
+            ]);
+            $user->balance = $data['balance'] + $user->balance;
             $user->save();
-            return redirect()->route('user', ['username' => $user->username]);
-        }
-        else
-        {
-            return redirect()->route('home');
+            return view('pages.user', ['user' => $user]);
         }
     }
     public function deleteUserProfile($username)
@@ -88,4 +90,5 @@ class UserProfileController extends Controller
         session()->flash('success', 'Image Upload successfully');
         return redirect()->route('user', ['username' => $user->username]);
     }
+
 }
