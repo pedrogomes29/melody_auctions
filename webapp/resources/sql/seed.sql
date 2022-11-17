@@ -43,13 +43,13 @@ CREATE TABLE authenticated_users (
 );
 CREATE INDEX user_search_idx ON authenticated_users USING gist (tsvectors);
 
-Drop TABLE if exists categorys cascade;
+Drop TABLE if exists categories cascade;
 
-CREATE TABLE categorys (
+CREATE TABLE categories (
 	id serial4 NOT NULL,
 	"name" varchar(50) NOT NULL,
-	CONSTRAINT categorys_name_key UNIQUE (name),
-	CONSTRAINT categorys_pkey PRIMARY KEY (id)
+	CONSTRAINT categories_name_key UNIQUE (name),
+	CONSTRAINT categories_pkey PRIMARY KEY (id)
 );
 
 
@@ -108,7 +108,7 @@ CREATE TABLE auctions (
 	CONSTRAINT auctions_minbidsdif_check CHECK ((minbidsdif >= (0)::double precision)),
 	CONSTRAINT auctions_pkey PRIMARY KEY (id),
 	CONSTRAINT auctions_startprice_check CHECK ((startprice >= (0)::double precision)),
-	CONSTRAINT auctions_category_id_fkey FOREIGN KEY (category_id) REFERENCES categorys(id),
+	CONSTRAINT auctions_category_id_fkey FOREIGN KEY (category_id) REFERENCES categories(id),
 	CONSTRAINT auctions_manufactor_id_fkey FOREIGN KEY (manufactor_id) REFERENCES manufactors(id),
 	CONSTRAINT auctions_owner__idfkey FOREIGN KEY (owner_id) REFERENCES authenticated_users
 (id),
@@ -562,11 +562,11 @@ insert into reports (id, reportstext, reportsdate, reported_id, reporter_id, rep
 insert into reports (id, reportstext, reportsdate, reported_id, reporter_id, reports_state_id) values (2, 'As caravelhas do violino vieram partidas', '2022-3-16 19:14:12.086', 4, 1, 1);
 insert into reports (id, reportstext, reportsdate, reported_id, reporter_id, reports_state_id) values (3, 'Unspecified injury of prostate', '2022-2-25 14:12:45.982', 4, 3, 1);
 
---categorys
-insert into categorys (id, name) values (1, 'Percussão');
-insert into categorys (id, name) values (2, 'Sopro');
-insert into categorys (id, name) values (3, 'Cordas');
-insert into categorys (id, name) values (4, 'Teclas');
+--categories
+insert into categories (id, name) values (1, 'Percussão');
+insert into categories (id, name) values (2, 'Sopro');
+insert into categories (id, name) values (3, 'Cordas');
+insert into categories (id, name) values (4, 'Teclas');
 
 --manufactors
 insert into manufactors (id, name) values (1, 'Yamaha');
@@ -585,6 +585,11 @@ insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdat
 insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id,winner_id) values (5, 'trompete', 4.53, 5.54, '2022-4-15 12:40:00.567', '2022-4-22 10:59:20.753', '2022-4-22 10:59:20.753',8.23, 'Korg Piano',' ',1,4,7,5);
 insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id, winner_id) values (6, 'trombone', 3.12, 4.23, '2022-3-16 12:00:00.321', '2022-3-16 15:31:59.512', '2022-3-16 15:31:59.512',1.18, 'Casio Piano',' ',2,1,6,NULL);
 insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id, winner_id) values (7, 'flauta', 5.19, 6.64, '2022-7-16 12:23:00.425', '2022-7-16 15:40:16.245', '2022-7-16 15:40:16.245',3.09, 'Roland Piano',' ',4,2,5,NULL);
+
+insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id,winner_id) values (8, 'harpa', 0.26, 1.14, '2022-11-17 12:50:00.512', '2022-11-17 15:05:42.764','2022-11-17 15:05:42.764' ,0.06, 'Ibanez Double Bass', ' ',2,3,4,NULL);
+insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id,winner_id) values (9, 'contrabaixo', 4.53, 5.54, '2022-4-15 12:40:00.567', '2022-4-22 10:59:20.753', '2022-4-22 10:59:20.753',8.23, 'Korg Piano',' ',1,4,7,NULL);
+insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id, winner_id) values (10, 'tuba', 3.12, 4.23, '2022-3-16 12:00:00.321', '2022-3-16 15:31:59.512', '2022-3-16 15:31:59.512',1.18, 'Casio Piano',' ',2,1,6,NULL);
+insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id, winner_id) values (11, 'trompa', 5.19, 6.64, '2022-7-16 12:23:00.425', '2022-7-16 15:40:16.245', '2022-7-16 15:40:16.245',3.09, 'Roland Piano',' ',4,2,5,NULL);
 
 --messages :)
 insert into messages (id, authenticateduser_id, auction_id, text, date) values (1, 3, 4, 'Olá tudo bem?', '2022-11-17 12:00:00.321');

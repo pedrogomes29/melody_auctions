@@ -11,7 +11,7 @@
 |
 */
 // Home
-Route::view('/','pages.index')->name('index');
+Route::get('/','AuctionController@index')->name('index');
 
 
 //Auctions

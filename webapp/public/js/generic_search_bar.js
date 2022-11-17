@@ -44,11 +44,20 @@ function search() {
 }
 
 function showAuctions(auctions) {
-    console.log(auctions);
     const dropdown_menu = document.querySelector(
         "#search_results .dropdown-menu"
     );
     dropdown_menu.innerHTML = "";
+
+    if (auctions.length == 0) {
+        const html = document.createElement("div");
+        const noResults = document.createElement("h4");
+        noResults.classList.add("ml-3");
+        html.appendChild(noResults);
+        noResults.innerText = "No results";
+        dropdown_menu.appendChild(html);
+    }
+
     for (const auction of auctions) {
         const auctionHTML = document.createElement("div");
         auctionHTML.classList.add("dropdown-item");
@@ -59,7 +68,7 @@ function showAuctions(auctions) {
         auctionHTML.appendChild(auctionName);
         auctionHTML.appendChild(auctionDescription);
         auctionHTML.addEventListener("click", function () {
-            location.replace("/auction/" + auction.id);
+            window.location.href = "/auction/" + auction.id;
         });
         dropdown_menu.appendChild(auctionHTML);
     }

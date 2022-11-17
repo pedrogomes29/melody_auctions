@@ -26,18 +26,19 @@
     @yield('scripts')
   </head>
     <body>
-      <header class="d-flex flex-row justify-content-between align-items-center">
+      <header class="d-flex flex-row justify-content-between align-items-center pb-3">
         <img
           src= {{ asset('images/auction.svg')}}
-          height="30"
+          height="60"
+          class="m-3"
           alt="Melody auctions Logo"
         />
 
-        <a class="px-5" href="{{ url('/') }}">Home</a>
+        <a class="h3 px-5 text-dark" href="{{ url('/') }}">Home</a>
 
-        <a class="px-5" href="{{ url('/auction/create') }}">Sell</a>
+        <a class="h3 px-5 text-dark" href="{{ url('/auction/create') }}">Sell</a>
 
-        <a class="px-5" href="{{ url('/auction') }}">Buy</a>
+        <a class="h3 px-5 text-dark" href="{{ url('/auction') }}">Buy</a>
 
         <div class="d-flex flex-row flex-grow-1 m-top">
           <div class="d-flex flex-row flex-grow-1">
@@ -54,7 +55,7 @@
                 </button>
             </span>
           </div>
-          <div id="auctionsOrUsers" class="dropdown">
+          <div id="auctionsOrUsers" class="dropdown ml-3 mr-5">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Auctions</button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
               <li><p class="dropdown-item chosen">Auctions</p></li>
@@ -63,9 +64,9 @@
           </div>
         </div>
         @if (Auth::check())
-          <a class="button mx-2" href="{{ url('/logout') }}"> Logout </a> <span>{{ Auth::user()->name }}</span>
+          <a id="logout" class="button mr-5" href="{{ url('/logout') }}"> Logout </a> <span>{{ Auth::user()->name }}</span>
         @else
-          <a class="button mx-2" href="{{ url('/login') }}"> Log in </a>
+          <a id="login" class="button mr-5" href="{{ url('/login') }}"> Log in </a>
         @endif
       </header>
       <main>
@@ -73,20 +74,14 @@
           @yield('content')
         </section>
       </main>
-      <footer>
-        <img
-          src= {{ asset('images/auction.svg')}}
-          height="30"
-          alt="Melody auctions Logo"
-        />
-
-        <a href="{{ url('/about') }}">About Us</a>
-
-        <a href="{{ url('/contact-us') }}">Contact Us</a>
-
-        <a href="{{ url('/FAQ') }}">FAQ</a>
-        <p>Ⓒ 2022 - Melody Auctions</p>
-      </footer>
+        <footer class="py-3 my-4">
+          <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <li class="nav-item"><a class="nav-link px-2 text-muted" href="{{ url('/about') }}">About Us</a></li>
+            <li class="nav-item"><a class="nav-link px-2 text-muted" href="{{ url('/contact-us') }}">Contact Us</a></li>
+            <li class="nav-item"><a class="nav-link px-2 text-muted" href="{{ url('/FAQ') }}">FAQ</a></li>
+          </ul>
+          <p class="text-center text-muted">&copy; 2022 - Melody Auctions</p>
+        </footer>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
     </body>
 </html>
