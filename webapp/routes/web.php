@@ -33,6 +33,7 @@ Route::post('register', 'Auth\RegisterController@register');
 
 // Auctions
 Route::get('auction/{id}', 'AuctionController@show')->where('id', '[0-9]+');
+Route::get('/auction/create', 'AuctionController@create');
 
 
 // bids

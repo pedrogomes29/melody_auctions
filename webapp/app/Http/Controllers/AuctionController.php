@@ -15,9 +15,21 @@ class AuctionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function showCreate()
+    {
+        //TODO verificar se está logado
+        return view('pages.create_auction');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
-        //
+        //TODO verificar se está logado
+        return view('pages.create_auction');
     }
 
     /**
