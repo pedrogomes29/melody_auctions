@@ -586,6 +586,7 @@ insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdat
 insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id, winner_id) values (6, 'trombone', 3.12, 4.23, '2022-3-16 12:00:00.321', '2022-3-16 15:31:59.512', '2022-3-16 15:31:59.512',1.18, 'Casio Piano',' ',2,1,6,NULL);
 insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id, winner_id) values (7, 'flauta', 5.19, 6.64, '2022-7-16 12:23:00.425', '2022-7-16 15:40:16.245', '2022-7-16 15:40:16.245',3.09, 'Roland Piano',' ',4,2,5,NULL);
 insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id, winner_id) values (8, 'timbales', 5.19, 6.64, '2022-11-19 12:23:00.425', NULL, '2022-11-22 12:23:00.425',3.09, 'Roland Piano',' ',4,2,5,NULL);
+insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id, winner_id) values (9, 'marimba', 5.19, 6.64, '2022-11-19 12:23:00.425', NULL, '2022-11-22 12:23:00.425',3.09, 'Roland Piano',' ',4,2,5,NULL);
 
 --messages :)
 insert into messages (id, authenticateduser_id, auction_id, text, date) values (1, 3, 4, 'Olá tudo bem?', '2022-11-17 12:00:00.321');

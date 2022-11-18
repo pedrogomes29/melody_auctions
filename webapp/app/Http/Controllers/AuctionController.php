@@ -80,7 +80,7 @@ class AuctionController extends Controller
     {
         $auction = Auction::find($auctionId);
         $auction->delete();
-        return redirect('login/')->with('success',true);
+        return redirect('login/');
     }
 
     public function store(Request $request,$auctionId)
