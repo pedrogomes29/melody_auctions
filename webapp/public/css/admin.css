@@ -26,3 +26,10 @@
     justify-content: center;
 }
 
+.upload-btn {
+    margin-top: 2.5em;
+}
+
+#default_image_form {
+    margin-bottom: 0em;
+}

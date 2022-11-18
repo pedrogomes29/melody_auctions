@@ -33,10 +33,11 @@ Route::post('register', 'Auth\RegisterController@register');
 
 // Admin
 Route::get('admin/{admin_id}', 'AdminController@show');
-Route::get('admin/{admin_id}/auctions', 'AdminController@auctions');
+Route::get('admin/{admin_id}/auctions', 'AdminController@auctions')->name('admin.auctions');
 Route::get('admin/{admin_id}/auctions/{auctions_id}', 'AdminController@edit_auctions');
 Route::put('admin/{admin_id}/auctions/{auctions_id}', 'AdminController@edit_auction');
 Route::delete('admin/{admin_id}/auctions/{auctions_id}', 'AdminController@delete_auction');
+Route::post('admin/{admin_id}/auctions/{auctions_id}/default_image', 'AdminController@default_image');
 
 // Auctions
 Route::get('auction/{id}/edit', 'AuctionController@edit');

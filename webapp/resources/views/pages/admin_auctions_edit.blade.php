@@ -7,6 +7,19 @@
 
 @section('content')
     <div class="container">
+        <form id="default_image_form" action="/admin/{{$adminId}}/auctions/{{$auction->id}}/default_image" method="POST">
+            {{ csrf_field() }}
+            <div class="text-center">
+                @if ($auction->photo)
+                    <img class="img-thumbnail " src="{{ asset('storage/' . $auction->photo) }}" alt="Auction Photo">
+                @else
+                    <img class="img-thumbnail " src="{{ asset('default_image/default_auction.jpg') }}" alt="Auction Photo">
+                @endif
+                
+                <button type="submit" class="btn btn-warning upload-btn">Set Default Image</button>                
+            </div>
+            
+        </form>
         <form action="/admin/{{$adminId}}/auctions/{{$auction->id}}" method="POST">
             {{ csrf_field() }}
             @method('PUT')
@@ -19,7 +32,7 @@
             <textarea  name="description" id="auctionDescription" cols="30" rows="10" >{{$auction->description}}</textarea> 
             </div>
             <div class="text-center">
-                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="submit" class="btn btn-warning">Update</button>
             </div>        
         </form>
         <form action="/admin/{{$adminId}}/auctions/{{$auction->id}}" method="POST">

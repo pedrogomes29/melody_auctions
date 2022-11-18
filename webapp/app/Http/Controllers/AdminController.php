@@ -45,4 +45,12 @@ class AdminController extends Controller
         AuctionController::destroy($auctionId);
         return redirect('admin/'.$adminId.'/auctions');;
     }
+
+    public function default_image(Request $request,$adminId,$auctionId)
+    {
+        $auction = AuctionController::find($auctionId);
+        $auction->photo = NULL;
+        $auction->save();
+        return redirect()->route('admin.auctions', ['admin_id' => $adminId]);
+    }
 }
