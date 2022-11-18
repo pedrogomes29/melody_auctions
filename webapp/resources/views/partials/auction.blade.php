@@ -1,6 +1,6 @@
 <div class="col">
     <div class="card m-5"  id="auction-{{$auction->id}}" >
-        <p class="countdown card-text ml-4 mt-4 p-2 h5"> </p>
+        <p class="countdown card-text ms-4 mt-4 p-2 h5"> </p>
         <p hidden class="enddate">{{$auction->enddate}}</p>
         <div class="text-center">
         @if($auction->photo!==" ")

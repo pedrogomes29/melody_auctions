@@ -13,7 +13,7 @@
 
 @section('content')
     <div class="d-flex flex-row">
-        <div class="d-flex flex-column flex-shrink-0 p-3 px-5 mr-5 border-right border-dark position-sticky">
+        <div class="d-flex flex-column flex-shrink-0 p-3 px-5 me-5 border-right border-dark position-sticky">
             <div id="category"class="dropdown my-3">
                 <h1>Category</h1>
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">{{$categoryName}}</button>
@@ -33,6 +33,7 @@
             </div>
         </div>
         <div id='auctions' class='flex-grow-1'>
+            <h1>{{$nrAuctions}} results</h1>
             @include('partials.auctions', ['auctions' => $auctions,'nrAuctions'=>$nrAuctions,'offset'=>$offset])
         </div>
     </div>

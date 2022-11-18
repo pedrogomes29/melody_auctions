@@ -36,6 +36,7 @@
 
 .col .card .countdown:empty {
     background-color: white;
+    margin-left: 1em;
 }
 
 body header {
@@ -51,4 +52,18 @@ body header {
 
 #search_bar_container {
     border: solid 0.2em;
+}
+
+#home,
+#sell,
+#buy {
+    font-size: 1.88rem;
+}
+
+#profile:hover {
+    cursor: pointer;
+}
+#profile img {
+    height: 60px;
+    width: 60px;
 }

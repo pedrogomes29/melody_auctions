@@ -150,6 +150,7 @@ class AuctionController extends Controller
     }
 
     public function list(Request $request){
+        [$username,$profile_pic_path] = AuthenticatedUserController::get_username_pfp();
         $search = $request->search;
         $offset = ((int)$request->offset) ?? 0;
         [$auctions,$nrAuctions]=$this->search_auctions_helper($request);
@@ -179,6 +180,8 @@ class AuctionController extends Controller
             ->with('categoryId',$request->categoryId)
             ->with('categoryName',$categoryName)
             ->with('categories',$categories)
-            ->with('offset',$offset);
+            ->with('offset',$offset)
+            ->with('profile_pic_path',$profile_pic_path)
+            ->with('username',$username);
     }
 };

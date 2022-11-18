@@ -1,10 +1,12 @@
 function addEventListeners() {
-    let options = document.querySelectorAll("#auctionsOrUsers .dropdown-item");
+    const options = document.querySelectorAll(
+        "#auctionsOrUsers .dropdown-item"
+    );
     [].forEach.call(options, function (option) {
         option.addEventListener("click", chooseOption);
     });
 
-    let searchInput = document.getElementById("search_bar");
+    const searchInput = document.getElementById("search_bar");
     searchInput.addEventListener("input", async function () {
         if (
             document.querySelector("#auctionsOrUsers > #dropdownMenuButton1")
@@ -17,13 +19,20 @@ function addEventListeners() {
             showUsers(users);
         }
     });
+
+    const profilePic = document.getElementById("profile");
+    profilePic.addEventListener("click", seeProfile);
+}
+
+function seeProfile(event) {
+    window.location.href = "/user/" + event.currentTarget.classList[0];
 }
 
 function chooseOption(event) {
     previous_option = document.querySelector("#auctionsOrUsers .chosen");
 
     previous_option.classList.remove("chosen");
-    let selected = document.querySelector(
+    const selected = document.querySelector(
         "#auctionsOrUsers > #dropdownMenuButton1"
     );
     selected.textContent = event.target.textContent;
@@ -32,7 +41,7 @@ function chooseOption(event) {
 
 window.onclick = function (event) {
     if (!event.target.matches(".dropdown-item")) {
-        let dropdown_menu = document.querySelector(
+        const dropdown_menu = document.querySelector(
             "#search_results .dropdown-menu"
         );
         if (dropdown_menu.classList.contains("show"))
@@ -41,7 +50,7 @@ window.onclick = function (event) {
 };
 
 window.onscroll = function () {
-    let dropdown_menu = document.querySelector(
+    const dropdown_menu = document.querySelector(
         "#search_results .dropdown-menu"
     );
     if (dropdown_menu.classList.contains("show"))
