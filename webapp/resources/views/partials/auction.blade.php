@@ -3,8 +3,8 @@
         <p class="countdown card-text ms-4 mt-4 p-2 h5"> </p>
         <p hidden class="enddate">{{$auction->enddate}}</p>
         <div class="text-center">
-        @if($auction->photo!==" ")
-            <img height=200px width=250px class="img-fluid" src={{ asset('default_images/' . $auction->photo)}}></img>
+        @if($auction->photo!=="")
+            <img height=200px width=250px class="img-fluid" src={{ asset('storage/' . $auction->photo)}}></img>
         @else
             <img height=200px width=250px class="img-fluid" src={{ asset('default_images/auction_default.svg' )}}></img>
         @endif

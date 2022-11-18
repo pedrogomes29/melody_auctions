@@ -33,6 +33,7 @@ Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 Route::post('register', 'Auth\RegisterController@register');
 
+// Admin 
 Route::get('/admin/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
 Route::post('/admin/login', 'Auth\AdminLoginController@login')->name('admin.login.post');
 Route::post('/admin/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
@@ -40,6 +41,7 @@ Route::post('/admin/logout', 'Auth\AdminLoginController@logout')->name('admin.lo
 Route::group(['middleware'=>'admin'], function() {
     Route::get('/admin/home', 'Admin\HomeController@index');
 });
+
 //User Profile
 Route::get('user/{username}','UserProfileController@showUserProfile')->name('user');
 Route::put('user/{username}','UserProfileController@updateUserProfile')->name('user.update');
@@ -48,3 +50,9 @@ Route::post('user/{username}','UserProfileController@store')->name('user.photo')
 //User Profile API
 Route::put('api/user/{username}/balance','UserProfileController@updateUserBalance')->name('user.balance');
 
+
+// Auction
+Route::get('auction/{auction_id}/edit', 'AuctionController@edit')->name('auction.edit');
+Route::put('auction/{auction_id}/edit', 'AuctionController@ownerUpdate')->name('auction.update');
+Route::delete('auction/{auction_id}/edit', 'AuctionController@ownerDelete')->name('auction.delete');
+Route::post('auction/{auction_id}/store', 'AuctionController@store')->name('auction.store');	
