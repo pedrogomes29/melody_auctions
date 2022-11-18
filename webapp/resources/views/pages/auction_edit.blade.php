@@ -19,8 +19,8 @@
         <form id="store" action="/auction/{{$auction->id}}/store" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
             <div class="text-center">
-                @if (File::exists(public_path().'/storage/auctions/'.$auction->photo))
-                    <img class="img-thumbnail " src="{{ asset('storage/auctions/' . $auction->photo) }}" alt="Auction Photo">
+                @if ($auction->photo)
+                    <img class="img-thumbnail " src="{{ asset('storage/' . $auction->photo) }}" alt="Auction Photo">
                 @else
                     <img class="img-thumbnail " src="{{ asset('default_image/default_auction.jpg') }}" alt="Auction Photo">
                 @endif

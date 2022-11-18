@@ -89,10 +89,9 @@ class AuctionController extends Controller
         $validated = $request->validate([
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-        $image_path = $request->file('photo')->store(public_path().'/storage/auctions');
-        $image_path = substr($image_path, Str::length(public_path().'/storage/auctions'));
+        $image_path = $request->file('photo')->store('auctions','public');
         $auction->photo = $image_path;
         $auction->save();
-        return view('pages.auction_edit', ['auction' => $auction]);
+        return redirect()->route('auction.edit',$auctionId);
     }
 }
