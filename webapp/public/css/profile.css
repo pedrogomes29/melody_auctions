@@ -60,10 +60,11 @@
 .profile-usertitle{
     text-align: center;
     margin-top: 20px;
+    font-size: 1.5em;
 }
 .profile-usertitle-name{
     color: #5a7391;
-    font-size: 19px;
+    font-size: 2em;
     font-weight: 600;
     margin-bottom: 7px;
 }
@@ -93,4 +94,9 @@
 #username-at{
     text-decoration: none;
     color: #5a7391;
+    font-size: 1.5em;
+}
+button{
+    font-size: 1em;
+    margin: 0.5em;
 }
