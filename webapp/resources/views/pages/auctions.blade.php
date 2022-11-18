@@ -24,7 +24,7 @@
                 </ul>
             </div>
             <div id="ongoing" class="dropdown my-3">
-                <h1>Type</h1>
+                <h1 >Type</h1>
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">{{$onGoingText}}</button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
                     <li><p class="dropdown-item {{$onGoing==='1'?'chosen':''}}">Active</p></li>
