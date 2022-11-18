@@ -245,7 +245,7 @@ paths:
     get:
       operationId: R109
       summary: 'R109: Search Users API'
-      description: 'Searches for works and returns the results as JSON. Access: USR'
+      description: 'Searches for works and returns the results as JSON. Access: PUB'
       tags:
          - 'M01: Authentication and Profile'
       parameters:
@@ -257,7 +257,16 @@ paths:
           required: false
       responses:
         '200':
-          description: 'Ok. Return json object with auctions found'
+          description: 'Ok. Return json object with users found'
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    username:
+                      type: text
+                    description:
+                      type: text
 
   /api/user/{username}/balance:
     put:
@@ -476,7 +485,7 @@ paths:
                   description: 'Failed authentication. Redirect to auction creation form.'
                   value: '/auction/create'
 
-  /api/auction:
+  /api/auction_json:
     get:
       operationId: R208
       summary: 'R208: Search Auctions API'
@@ -489,7 +498,7 @@ paths:
           description: boolean with ongoing flag value
           schema:
             type: boolean
-          required: true
+          required: false
         - in: query
           name: query
           description: String to use for full-text search
@@ -522,7 +531,92 @@ paths:
           required: false
       responses:
         '200':
-          description: 'Ok. Return json object with auctions found'
+          description: 'Ok. Return json object with users found'
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    name:
+                      type: text
+                    description:
+                      type: text
+                    id:
+                      type: integer
+
+
+  /api/auction_html:
+    get:
+      operationId: R208
+      summary: 'R208: Search Auctions API'
+      description: 'Searches for auctions and returns the results as JSON. Access: PUB'
+      tags:
+        - 'M02: Auctions'
+      parameters:
+        - in: query
+          name: ongoing
+          description: boolean with ongoing flag value
+          schema:
+            type: boolean
+          required: false
+        - in: query
+          name: query
+          description: String to use for full-text search
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: categoryId
+          description: id of the category of the auction
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: minPrice
+          description: minimum bid price
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: maxPrice
+          description: maximum bid price
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: order
+          description: Order to be used displaying auctions
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: 'Ok. Return html with auctions found'
+          content:
+            text/html:
+                schema:
+                  format: html
+                  example: '<div class="row row-cols-1 row-cols-md-3 g-4 flex-grow-1">
+                              <div class="col">
+                                <div class="card m-5"  id="auction-12" >
+                                    <p class="countdown card-text ms-4 mt-4 p-2 h5"> </p>
+                                    <p hidden class="enddate">1999-01-08 04:05:06</p>
+                                    <div class="text-center">
+                                      <img src="example_img"/>
+                                    </div>
+                                    <div class="card-body">
+                                        <h3 class="card-title text-center">piano</h3>
+                                        <p class="card-text font-weight-bold h4">Current Bid</p>
+                                        <p class="card-text h5">120€</p>
+                                    </div>
+                                </div>
+                              </div>
+                            <div>
+                            <div id="auctions-footer">
+                              <button id="load-more" type="button">Load more</button>
+                              <footer class="ms-4 h3 mt-5">Showing 10 of 50 results</footer>
+                            </div>'
+    
   /user/{username}/auction:
     get:
       operationId: R209
