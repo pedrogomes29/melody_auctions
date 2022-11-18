@@ -15,7 +15,7 @@
                <a id="username-at" href=""> &#64{{ $user->username }}</a>
             </h1>
     </header>
-    @if (Auth::user()->id == $user->id)
+    @if (Auth::id() == $user->id)
         <form id="delete-user"action="{{ route('user.delete', $user->username) }}" method="POST">
             @csrf
             @method('DELETE')
