@@ -28,7 +28,7 @@
             @if ($user->photo)
             <img id="real_pic" class="pic"src="{{ asset('storage/' . $user->photo) }}" class="profilepic" alt="User Image">
             @else
-            <img id="default_pic" class="pic"src="{{ asset('default_image/default.jpg') }}"class="default_profilepic" alt="User Image">
+            <img id="default_pic" class="pic"src="{{ asset('default_images/default.jpg') }}"class="default_profilepic" alt="User Image">
             @endif
         </div>
         @if(Auth::id() == $user->id)
