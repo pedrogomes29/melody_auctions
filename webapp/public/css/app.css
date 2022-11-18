@@ -37,18 +37,3 @@
 .col .card .countdown:empty {
     background-color: white;
 }
-
-body header {
-    background-color: #f8f8f8;
-}
-
-#login,
-#logout {
-    margin-bottom: 0em;
-    background-color: black;
-    border: black;
-}
-
-#search_bar_container {
-    border: solid 0.2em;
-}

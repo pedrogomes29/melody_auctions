@@ -4,9 +4,9 @@
         <p hidden class="enddate">{{$auction->enddate}}</p>
         <div class="text-center">
         @if($auction->photo!==" ")
-            <img height=200px width=250px class="img-fluid" src={{ asset('images/' . $auction->photo)}}></img>
+            <img height=200px width=250px class="img-fluid" src={{ asset('default_images/' . $auction->photo)}}></img>
         @else
-            <img height=200px width=250px class="img-fluid" src={{ asset('images/auction_default.svg' )}}></img>
+            <img height=200px width=250px class="img-fluid" src={{ asset('default_images/auction_default.svg' )}}></img>
         @endif
         </div>
         <div class="card-body">

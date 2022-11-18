@@ -28,7 +28,7 @@
     <body>
       <header class="d-flex flex-row justify-content-between align-items-center pb-3">
         <img
-          src= {{ asset('images/auction.svg')}}
+          src= {{ asset('default_images/auction.svg')}}
           height="60"
           class="m-3"
           alt="Melody auctions Logo"
