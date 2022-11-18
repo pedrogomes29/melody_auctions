@@ -264,9 +264,9 @@ paths:
                   type: object
                   properties:
                     username:
-                      type: text
+                      type: string
                     description:
-                      type: text
+                      type: string
 
   /api/user/{username}/balance:
     put:
@@ -427,7 +427,37 @@ paths:
           description: boolean with ongoing flag value
           schema:
             type: boolean
-          required: true
+          required: false
+        - in: query
+          name: query
+          description: String to use for full-text search
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: categoryId
+          description: id of the category of the auction
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: minPrice
+          description: minimum bid price
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: maxPrice
+          description: maximum bid price
+          schema:
+            type: integer
+          required: false
+        - in: query
+          name: order
+          description: magnitude of prices to be displayed
+          schema:
+            type: integer
+          required: false
       responses:
         '200':
           description: 'Ok. Show view Auction UI'
@@ -538,9 +568,9 @@ paths:
                   type: object
                   properties:
                     name:
-                      type: text
+                      type: string
                     description:
-                      type: text
+                      type: string
                     id:
                       type: integer
 
