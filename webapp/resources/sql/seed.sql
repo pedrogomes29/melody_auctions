@@ -626,7 +626,7 @@ insert into notifications (id, date, beenread) values (3, '2022-10-5 14:12:43.14
 insert into notifications (id, date, beenread) values (4, '2022-7-16 12:54:32.145', false);
 
 --admin
-insert into admins (id, firstname, lastname, username,password, email,photo, description, contact)  values (1, 'Lorrie', 'Bartosch', 'lbartosch0', '$2a$12$LFXiwEpPbt3t8F9aq4x/veWrfvdEFWzx.Qx/ZT7qN9rZBwXvk5YOK','lbartosh@123.com', ' ' ,'Life is a wild ride', '921412112');
+insert into admins (id, firstname, lastname, username,password, email,photo, description, contact)  values (1, 'Lorrie', 'Bartosch', 'lbartosch0', '$2a$12$LFXiwEpPbt3t8F9aq4x/veWrfvdEFWzx.Qx/ZT7qN9rZBwXvk5YOK','lbartosh@123.com', '' ,'Life is a wild ride', '921412112');
 
 --auctions_canceled_notifications
 insert into auctions_canceled_notifications (notification_id, auction_id) values (1, 1);

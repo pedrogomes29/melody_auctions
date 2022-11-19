@@ -35,6 +35,7 @@
       <header class="d-flex flex-row justify-content-between align-items-center pb-3 mb-5">
         <img
           src= {{ asset('default_images/auction.svg')}}
+          id="logo"
           height="60"
           class="m-3"
           alt="Melody auctions Logo"
@@ -70,12 +71,20 @@
           </div>
         </div>
         @if (Auth::check())
-          <div id= "profile" class="{{$username}} profile-userpic me-3">
-              @if ($profile_pic_path!="")
-                <img class="rounded-circle" src="{{ asset('storage/' . $profile_pic_path) }}" class="profilepic" alt="User Image">
+          <div id= "user-profile" class="{{Auth::user()->username}} profile-userpic me-3">
+              @if (Auth::user()->photo !="")
+                <img class="rounded-circle" src="{{ asset('storage/' . Auth::user()->photo) }}" class="profilepic" alt="User Image">
               @else
                 <img class="rounded-circle" src="{{ asset('default_images/default.jpg') }}"class="default_profilepic" alt="User Image">
               @endif
+          </div>
+        @elseif(Auth::guard('admin')->user())
+          <div id= "admin-profile" class="{{Auth::guard('admin')->user()->id  }} profile-userpic me-3">
+            @if ( Auth::guard('admin')->user()->photo!="")
+              <img class="rounded-circle" src="{{ asset('storage/' . Auth::guard('admin')->user()->photo) }}" class="profilepic" alt="User Image">
+            @else
+              <img class="rounded-circle" src="{{ asset('default_images/default.jpg') }}"class="default_profilepic" alt="User Image">
+            @endif
           </div>
         @else
           <a id="login" class="button me-5" href="{{ url('/login') }}"> Log in </a>

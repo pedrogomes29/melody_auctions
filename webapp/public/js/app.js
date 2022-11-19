@@ -20,12 +20,25 @@ function addEventListeners() {
         }
     });
 
-    const profilePic = document.getElementById("profile");
-    profilePic.addEventListener("click", seeProfile);
+    const userProfilePic = document.getElementById("user-profile");
+    if (userProfilePic)
+        userProfilePic.addEventListener("click", seeUserProfile);
+
+    const adminProfilePic = document.getElementById("admin-profile");
+    if (adminProfilePic)
+        adminProfilePic.addEventListener("click", seeAdminProfile);
+
+    document
+        .getElementById("logo")
+        .addEventListener("click", () => (window.location.href = "/"));
 }
 
-function seeProfile(event) {
+function seeUserProfile(event) {
     window.location.href = "/user/" + event.currentTarget.classList[0];
+}
+
+function seeAdminProfile(event) {
+    window.location.href = "/admin/" + event.currentTarget.classList[0];
 }
 
 function chooseOption(event) {

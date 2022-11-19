@@ -15,8 +15,6 @@ class HomePageController extends Controller
 
     public function index(Request $request){
 
-        [$username,$profile_pic_path] = AuthenticatedUserController::get_username_pfp();
-
         $active_auctions = Auction::selectRaw(' id,
                                                 enddate,
                                                 CASE 
@@ -55,8 +53,6 @@ class HomePageController extends Controller
         return view('pages.index')
                 ->with('active_auctions',$active_auctions)
                 ->with('closed_auctions',$closed_auctions)
-                ->with('categories',$categories)
-                ->with('profile_pic_path',$profile_pic_path)
-                ->with('username',$username);
+                ->with('categories',$categories);
     }
 }

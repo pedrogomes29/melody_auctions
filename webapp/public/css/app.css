@@ -1,4 +1,3 @@
-
 #search_results .dropdown-menu.show {
     display: inherit;
     top: inherit;
@@ -60,10 +59,16 @@ body header {
     font-size: 1.88rem;
 }
 
-#profile:hover {
+#user-profile:hover,
+#admin-profile:hover {
     cursor: pointer;
 }
-#profile img {
+#user-profile img,
+#admin-profile img {
     height: 60px;
     width: 60px;
+}
+
+#logo:hover {
+    cursor: pointer;
 }

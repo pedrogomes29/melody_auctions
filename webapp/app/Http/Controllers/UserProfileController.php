@@ -9,11 +9,8 @@ class UserProfileController extends Controller
 {
     public function showUserProfile($username)
     {
-        [$username,$profile_pic_path] = AuthenticatedUserController::get_username_pfp();
-
-
         $user = AuthenticatedUser::where('username',$username)->firstOrFail();
-        return view('pages.user', ['user' => $user,'username'=>$user->username,'profile_pic_path'=>$profile_pic_path]);
+        return view('pages.user', ['user' => $user]);
     }
     public function showUserEditForm($username)
     {
@@ -21,7 +18,7 @@ class UserProfileController extends Controller
         if(Auth::id() == $id)
         {
             $user = AuthenticatedUser::where('username',$username)->firstOrFail();;
-            return view('pages.user-edit', ['user' => $user,'username'=>$username,'profile_pic_path'=>$user->photo]);
+            return view('pages.user-edit', ['user' => $user]);
         }
         else
         {
