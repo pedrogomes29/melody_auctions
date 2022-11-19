@@ -1,10 +1,10 @@
-create schema if not exists lbaw_2211;
+create schema if not exists lbaw2211;
 
 -- ----------------------------------------------------------
 -- CREATE TABLES
 -- ----------------------------------------------------------
 
-SET search_path TO lbaw_2211;
+SET search_path TO lbaw2211;
 
 Drop table if exists admins cascade;
 
@@ -43,13 +43,13 @@ CREATE TABLE authenticated_users (
 );
 CREATE INDEX user_search_idx ON authenticated_users USING gist (tsvectors);
 
-Drop TABLE if exists categorys cascade;
+Drop TABLE if exists categories cascade;
 
-CREATE TABLE categorys (
+CREATE TABLE categories (
 	id serial4 NOT NULL,
 	"name" varchar(50) NOT NULL,
-	CONSTRAINT categorys_name_key UNIQUE (name),
-	CONSTRAINT categorys_pkey PRIMARY KEY (id)
+	CONSTRAINT categories_name_key UNIQUE (name),
+	CONSTRAINT categories_pkey PRIMARY KEY (id)
 );
 
 
@@ -108,7 +108,7 @@ CREATE TABLE auctions (
 	CONSTRAINT auctions_minbidsdif_check CHECK ((minbidsdif >= (0)::double precision)),
 	CONSTRAINT auctions_pkey PRIMARY KEY (id),
 	CONSTRAINT auctions_startprice_check CHECK ((startprice >= (0)::double precision)),
-	CONSTRAINT auctions_category_id_fkey FOREIGN KEY (category_id) REFERENCES categorys(id),
+	CONSTRAINT auctions_category_id_fkey FOREIGN KEY (category_id) REFERENCES categories(id),
 	CONSTRAINT auctions_manufactor_id_fkey FOREIGN KEY (manufactor_id) REFERENCES manufactors(id),
 	CONSTRAINT auctions_owner__idfkey FOREIGN KEY (owner_id) REFERENCES authenticated_users
 (id),
@@ -562,11 +562,11 @@ insert into reports (id, reportstext, reportsdate, reported_id, reporter_id, rep
 insert into reports (id, reportstext, reportsdate, reported_id, reporter_id, reports_state_id) values (2, 'As caravelhas do violino vieram partidas', '2022-3-16 19:14:12.086', 4, 1, 1);
 insert into reports (id, reportstext, reportsdate, reported_id, reporter_id, reports_state_id) values (3, 'Unspecified injury of prostate', '2022-2-25 14:12:45.982', 4, 3, 1);
 
---categorys
-insert into categorys (id, name) values (1, 'Percussão');
-insert into categorys (id, name) values (2, 'Sopro');
-insert into categorys (id, name) values (3, 'Cordas');
-insert into categorys (id, name) values (4, 'Teclas');
+--categories
+insert into categories (id, name) values (1, 'Percussão');
+insert into categories (id, name) values (2, 'Sopro');
+insert into categories (id, name) values (3, 'Cordas');
+insert into categories (id, name) values (4, 'Teclas');
 
 --manufactors
 insert into manufactors (id, name) values (1, 'Yamaha');

@@ -32,6 +32,7 @@ function addEventListeners() {
 addEventListeners();
 
 
+// Bids
 
 async function load_more_bids(ev){
   
@@ -76,14 +77,28 @@ function loadImagePreview(imagecontainer){
       if(input && image){
 
           const loadFile = function() {
-              const reader = new FileReader();
-              reader.onload = function(){
-                  image.src = reader.result;
+            
+
+            const reader = new FileReader();
+            reader.onload = function(){
+                image.src = reader.result;
+
+                image.onload = function(el) {
+                  
+                  const elem = document.createElement('canvas');
+                  elem.width = 250;
+                  elem.height = 200;
+                  const ctx = elem.getContext("2d");
+                  ctx.drawImage(el.target, 0, 0, 250, 250);
+
+                  image.src=ctx.canvas.toDataURL('image/png', 1);
               };
-              reader.readAsDataURL(input.files[0]);
+            };
+            reader.readAsDataURL(input.files[0]);            
           };
 
           input.addEventListener('change', loadFile);
+          
 
       }
 

@@ -9,6 +9,7 @@ class Auction extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
 
     /**
      * Get the owner that owns the Auction.
