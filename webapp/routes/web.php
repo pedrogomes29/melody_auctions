@@ -29,17 +29,22 @@ Route::get('/', 'HomePageController@index')->name('home');
 // Authentication
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
-Route::get('logout', 'Auth\LoginController@logout')->name('logout');
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 Route::post('register', 'Auth\RegisterController@register');
 
-// Admin 
-Route::get('/admin/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
-Route::post('/admin/login', 'Auth\AdminLoginController@login')->name('admin.login.post');
-Route::post('/admin/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
-//Admin Home page after login
-Route::group(['middleware'=>'admin'], function() {
-    Route::get('/admin/home', 'Admin\HomeController@index');
+
+//Admin 
+Route::group(['prefix' => 'admin', 'namespace' => 'Auth'], function () {
+    Route::get('/login','AdminLoginController@getLogin')->name('adminLogin');
+    Route::post('/login', 'AdminLoginController@postLogin')->name('adminLoginPost');
+    Route::post('/logout', 'AdminLoginController@adminLogout')->name('adminLogout');	
+    Route::group(['middleware' => 'adminauth'], function () {
+        Route::get('/', function () {
+            return view('welcome');
+        })->name('adminDashboard');
+
+    });
 });
 
 //User Profile
@@ -56,3 +61,13 @@ Route::get('auction/{auction_id}/edit', 'AuctionController@edit')->name('auction
 Route::put('auction/{auction_id}/edit', 'AuctionController@ownerUpdate')->name('auction.update');
 Route::delete('auction/{auction_id}/edit', 'AuctionController@ownerDelete')->name('auction.delete');
 Route::post('auction/{auction_id}/store', 'AuctionController@store')->name('auction.store');	
+
+// Admin
+Route::get('admin/{admin_id}', 'AdminController@show')->name('adminDashboard');
+Route::get('admin/{admin_id}/auctions', 'AdminController@auctions')->name('admin.auctions');
+Route::get('admin/{admin_id}/auctions/{auctions_id}', 'AdminController@edit_auctions');
+Route::put('admin/{admin_id}/auctions/{auctions_id}', 'AdminController@edit_auction');
+Route::delete('admin/{admin_id}/auctions/{auctions_id}', 'AdminController@delete_auction');
+Route::post('admin/{admin_id}/auctions/{auctions_id}/default_image', 'AdminController@default_image');
+
+

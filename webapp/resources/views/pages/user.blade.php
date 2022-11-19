@@ -16,10 +16,9 @@
             </h1>
     </header>
     @if (Auth::id() == $user->id)
-        <form id="delete-user"action="{{ route('user.delete', $user->username) }}" method="POST">
+        <form id="logout"action="{{ route('logout') }}" method="POST">
             @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger">Delete Account</button>
+            <button type="submit" class="btn btn-danger">Logout</button>         
         </form>
     @endif
     <section class="profile-sidebar">
@@ -138,6 +137,13 @@
             </form>
             <script src={{ asset('js/edit.js') }}></script>
         </div>
+    @endif
+    @if (Auth::id() == $user->id)
+        <form id="delete-user"action="{{ route('user.delete', $user->username) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger">Delete Account</button>
+        </form>
     @endif
 </section>
 @endsection

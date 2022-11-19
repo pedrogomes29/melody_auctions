@@ -198,10 +198,16 @@ class AuctionController extends Controller
      */
     public function edit($auctionId)
     {
-        $auction = Auction::find($auctionId);
-
-        return view('pages.auction_edit', ['auction' => $auction]);
+        if (Auth::check()){
+            $user_id = Auth::id();
+            $auction = Auction::find($auctionId);
+            if ($auction->owner_id == $user_id){
+                return view('pages.auction_edit', ['auction' => $auction]);
+            }
+        }
+        return redirect()->route('home');
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -210,71 +216,121 @@ class AuctionController extends Controller
      * @param  \App\Models\Auction  $auction
      * @return \Illuminate\Http\Response
      */
+
     public function ownerUpdate(Request $request, $auctionId)
     {
-        $success = true;
-        $auction = Auction::find($auctionId);
+        if (Auth::check()){
+            $user_id = Auth::id();
+            $auction = Auction::find($auctionId);
+            if ($auction->owner_id == $user_id){
+                $success = true;
+                $auction = Auction::find($auctionId);
 
-        $validated = $request->validate([
-            'name' => 'required|max:50',
-            'description' => 'required',
-            'minBidDif' => 'required|numeric|min:0.01',
-            'startDate' => 'required|date',
-            'endDate' => 'required|date',
-        ]);
+                $validated = $request->validate([
+                    'name' => 'required|max:50',
+                    'description' => 'required',
+                    'minBidDif' => 'required|numeric|min:0.01',
+                    'startDate' => 'required|date',
+                    'endDate' => 'required|date',
+                ]);
 
-        $auction->name = $request->input('name');
-        $auction->description = $request->input('description');
-        $auction->minbidsdif = $request->input('minBidDif');
+                $auction->name = $request->input('name');
+                $auction->description = $request->input('description');
+                $auction->minbidsdif = $request->input('minBidDif');
 
-        // Start date
-        $inputStartDate = Carbon::parse($request->input('startDate'))->format('Y-m-d H:i:s.u'); // get the start date from the form
-        $inputStartDate = substr($inputStartDate, 0, -3); // remove last 3 digits to be according to the dates saved in the database
-        $nowDate = Carbon::now()->format('Y-m-d H:i:s.u'); // get current date
-        $nowDate = substr($nowDate, 0, -3); // remove last 3 digits to be according to the dates saved in the database
-    
-        // check if the input date and the auction start date is in the future //check if input date is the current one stored in the database
-        if ((Carbon::parse($inputStartDate)->gt(Carbon::now()) && Carbon::parse($auction->startdate)->gt(Carbon::now())) || $auction->startdate == $inputStartDate) { 
-            $auction->startdate = $inputStartDate; 
-        } else {
-            $success = false;
+                // Start date
+                $inputStartDate = Carbon::parse($request->input('startDate'))->format('Y-m-d H:i:s.u'); // get the start date from the form
+                $inputStartDate = substr($inputStartDate, 0, -3); // remove last 3 digits to be according to the dates saved in the database
+                $nowDate = Carbon::now()->format('Y-m-d H:i:s.u'); // get current date
+                $nowDate = substr($nowDate, 0, -3); // remove last 3 digits to be according to the dates saved in the database
+            
+                // check if the input date and the auction start date is in the future //check if input date is the current one stored in the database
+                if ((Carbon::parse($inputStartDate)->gt(Carbon::now()) && Carbon::parse($auction->startdate)->gt(Carbon::now())) || $auction->startdate == $inputStartDate) { 
+                    $auction->startdate = $inputStartDate; 
+                } else {
+                    $success = false;
+                }
+
+                // End date
+                $inputEndDate = Carbon::parse($request->input('endDate'))->format('Y-m-d H:i:s.u'); // get the end date from the form
+                $inputEndDate = substr($inputEndDate, 0, -3); // remove last 3 digits to be according to the dates saved in the database
+
+                // check if the input date and the auction start date is in the future //check if input date is the current one stored in the database
+                if ((Carbon::parse($inputEndDate)->gt(Carbon::now()) && Carbon::parse($auction->startdate)->gt(Carbon::now())) || $auction->enddate == $inputEndDate) { 
+                    $auction->enddate = $inputEndDate; 
+                } else {
+                    $success = false;
+                }
+
+                
+                if ($success){
+                    $auction->save();
+                }
+                return view('pages.auction_edit', ['auction' => $auction, 'success' => $success]);
+            }
         }
-
-        // End date
-        $inputEndDate = Carbon::parse($request->input('endDate'))->format('Y-m-d H:i:s.u'); // get the end date from the form
-        $inputEndDate = substr($inputEndDate, 0, -3); // remove last 3 digits to be according to the dates saved in the database
-
-        // check if the input date and the auction start date is in the future //check if input date is the current one stored in the database
-        if ((Carbon::parse($inputEndDate)->gt(Carbon::now()) && Carbon::parse($auction->startdate)->gt(Carbon::now())) || $auction->enddate == $inputEndDate) { 
-            $auction->enddate = $inputEndDate; 
-        } else {
-            $success = false;
-        }
-
-        
-        if ($success){
-            $auction->save();
-        }
-        return view('pages.auction_edit', ['auction' => $auction, 'success' => $success]);
+        return redirect()->route('home');
     }
-
     public function ownerDelete($auctionId)
     {
-        $auction = Auction::find($auctionId);
-        $auction->delete();
-        return redirect('/');
+        if (Auth::check()){
+            $user_id = Auth::id();
+            $auction = Auction::find($auctionId);
+            if ($auction->owner_id == $user_id){
+                $auction->delete();
+                return redirect('/');
+            }
+        }
+        return redirect()->route('home');
     }
 
     public function store(Request $request,$auctionId)
     {
-        $auction = Auction::find($auctionId);
-        $validated = $request->validate([
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-        $image_path = $request->file('photo')->store('auctions','public');
-        $auction->photo = $image_path;
-        $auction->save();
-        return redirect()->route('auction.edit',$auctionId);
+        if (Auth::check()){
+            $user_id = Auth::id();
+            $auction = Auction::find($auctionId);
+            if ($auction->owner_id == $user_id){
+                $validated = $request->validate([
+                    'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                ]);
+                $image_path = $request->file('photo')->store('auctions','public');
+                $auction->photo = $image_path;
+                $auction->save();
+                return redirect()->route('auction.edit',$auctionId);
+            }
+        }
+        return redirect()->route('home');
     }
+
+
+
+    public static function update(Request $request, $id)
+    {
+        $auction = Auction::find($id);
+        $auction->name = $request->input('name');
+        $auction->description = $request->input('description');
+        $auction->save();
+        return redirect('admin/auctions');
+}
+
+    public static function destroy($id)
+    {
+        $auction = Auction::find($id);
+        $auction->delete();
+        return redirect('admin/auctions');
+    }
+  
+    public static function find($id)
+    {
+        $auction = Auction::find($id);
+        return $auction;
+    }
+
+    public static function findAll()
+    {
+        $auctions = Auction::all();
+        return $auctions;
+    }
+
 }
 

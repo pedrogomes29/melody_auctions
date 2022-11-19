@@ -1,3 +1,4 @@
+
 #search_results .dropdown-menu.show {
     display: inherit;
     top: inherit;
@@ -43,8 +44,7 @@ body header {
     background-color: #f8f8f8;
 }
 
-#login,
-#logout {
+#login {
     margin-bottom: 0em;
     background-color: black;
     border: black;
