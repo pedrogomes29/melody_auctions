@@ -89,7 +89,17 @@ class FollowController extends Controller
         $follows = Follow::where('authenticateduser_id', $id)->get();
         $auctions = [];
         foreach($follows as $follow){
-            array_push($auctions, Auction::where('id', $follow->auction_id)->first());
+            array_push($auctions, Auction::selectRaw(' id,
+            enddate,
+            CASE 
+            WHEN CURRENT_TIMESTAMP < enddate
+                THEN 1
+                ELSE 0
+                END
+            AS active,
+            name AS productName,
+            currentprice + minbidsdif AS minBid,
+            photo')->where('id', $follow->auction_id)->first());
         }
         return view('pages.follows')->with('auctions', $auctions)->with('username', $username);
     }
