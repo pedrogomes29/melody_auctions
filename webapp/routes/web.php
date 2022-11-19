@@ -71,3 +71,5 @@ Route::delete('admin/{admin_id}/auctions/{auctions_id}', 'AdminController@delete
 Route::post('admin/{admin_id}/auctions/{auctions_id}/default_image', 'AdminController@default_image');
 
 
+// Follows
+Route::get('user/{username}/follow', 'FollowController@showFollows')->name('user.follows');

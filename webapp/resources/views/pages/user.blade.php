@@ -65,6 +65,7 @@
                 <button id="editprofile" class="btn btn-primary">
                     Edit Info
                 </button>
+                <a href="{{route('user.follows', $user->username)}}"> <button id="showFollowedAuctions" class="btn btn-primary">Show Followed Auctions</button> </a>
             @endif
             <form style="display:none" id="edituser" method="POST" action="{{ route('user.update', $user->username) }}">
                 {{ csrf_field() }}

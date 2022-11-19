@@ -12,6 +12,9 @@ class AdminLoginController extends Controller
 
 
     public function getLogin(){
+      if(auth()->user()){
+        return redirect(route('home'));
+      }
       return view('auth.adminlogin');
   }
 
@@ -23,6 +26,9 @@ class AdminLoginController extends Controller
 
   public function postLogin(Request $request)
   {
+    if(auth()->user()){
+        return redirect(route('home'));
+      }
       $this->validate($request, [
           'email' => 'required|email',
           'password' => 'required',
@@ -37,6 +43,9 @@ class AdminLoginController extends Controller
 
   public function adminLogout(Request $request)
   {
+    if(auth()->user()){
+        return redirect(route('home'));
+      }
       auth()->guard('admin')->logout();
       Session::flush();
       Session::put('success', 'You are logout sucessfully');
