@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Follow;
+use App\Models\Auction;
 use Illuminate\Http\Request;
 use App\Models\AuthenticatedUser;
 
@@ -86,6 +87,10 @@ class FollowController extends Controller
     public function showFollows($username){
         $id = AuthenticatedUser::where('username', $username)->first()->id;
         $follows = Follow::where('authenticateduser_id', $id)->get();
-        return view('pages.follows')->with('follows', $follows)->with('username', $username);
+        $auctions = [];
+        foreach($follows as $follow){
+            array_push($auctions, Auction::where('id', $follow->auction_id)->first());
+        }
+        return view('pages.follows')->with('auctions', $auctions)->with('username', $username);
     }
 }
