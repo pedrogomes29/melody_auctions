@@ -158,14 +158,14 @@ Drop TABLE if exists bids cascade;
 
 CREATE TABLE bids (
 	id serial4 NOT NULL,
-	authenticateduser_id int4 NOT NULL,
+	authenticated_user_id int4 NOT NULL,
 	auction_id int4 NOT NULL,
 	value float8 NOT NULL,
 	bidsdate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT bids_pkey PRIMARY KEY (id),
 	CONSTRAINT bids_value_check CHECK ((value >= (0)::double precision)),
 	CONSTRAINT bids_auction_id_fkey FOREIGN KEY (auction_id) REFERENCES auctions(id),
-	CONSTRAINT bids_authenticateduser_id_fkey FOREIGN KEY (authenticateduser_id) REFERENCES authenticated_users
+	CONSTRAINT bids_authenticated_user_id_fkey FOREIGN KEY (authenticated_user_id) REFERENCES authenticated_users
 (id)
 );
 
@@ -184,11 +184,11 @@ CREATE TABLE bids_notifications (
 Drop TABLE if exists follows cascade;
 
 CREATE TABLE follows (
-	authenticateduser_id int4 NOT NULL,
+	authenticated_user_id int4 NOT NULL,
 	auction_id int4 NOT NULL,
-	CONSTRAINT follows_pkey PRIMARY KEY (authenticateduser_id, auction_id),
+	CONSTRAINT follows_pkey PRIMARY KEY (authenticated_user_id, auction_id),
 	CONSTRAINT follows_auction_id_fkey FOREIGN KEY (auction_id) REFERENCES auctions(id),
-	CONSTRAINT follows_authenticateduser_id_fkey FOREIGN KEY (authenticateduser_id) REFERENCES authenticated_users
+	CONSTRAINT follows_authenticated_user_id_fkey FOREIGN KEY (authenticated_user_id) REFERENCES authenticated_users
 (id)
 );
 
@@ -196,13 +196,13 @@ Drop TABLE if exists messages cascade;
 
 CREATE TABLE messages (
 	id serial4 NOT NULL,
-	authenticateduser_id int4 NOT NULL,
+	authenticated_user_id int4 NOT NULL,
 	auction_id int4 NOT NULL,
 	"text" text NULL,
 	"date" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT messages_pkey PRIMARY KEY (id),
 	CONSTRAINT messages_auction_id_fkey FOREIGN KEY (auction_id) REFERENCES auctions(id),
-	CONSTRAINT messages_authenticateduser_id_fkey FOREIGN KEY (authenticateduser_id) REFERENCES authenticated_users
+	CONSTRAINT messages_authenticated_user_id_fkey FOREIGN KEY (authenticated_user_id) REFERENCES authenticated_users
 (id)
 );
 
@@ -326,7 +326,7 @@ CREATE OR REPLACE FUNCTION must_have_balance()
 AS $function$
 	BEGIN
 		if EXISTS (select * from authenticated_users
-	 where new.authenticateduser_id = id and new.value > balance) then 
+	 where new.authenticated_user_id = id and new.value > balance) then 
 		raise exception 'Insuficient balance to bids that value';
 		end if;
 		return new;
@@ -352,7 +352,7 @@ CREATE OR REPLACE FUNCTION owner_auctions()
  LANGUAGE plpgsql
 AS $function$
 	BEGIN
-        IF EXISTS (SELECT * FROM auctions as A WHERE NEW.authenticateduser_id = a.owner_id and a.id = new.auction_id) THEN
+        IF EXISTS (SELECT * FROM auctions as A WHERE NEW.authenticated_user_id = a.owner_id and a.id = new.auction_id) THEN
            RAISE EXCEPTION 'The owner of an auctions cannot bids in its own auctions';
         END IF;
         RETURN NEW;
@@ -365,7 +365,7 @@ CREATE OR REPLACE FUNCTION same_bidder()
  LANGUAGE plpgsql
 AS $function$
 	BEGIN
-		if (select authenticateduser_id  from bids where new.auction_id = auction_id order by value desc limit 1) = new.authenticateduser_id then 
+		if (select authenticated_user_id  from bids where new.auction_id = auction_id order by value desc limit 1) = new.authenticated_user_id then 
 		raise exception 'Cannot bids on an auctions that you are the last person to bids';
 		end if;
 		return new;
@@ -383,7 +383,7 @@ DECLARE
 
 begin
 		
-		select authenticateduser_id , value  from bids  where NEW.auction_id = bids.auction_id and new.id != bids.id order by value desc
+		select authenticated_user_id , value  from bids  where NEW.auction_id = bids.auction_id and new.id != bids.id order by value desc
 				into last_bidder, last_price;
 			
 		if last_bidder is not null then
@@ -392,7 +392,7 @@ begin
 			
 		end if;
 		update authenticated_users
-	 set balance = (balance-new.value) where id=new.authenticateduser_id;
+	 set balance = (balance-new.value) where id=new.authenticated_user_id;
         RETURN NEW;
 END
 $function$
@@ -442,7 +442,7 @@ begin
 		elsif winner is not null then
 			raise exception 'auctions already has a winner';
 		else
-			select bids.authenticateduser_id  from bids where bids.auction_id = new.id and bids.value = winvalue into last_bidder;
+			select bids.authenticated_user_id  from bids where bids.auction_id = new.id and bids.value = winvalue into last_bidder;
 			if last_bidder is not null then
 				update authenticated_users
 			  set balance  = (balance+ winvalue)
@@ -591,27 +591,27 @@ insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdat
 insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id, winner_id) values (11, 'trompa', 5.19, 6.64, '2022-7-16 12:23:00.425', '2022-7-16 15:40:16.245', '2022-7-16 15:40:16.245',3.09, 'Roland Piano','',4,2,5,NULL);
 
 --messages :)
-insert into messages (id, authenticateduser_id, auction_id, text, date) values (1, 3, 4, 'Olá tudo bem?', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticateduser_id, auction_id, text, date) values (2, 3, 5, 'Que informções deseja?','2022-11-18 12:00:00.321');
-insert into messages (id, authenticateduser_id, auction_id, text, date) values (3, 1, 3, 'Em que estado o artigo se encontra?', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticateduser_id, auction_id, text, date) values (4, 2, 3, 'Qual a cor do interior do violino?', '2022-11-4 12:00:00.00');
-insert into messages (id, authenticateduser_id, auction_id, text, date) values (5, 1, 1, 'Quantos anos tem de uso?', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticateduser_id, auction_id, text, date) values (6, 1, 1, 'Será necessário algum tipo de arranjo?', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticateduser_id, auction_id, text, date) values (7, 2, 2, 'O saxofone é tenor ou baixo?', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticateduser_id, auction_id, text, date) values (8, 3, 4, 'espero que essa guitarra seja da yamaha', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticateduser_id, auction_id, text, date) values (9, 2, 5, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticateduser_id, auction_id, text, date) values (10, 1, 3, 'É mesmo giro o clarinete', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (1, 3, 4, 'Olá tudo bem?', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (2, 3, 5, 'Que informções deseja?','2022-11-18 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (3, 1, 3, 'Em que estado o artigo se encontra?', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (4, 2, 3, 'Qual a cor do interior do violino?', '2022-11-4 12:00:00.00');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (5, 1, 1, 'Quantos anos tem de uso?', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (6, 1, 1, 'Será necessário algum tipo de arranjo?', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (7, 2, 2, 'O saxofone é tenor ou baixo?', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (8, 3, 4, 'espero que essa guitarra seja da yamaha', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (9, 2, 5, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (10, 1, 3, 'É mesmo giro o clarinete', '2022-11-17 12:00:00.321');
 
 --bids :(
-insert into bids (id, auction_id, authenticateduser_id, value, bidsdate) values (1, 6, 5, 20, '2022-11-17 12:00:00.321');
-insert into bids (id, auction_id, authenticateduser_id, value, bidsdate) values (2, 7, 5, 20, '2022-7-16 12:23:00.425');
+insert into bids (id, auction_id, authenticated_user_id, value, bidsdate) values (1, 6, 5, 20, '2022-11-17 12:00:00.321');
+insert into bids (id, auction_id, authenticated_user_id, value, bidsdate) values (2, 7, 5, 20, '2022-7-16 12:23:00.425');
 
 --follows
-insert into follows (authenticateduser_id, auction_id) values (1, 1);
-insert into follows (authenticateduser_id, auction_id) values (2, 2);
-insert into follows (authenticateduser_id, auction_id) values (3, 3);
-insert into follows (authenticateduser_id, auction_id) values (4, 4);
-insert into follows (authenticateduser_id, auction_id) values (5, 5);
+insert into follows (authenticated_user_id, auction_id) values (1, 1);
+insert into follows (authenticated_user_id, auction_id) values (2, 2);
+insert into follows (authenticated_user_id, auction_id) values (3, 3);
+insert into follows (authenticated_user_id, auction_id) values (4, 4);
+insert into follows (authenticated_user_id, auction_id) values (5, 5);
 
 --reviews
 insert into reviews (id, reviewserid, reviewsedid, reviewsdate, comment, rating) values (1, 1, 2, '2022-11-7 14:12:15.544', 'Muito bom', 5);

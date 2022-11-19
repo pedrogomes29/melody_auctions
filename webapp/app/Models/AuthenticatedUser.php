@@ -12,4 +12,13 @@ class AuthenticatedUser extends Authenticatable
     protected $fillable = ['id','email', 'firstname', 'lastname', 'username','password', 'contact','balance','photo'];
     public $timestamps = false;
     use HasFactory;
+
+    public function auctions(){
+        return $this->hasMany(Auction::class,'owner_id');
+    }
+
+
+    public function followed_auctions() {
+        return $this->belongsToMany(Auction::class,'follows');
+    }
 }
