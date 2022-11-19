@@ -74,7 +74,8 @@ class AdminController extends Controller
             $auction = AuctionController::find($auctionId);
             $auction->photo = "";
             $auction->save();
-            return view('pages.admin_auctions', compact('adminId', 'auctions'));
+            $auctions = AuctionController::findAll();
+            return view('pages.admin_auctions')->with('adminId', $adminId)->with('auctions', $auctions);
         }
         else {
             return redirect(route('adminLogin'));
