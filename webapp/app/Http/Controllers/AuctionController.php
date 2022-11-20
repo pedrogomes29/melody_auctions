@@ -102,7 +102,7 @@ class AuctionController extends Controller
             $auction->startdate = $request->input('startdate');
             $auction->enddate = $request->input('enddate');
 
-            $auction->owner_id = 1; //TODO: mudar para o id do user logado
+            $auction->owner_id = 2; //TODO: mudar para o id do user logado
 
             //$this->authorize('store', $auction);
 
@@ -149,7 +149,7 @@ class AuctionController extends Controller
 
             $auction->manufactor_id = $manufactor->id;
             
-            $image_path = AuctionController::uploadImage($request);
+            $auction->photo = AuctionController::uploadImage($request);
             $auction->id = Auction::max('id') + 1;
 
 
@@ -159,7 +159,7 @@ class AuctionController extends Controller
         }catch(PDOException $e){
 
             error_log($e->getMessage());
-            if($image_path!==""){
+            if($auction->photo!==""){
                 // apagar imagem  
             }
 

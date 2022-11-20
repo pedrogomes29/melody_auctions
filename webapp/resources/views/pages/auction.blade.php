@@ -1,3 +1,7 @@
+
+<?php
+use App\Models\Manufactor;
+?>
 @extends('layouts.app')
 
 
@@ -16,10 +20,21 @@
 
     <main >
 
+      <?php
+      error_log(Storage::get('public/'.$auction->photo) );
+      error_log($auction);
+      if (empty($auction->photo)){
+        error_log("OLAA");
+      }
+      ?>
+
       <section id="auction_information" class="container">
         <section id="details">
-          <img id="auction_img" class=".img-fluid mx-auto d-block" src="{{URL('/images/guitar.png')}}">
-
+          <img id="auction_img" class=".img-fluid mx-auto d-block" src="{{ empty(trim($auction->photo)) ? URL('/images/default_auction.jpg') : asset('storage/' . $auction->photo) }}">
+          <h2>Manufactor</h2>
+          <p>
+          {{ Manufactor::find($auction->manufactor_id)->name }}
+          </p>
           <h2>Description</h2>
           <p>
           {{ $auction->description }}
@@ -31,7 +46,7 @@
           <?php $last_bidder = $auction->getLastBidder();?>
 
           <p>End Date: {{ $auction->enddate }}</p>
-          <p>Current Price: {{ $auction->currentprice }}</p>
+          <p>Current Price: {{ $auction->currentprice ?? $auction->startprice }}</p>
           <p>Last Bidder: 
             @if ($last_bidder)
              <a href="{{url('/user/'.$last_bidder->id)}}">{{$last_bidder->firstname . ' '. $last_bidder->lastname }}</a>
