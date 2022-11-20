@@ -8,6 +8,7 @@ use App\Models\AuthenticatedUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDOException; 
+use Auth;
 
 class BidController extends Controller
 {
@@ -21,15 +22,18 @@ class BidController extends Controller
    */
     public function create(Request $request, int $id)
     {
+
+        
+        $this->authorize('create', Bid::class);
         $bid = new Bid();
-        $bid->authenticateduser_id = 1; //TODO
+        $bid->authenticated_user_id = Auth::id();
         $bid->auction_id = $id;
         $bid->value = $request->input('value'); // input do post
 
-        //$this->authorize('create', $bid);
+        
 
         // nao é um admin
-        //TODO passar isto para o authorize
+        //TODO passar isto para o authorize ???
         try{
             DB::beginTransaction();
             DB::statement('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE');
@@ -42,13 +46,13 @@ class BidController extends Controller
                 return;
             }
 
-            $user = AuthenticatedUser::find($bid->authenticateduser_id);
+            $user = AuthenticatedUser::find($bid->authenticated_user_id);
             if (empty($user)){
                 DB::rollBack();
                 abort(404);
             }
 
-            if($auction->owner_id === $bid->authenticateduser_id)
+            if($auction->owner_id === $bid->authenticated_user_id)
                 throw new PDOException('Cannot bid on your own auction!', 1 );
             
 
@@ -60,9 +64,9 @@ class BidController extends Controller
                 throw new PDOException('Cannot bid on an auction already won!', 1 );
             
 
-            $lastBid = Bid::where('auction_id', $bid->auction_id)->orderByDesc('value')->limit(1)->get()[0];
+            $lastBid = Bid::where('auction_id', $bid->auction_id)->orderByDesc('value')->limit(1)->first();
 
-            if($lastBid->authenticateduser_id === $bid->authenticateduser_id)
+            if($lastBid && $lastBid->authenticated_user_id === $bid->authenticated_user_id)
                 throw new PDOException('Cannot bid on an auction that you are the last person to bid!', 1 );
             
 
@@ -87,37 +91,4 @@ class BidController extends Controller
         return redirect()->back()->withErrors(['bid_success' => 'The bid was successfully made! :)']);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Bid  $bid
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Bid $bid)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Bid  $bid
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Bid $bid)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Bid  $bid
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Bid $bid)
-    {
-        //
-    }
 }

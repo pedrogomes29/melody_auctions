@@ -11,6 +11,15 @@ use App\Models\Manufactor;
       <div class="container">
         <h1> {{ $auction->name }}</h1>
 
+        @if ($auction->isOpen())
+          <h3 style="color: green">Open</h3>
+        @elseif ($auction->isClosed())
+          <h3 style="color: red">Closed</h3>
+        @else
+          <h3 style="color: #da9465;">Not started yet</h3>
+        @endif
+          
+
         <div class="owner_info">
           <img src="{{URL('/images/default-profile.png')}}" class="rounded-circle">
           {{ $auction->owner->firstname }}  {{ $auction->owner->lastname }} 
@@ -20,13 +29,6 @@ use App\Models\Manufactor;
 
     <main >
 
-      <?php
-      error_log(Storage::get('public/'.$auction->photo) );
-      error_log($auction);
-      if (empty($auction->photo)){
-        error_log("OLAA");
-      }
-      ?>
 
       <section id="auction_information" class="container">
         <section id="details">
@@ -43,7 +45,10 @@ use App\Models\Manufactor;
         </section>
 
         <section id = "bid_auction">
-          <?php $last_bidder = $auction->getLastBidder();?>
+          <?php $last_bidder = $auction->getLastBidder();
+            error_log("LAST BIDEER");
+            error_log($last_bidder);
+          ?>
 
           <p>End Date: {{ $auction->enddate }}</p>
           <p>Current Price: {{ $auction->currentprice ?? $auction->startprice }}</p>
@@ -57,7 +62,7 @@ use App\Models\Manufactor;
           <form action="{{ url('api/auction/'.$auction->id.'/bid') }}" class="mb-1" method="post" >
             <div class="input-group mb-3">
               <span class="input-group-text">€</span>
-              <input type="number" step="0.01" value ="{{$auction->currentprice + $auction->minbidsdif}}" class="form-control" name="value" placeholder="{{$auction->currentprice + $auction->minbidsdif}} or up" aria-label="Euro amount (with dot and two decimal places)">
+              <input type="number" step="0.01" value ="{{ empty($auction->currentprice) ? $auction->startprice : $auction->currentprice + $auction->minbidsdif}}" class="form-control" name="value" placeholder="{{ empty($auction->currentprice) ? $auction->startprice : $auction->currentprice + $auction->minbidsdif}} or up" aria-label="Euro amount (with dot and two decimal places)">
               {{ csrf_field() }}
 
             </div>
@@ -72,7 +77,7 @@ use App\Models\Manufactor;
 
             @endif
 
-            <input type="submit" value="Bid">
+            <input @if (!$auction->isOpen()) disabled  @endif type="submit" value="Bid">
           </form>
             
           <section id="bidding_section">

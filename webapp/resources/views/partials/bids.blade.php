@@ -1,2 +1,2 @@
 
-  @each('partials.bid', $bids, 'bid')
+@each('partials.bid', $bids, 'bid')

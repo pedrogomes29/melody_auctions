@@ -3,22 +3,24 @@
 namespace App\Policies;
 
 use App\Models\Bid;
-use App\Models\User;
+use App\Models\AuthenticatedUser;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Auth;
 
 class BidPolicy
 {
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any models.
+     * Determine whether the user can view any bid.
      *
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(AuthenticatedUser $user)
     {
-        //
+        // any user can be any bid
+        return TRUE;
     }
 
     /**
@@ -28,7 +30,7 @@ class BidPolicy
      * @param  \App\Models\Bid  $bid
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Bid $bid)
+    public function view(AuthenticatedUser $user, Bid $bid)
     {
         //
     }
@@ -40,32 +42,10 @@ class BidPolicy
      * @param  \App\Models\Bid      $bid
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user, Bid $bid)
+    public function create(AuthenticatedUser $user)
     {
-        // nao é um admin
-        //TODO
 
-        $auction = Auction::find($bid->auction_id);
-
-        
-        // DEBUG
-        error_log(json_encode(['bid' => $bid]));
-        error_log(json_encode(['auction' => $auction]));
-
-        // dono nao pode dar bid na auction
-        if($auction->owner_id === $bid->authenticateduser_id)
-            return FALSE;
-        
-
-        $date = date('Y-m-d H:i:s');
-        // nao se pode dar bid quando a auction acabou
-        if($date > $auction->enddate)
-            return FALSE;
-        
-
-        // o value tem q ser maior q o currentbidprice + minbiddiff
-
-        return TRUE;
+        return Auth::check();
     }
 
     /**
@@ -75,7 +55,7 @@ class BidPolicy
      * @param  \App\Models\Bid  $bid
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Bid $bid)
+    public function update(AuthenticatedUser $user, Bid $bid)
     {
         //
     }
@@ -87,7 +67,7 @@ class BidPolicy
      * @param  \App\Models\Bid  $bid
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Bid $bid)
+    public function delete(AuthenticatedUser $user, Bid $bid)
     {
         //
     }
@@ -99,7 +79,7 @@ class BidPolicy
      * @param  \App\Models\Bid  $bid
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Bid $bid)
+    public function restore(AuthenticatedUser $user, Bid $bid)
     {
         //
     }
@@ -111,7 +91,7 @@ class BidPolicy
      * @param  \App\Models\Bid  $bid
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Bid $bid)
+    public function forceDelete(AuthenticatedUser $user, Bid $bid)
     {
         //
     }

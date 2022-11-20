@@ -30,111 +30,48 @@ class AuctionController extends Controller
             $offset = (int)$request->offset??0;
             DB::beginTransaction();
             DB::statement('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY');
+            
+            $auctionsAfterFilter = null;
 
-            $auctionsAfterFilter = Auction::when($useSearch,
-                                    function($query1) use($search,$categoryId,$onGoing,$useCategory,$useOnGoing){
-                                        $query1->when($useCategory,
-                                        function($query2) use ($search,$categoryId,$onGoing,$useOnGoing){
-                                            $query2->when($useOnGoing,
-                                            function($query3) use($search,$categoryId,$onGoing){
-                                                    $query3->when($onGoing,
-                                                    function($query) use($search,$categoryId){
-                                                        $query->whereRaw('tsvectors @@ plainto_tsquery(\'english\', ?) AND category_id=? AND enddate>CURRENT_TIMESTAMP',
-                                                        [$search,$categoryId]);
-                                                    },
-                                                    function($query) use($search,$categoryId){
-                                                        $query->whereRaw('tsvectors @@ plainto_tsquery(\'english\', ?) AND category_id=? AND enddate<CURRENT_TIMESTAMP',
-                                                        [$search,$categoryId]);
-                                                    });
-                                            },
-                                            function($query) use($search,$categoryId){
-                                                $query->whereRaw('tsvectors @@ plainto_tsquery(\'english\', ?) AND category_id=?',
-                                                        [$search,$categoryId]);
-                                            });
-                                        },
-                                        function($query2) use($search,$onGoing,$useOnGoing){
-                                            $query2->when($useOnGoing,
-                                            function($query3) use($search,$onGoing){
-                                                    $query3->when($onGoing,
-                                                    function($query) use($search){
-                                                        $query->whereRaw('tsvectors @@ plainto_tsquery(\'english\', ?) AND enddate>CURRENT_TIMESTAMP',
-                                                        [$search]);
-                                                    },
-                                                    function($query) use($search){
-                                                        $query->whereRaw('tsvectors @@ plainto_tsquery(\'english\', ?) AND enddate<CURRENT_TIMESTAMP',
-                                                        [$search]);
-                                                    });
-                                            },
-                                            function($query) use($search){
-                                                $query->whereRaw('tsvectors @@ plainto_tsquery(\'english\', ?)',
-                                                        [$search]);
-                                            });
-                                        });
-                                    },
-                                    function($query1) use($categoryId,$onGoing,$useCategory,$useOnGoing){
-                                        $query1->when($useCategory,
-                                        function($query2) use($categoryId,$onGoing,$useOnGoing){
-                                            $query2->when($useOnGoing,
-                                            function($query3) use($categoryId,$onGoing){
-                                                    $query3->when($onGoing,
-                                                    function($query) use($categoryId){
-                                                        $query->whereRaw('category_id=? AND enddate>CURRENT_TIMESTAMP',
-                                                        [$categoryId]);
-                                                    },
-                                                    function($query) use($categoryId){
-                                                        $query->whereRaw('category_id=? AND enddate<CURRENT_TIMESTAMP',
-                                                        [$categoryId]);
-                                                    });
-                                            },
-                                            function($query) use($categoryId){
-                                                $query->whereRaw('category_id=?',
-                                                [$categoryId]);
-                                            });
-                                        },
-                                        function($query2) use($onGoing,$useOnGoing){
-                                            $query2->when($useOnGoing,
-                                            function($query3) use($onGoing){
-                                                    $query3->when($onGoing,
-                                                    function($query){
-                                                        $query->whereRaw('enddate>CURRENT_TIMESTAMP');
-                                                    },
-                                                    function($query){
-                                                        $query->whereRaw('enddate<CURRENT_TIMESTAMP');
-                                                    });
-                                            });
-                                        });
-                                    }
+            if ($useSearch)
+                $auctionsAfterFilter = Auction::whereRaw('tsvectors @@ plainto_tsquery(\'english\', ?)', $search);
+            else
+                $auctionsAfterFilter = Auction::query();
+            
+            if($useCategory)
+                $auctionsAfterFilter->where('category_id',$categoryId);
+            
+            if($useOnGoing){
+                if($onGoing)
+                    $auctionsAfterFilter->whereRaw('enddate > CURRENT_TIMESTAMP');
+                else
+                    $auctionsAfterFilter->whereRaw('enddate <= CURRENT_TIMESTAMP');
+            }
 
-                                );
-
+           
             $nrAuctions = $auctionsAfterFilter->count();
             
-            $auctions = $auctionsAfterFilter->selectRaw('id,
-                                                        enddate,
-                                                        CASE 
-                                                        WHEN CURRENT_TIMESTAMP < enddate
+            $auctions = $auctionsAfterFilter->selectRaw('id, enddate, name AS productName, currentprice + minbidsdif AS minBid, photo,
+                                                        CASE WHEN CURRENT_TIMESTAMP < enddate
                                                             THEN 1
                                                             ELSE 0
-                                                            END
-                                                        AS active,
-                                                        name AS productName,
-                                                        currentprice + minbidsdif AS minBid,
-                                                        photo')
-                                            ->when($useSearch,function($query,$search){
-                                                $query->orderByRaw('ts_rank(tsvectors, plainto_tsquery(\'english\', ?)) DESC,name', [$search]);
-                                            },function($query){
-                                                $query->orderBy('name');
-                                            }
-                                            )
-                                            ->offset($offset*10)
-                                            ->limit(10)
-                                            ->get();
+                                                        END AS active');
+            if($useSearch){
+                $auctions->orderByRaw('ts_rank(tsvectors, plainto_tsquery(\'english\', ?)) DESC,name', [$search]);                         
+            }else{
+                $auctions->orderBy('name');
+            }
+
+            $auctions = $auctions->offset($offset*10)->limit(10)->get();
             DB::commit();
+            return [$auctions,$nrAuctions];
         }
         catch(PDOException $e){
+
+            error_log($e->getMessage());
             DB::rollBack();
         }
-        return [$auctions,$nrAuctions];
+        return [[],0];
     }
     public function search_results_html(Request $request){
         [$auctions,$nrAuctions]=$this->search_auctions_helper($request);
@@ -346,7 +283,7 @@ class AuctionController extends Controller
      */
     public function create(Request $request)
     {
-        //$this->authorize('create', Auction::class);
+        $this->authorize('create', Auction::class);
         return view('pages.create_auction', ['categories' => Category::all(), 'manufactors' => Manufactor::all()]);
     }
 
@@ -358,6 +295,9 @@ class AuctionController extends Controller
      */
     public function store(Request $request)
     {
+        
+        $this->authorize('store', Auction::class);
+
         $this->validate($request, [            
             'photo' => 'required|image|mimes:jpg,png,jpeg',
             'name' => 'required',
@@ -374,7 +314,6 @@ class AuctionController extends Controller
         try{
             $errors = [];
 
-            error_log("sss");
             $auction = new Auction();
 
             $auction->name = $request->input('name');
@@ -386,10 +325,9 @@ class AuctionController extends Controller
             $auction->startdate = $request->input('startdate');
             $auction->enddate = $request->input('enddate');
 
-            $auction->owner_id = 2; //TODO: mudar para o id do user logado
 
-            //$this->authorize('store', $auction);
-
+            $auction->owner_id = Auth::id();
+            
             $now = date('Y-m-d\TH:i:s');
 
             
@@ -464,9 +402,9 @@ class AuctionController extends Controller
      */
     public function show(int $id)
     {
+        $this->authorize('show', Auction::class);
         $auction = Auction::find($id);
         if($auction){
-            //$this->authorize('show', $auction);
             return view('pages.auction', ['auction' => $auction]);
         }else{
             abort(404);
@@ -474,6 +412,7 @@ class AuctionController extends Controller
     }
 
     public function bids(Request $request, $id){
+        $this->authorize('viewany', Bid::class);
 
         $offset =$request->offset;
         if($offset!==null){
