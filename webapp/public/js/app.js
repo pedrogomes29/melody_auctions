@@ -82,17 +82,6 @@ function loadImagePreview(imagecontainer){
             const reader = new FileReader();
             reader.onload = function(){
                 image.src = reader.result;
-
-                image.onload = function(el) {
-                  
-                  const elem = document.createElement('canvas');
-                  elem.width = 250;
-                  elem.height = 200;
-                  const ctx = elem.getContext("2d");
-                  ctx.drawImage(el.target, 0, 0, 250, 250);
-
-                  image.src=ctx.canvas.toDataURL('image/png', 1);
-              };
             };
             reader.readAsDataURL(input.files[0]);            
           };
@@ -107,3 +96,28 @@ function loadImagePreview(imagecontainer){
 }
 
 loadImagePreview('.img-preview-container');
+
+
+function form_create_auction(form){
+  console.log(form.querySelector('input[name=startdate]'));
+
+  var startdate = new Date(form.querySelector('input[name=startdate]').value)
+  var userTimezoneOffset = startdate.getTimezoneOffset() * 60000;
+  form.querySelector('input[name=startdate]').value = new Date(startdate.getTime() - userTimezoneOffset).toISOString().slice(0,16);;
+
+  var enddate = new Date(form.querySelector('input[name=enddate]').value)
+  var userTimezoneOffset = enddate.getTimezoneOffset() * 60000;
+  form.querySelector('input[name=enddate]').value =  new Date(enddate.getTime() - userTimezoneOffset).toISOString().slice(0,16);;
+
+  
+  return true;
+}
+
+
+/*
+
+  var date = new Date()
+  var userTimezoneOffset = date.getTimezoneOffset() * 60000;
+  new Date(date.getTime() - userTimezoneOffset);
+
+*/

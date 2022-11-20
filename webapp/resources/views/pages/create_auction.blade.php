@@ -9,7 +9,7 @@
 
     <main>
 
-      <form class="form-create" method="post" action="{{ url('auction/create') }}"  enctype="multipart/form-data">
+      <form class="form-create" method="post" action="{{ url('auction/create') }}" onsubmit="return form_create_auction(this)" enctype="multipart/form-data">
 
         <div class="mb-3 img-preview-container">
           <label for="formFileSm" class="form-label ">Auction image</label>
@@ -38,7 +38,7 @@
               
           </datalist>
         </div>
-        
+
         <div class="mb-3">
           <label for="category" class="form-label">Category</label>
           <select required name="category" id="category" class="form-select" aria-label="Default select example">
@@ -48,16 +48,31 @@
               </option>
             @endforeach
           </select>
+          @if ($errors->has('category_error'))
+            <div class="alert alert-danger" role="alert">
+              {{ $errors->first('category_error') }}
+            </div>
+          @endif
         </div>
 
         <div class="mb-3">
           <label for="startDate">Start Date</label>
           <input required name="startdate" id="startDate" class="form-control w-auto" type="datetime-local" />
+          @if ($errors->has('startdate_error'))
+            <div class="alert alert-danger" role="alert">
+              {{ $errors->first('startdate_error') }}
+            </div>
+          @endif
         </div>
 
         <div class="mb-3">
           <label for="endDate">End Date</label>
           <input required name="enddate" id="endDate" class="form-control w-auto" type="datetime-local" />
+          @if ($errors->has('enddate_error'))
+            <div class="alert alert-danger" role="alert">
+              {{ $errors->first('enddate_error') }}
+            </div>
+          @endif
         </div>
         
         <div class="mb-3">
@@ -65,9 +80,10 @@
 
           <div class="input-group mb-3">
             <span class="input-group-text">€</span>
-            <input required name="startvalue" type="number" step="0.01" value ="0" class="form-control" name="start_value" aria-label="Euro amount (with dot and two decimal places)">
+            <input required name="startvalue" type="number" step="0.01" min="0.01" value ="0" class="form-control" name="start_value" aria-label="Euro amount (with dot and two decimal places)">
           </div> 
-          </div>
+          
+        </div>
 
           
         <div class="mb-3">
@@ -75,12 +91,12 @@
 
           <div class="input-group mb-3">
             <span class="input-group-text">€</span>
-            <input required name="minbiddiff" type="number" step="0.01" value ="0" class="form-control" name="minbiddiff" aria-label="Euro amount (with dot and two decimal places)">
+            <input required name="minbiddiff" type="number" step="0.01" min="0.01" value ="0" class="form-control" name="minbiddiff" aria-label="Euro amount (with dot and two decimal places)">
           </div>
         </div>
 
         {{ csrf_field() }}
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit"  class="btn btn-primary">Submit</button>
       </form>
 
       

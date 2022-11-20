@@ -35,7 +35,18 @@ class AuctionPolicy
      */
     public function create(User $user)
     {
-        //
+        error_log("STPRE");
+        //TODO return Auth::check();
+        return TRUE;
+    }
+
+    
+    public function store(User $user, Auction $auction)
+    {
+        error_log("STPRE");
+        //TODO return Auth::check();
+        // return $auction->owner_id = User->id;
+        return TRUE;
     }
 
     /**

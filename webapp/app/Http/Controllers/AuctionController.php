@@ -13,17 +13,6 @@ use PDOException;
 class AuctionController extends Controller
 {
 
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showCreate()
-    {
-        //TODO verificar se está logado
-        return view('pages.create_auction', ['categories' => Category::all(), 'manufactors' => Manufactor::all()]);
-    }
     
     private function uploadImage($request ){
 
@@ -73,60 +62,8 @@ class AuctionController extends Controller
      */
     public function create(Request $request)
     {
-        error_log($request->input('name'));
-        error_log($request->input('description'));
-        error_log($request->input('manufactor'));
-        error_log($request->input('category'));
-        error_log($request->input('startdate'));
-        error_log($request->input('enddate'));
-        error_log($request->input('startvalue'));
-        error_log($request->input('minbiddiff'));
-
-        try{
-            error_log("sss");
-            $auction = new Auction();
-            DB::beginTransaction();
-            DB::statement('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE');
-
-            error_log("NAME");
-            $auction->name = $request->input('name');
-            error_log("description");
-            $auction->description = $request->input('description');
-            error_log("enddate");
-            $auction->enddate = $request->input('enddate');
-            error_log("startprice");
-            $auction->startprice = floatval($request->input('startprice'));
-            error_log("minbiddiff");
-            $auction->minbidsdif = floatval($request->input('minbiddiff'));
-            error_log("startdate");
-            $auction->startdate = $request->input('startdate');
-
-            $auction->owner_id = 1; //TODO: mudar para o id do user logado
-            error_log("category");
-            $auction->category_id = intval($request->input('category'));
-
-            error_log("manufactor");
-            $manufactor_name = ucfirst(strtolower($request->input('manufactor')));
-            $auction->manufactor_id = Manufactor::where('name', $manufactor_name)->firstOrCreate(['name' => $manufactor_name])->id;
-            
-            error_log("uploadImage");
-            AuctionController::uploadImage($request);
-            $auction->id = Auction::max('id') + 1;
-            error_log("id");
-            $auction->save();
-            error_log("save");
-            
-            DB::commit();
-        }catch(PDOException $e){
-
-            error_log($e->getMessage());
-
-            DB::rollBack();
-        }
-
-        return redirect('auction/'.$auction->id);
-
-
+        //$this->authorize('create', Auction::class);
+        return view('pages.create_auction', ['categories' => Category::all(), 'manufactors' => Manufactor::all()]);
     }
 
     /**
@@ -137,7 +74,102 @@ class AuctionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [            
+            'photo' => 'required|image|mimes:jpg,png,jpeg',
+            'name' => 'required',
+            'description' => 'required',
+            'manufactor' => 'required',
+            'category' => 'required|integer|min:0',
+            'startdate' => 'required|date',
+            'enddate' => 'required|date',
+            'startvalue' => 'required|numeric',
+            'minbiddiff' => 'required|numeric',
+        ]);
+
+        $image_path = "";
+        try{
+            $errors = [];
+
+            error_log("sss");
+            $auction = new Auction();
+
+            $auction->name = $request->input('name');
+            $auction->description = $request->input('description');
+            $auction->startprice = floatval($request->input('startvalue'));
+            $auction->minbidsdif = floatval($request->input('minbiddiff'));
+
+
+            $auction->startdate = $request->input('startdate');
+            $auction->enddate = $request->input('enddate');
+
+            $auction->owner_id = 1; //TODO: mudar para o id do user logado
+
+            //$this->authorize('store', $auction);
+
+            $now = date('Y-m-d\TH:i:s');
+
+            
+            DB::beginTransaction();
+            DB::statement('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE');
+
+            if($auction->startdate < $now){
+                $errors['startdate_error'] = 'Start date must be after now!';
+                throw new PDOException('startdate error!');
+            }
+
+            if($auction->enddate < $auction->startdate){
+                $errors['enddate_error'] = 'End date must be after Star Date!';
+                throw new PDOException('enddate error!');
+            }
+
+            if($auction->startprice < 0.01){
+                $errors['start_value'] = 'Start value must be at least 0.01!';
+                throw new PDOException('start_value error!');
+            }
+                
+            if($auction->minbidsdif < 0.01){
+                $errors['minbiddiff'] = 'Min Bid difference must be at least 0.01!';
+                throw new PDOException('minbiddiff error!');
+            }
+
+            
+
+            if(!Category::find(intval($request->input('category')))->exists()){
+                $errors['category_error'] = 'Category does not exists!';
+                throw new PDOException('category error!');
+            }
+
+            $auction->category_id = intval($request->input('category'));
+
+            $manufactor_name = ucfirst(strtolower($request->input('manufactor')));
+            $manufactor = Manufactor::where('name', $manufactor_name)->first();
+            if($manufactor === null){
+                $manufactor = Manufactor::firstOrCreate(['name' => $manufactor_name, 'id' => Manufactor::max('id')+1]);
+            }
+
+            $auction->manufactor_id = $manufactor->id;
+            
+            $image_path = AuctionController::uploadImage($request);
+            $auction->id = Auction::max('id') + 1;
+
+
+            $auction->save();
+            
+            DB::commit();
+        }catch(PDOException $e){
+
+            error_log($e->getMessage());
+            if($image_path!==""){
+                // apagar imagem  
+            }
+
+            DB::rollBack();
+            return redirect('auction/create')->withErrors($errors);
+        }
+
+        return redirect('auction/'.$auction->id);
+
+
     }
 
     /**
