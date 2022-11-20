@@ -47,9 +47,9 @@ paths:
             schema:
               type: object
               properties:
-                usernameOrEmail:          # <!--- form field name
+                usernameOrEmail: 
                   type: string 
-                password:    # <!--- form field name
+                password:   
                   type: string
               required:
                 - usernameOrEmail
@@ -152,7 +152,7 @@ paths:
 
   /user/{username}:
     get:
-      operationId: R105
+      operationId: R106
       summary: 'R106: View user profile'
       description: 'Show the individual user profile. Access: USR'
       tags:
@@ -341,9 +341,19 @@ paths:
       description: 'Show the individual auction. Access: PUB'
       tags:
         - 'M02: Auctions'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the auction to get
+            
       responses:
         '200':
           description: 'Ok. Show view Auction UI'
+        '404':
+          description: 'Auction Not found'
 
     put:
       operationId: R204
@@ -659,13 +669,20 @@ paths:
           description: 'Ok. View user auctions'
 
 # M03: Bids
-  /api/bid:
+  /api/auction/{id}/bid:
     post:
       operationId: R301
       summary: 'R301: Make bid'
       description: 'Authenticated user submits a bid. Access: USR'
       tags:
         - 'M03: Bids'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true 
+          description: Numeric ID of the auction to bid
       requestBody:
         required: true
         content:
@@ -673,24 +690,65 @@ paths:
             schema:
               type: object
               properties:
-                auctionid:
-                  type: integer
-                value:
+                value:         
                   type: number
+                  description: Bid value
+                _token:   
+                  type: string
+                  description: CSRF Token
               required:
-                - auctionid
                 - value
+                - _token
       
       responses:
-        '201':
-          description: 'Bid made successfully'
-        '500':
-          description: 'Failure'
+        '302':
+          description: 'Redirecting to Auction Page'
+        '404':
+          description: 'Auction Not Found'
+
+    get:
+      operationId: R302
+      summary: 'R302: View the auction past bids'
+      description: 'Show the historic of bids of an auction. Access: PUB'
+      tags:
+        - 'M03: Bids'
+
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true 
+          description: Numeric ID of the auction to list bids
+        
+        - in: query
+          name: offset
+          type: integer
+          description: Offset of the bids to lists (show 10 bids per page)
+          required: false
+      responses:
+        '200':
+          description: 'List of bids'
+          content:
+            text/html:
+              schema:
+                format: html
+                example: '<a href="#" class="list-group-item list-group-item-action " aria-current="true">
+                            <div class="d-flex w-100 justify-content-between">
+
+                              <h5 class="mb-1">Eugenie Saint</h5>
+                              <small>2022-11-17 12:00:00.321</small>
+                            </div>
+                            <p class="mb-1">20€</p>
+                          </a>'
+        '404':
+          description: 'Auction Not Found'
+          
   
   /user/{username}/bid:
     get:
-      operationId: R302
-      summary: 'R302: View the list of bids made by a user'
+      operationId: R303
+      summary: 'R303: View the list of bids made by a user'
       description: 'View the bids of an authenticated user. Access: USR'
       tags:
         - 'M03: Bids'
@@ -698,16 +756,7 @@ paths:
         '200':
           description: 'Ok. Show view bids UI'     
 
-  /auction/{auctionid}/bid:
-    get:
-      operationId: R303
-      summary: 'R303: View the auction past bids'
-      description: 'Show the historic of bids of an auction. Access: PUB'
-      tags:
-        - 'M03: Bids'
-      responses:
-        '200':
-          description: 'Ok.'
+
 
 
 # M04: Notifications, Follows, Reviews
@@ -978,8 +1027,6 @@ paths:
                   description: 'Unauthorized. You need to be an admin'
                   value: '/login'
 
-
-
   /user/{username}/report:
     post:
       operationId: R505
@@ -1059,5 +1106,3 @@ paths:
         '200':
           description: 'Ok. Show log-in UI'
 
-
-    

@@ -71,4 +71,56 @@ body header {
 
 #logo:hover {
     cursor: pointer;
+
+
+
+/*Auctions*/
+
+.auction{
+  color: black;
+}
+
+.auction header{
+  background-color: white;
+
+}
+
+.auction main{
+  background-color: rgb(244, 239, 239);
+}
+
+.auction .owner_info{
+  font-size: 1.5em;
+  margin-top: 1em;
+}
+
+#bid_auction{
+  position: sticky;
+  top: 0;
+  height: fit-content;
+  background: #FFFFFF;
+  padding: 1em;
+}
+
+.auction .owner_info img{
+  width: 3em;
+  margin-right: 1em;
+  height: auto;
+}
+
+#auction_information{
+  
+  display: grid;
+  grid-template-columns: 80% 20%;
+}
+
+#auction_img{
+  max-height: 50vh;
+}
+
+
+
+.form-create{
+  margin: auto;
+  max-width: 60em;
 }

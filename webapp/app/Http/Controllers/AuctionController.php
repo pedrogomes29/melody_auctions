@@ -3,14 +3,18 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\Category;
-use Illuminate\Http\Request;
 use App\Models\Auction;
-use Illuminate\Support\Facades\DB;
-use PDOException;
-use Carbon\Carbon;	
+use App\Models\Category;
+use App\Models\Manufactor;
+
+
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+
+use PDOException;
+use Carbon\Carbon;	
 
 class AuctionController extends Controller
 {
@@ -281,7 +285,7 @@ class AuctionController extends Controller
         return redirect()->route('home');
     }
 
-    public function store(Request $request,$auctionId)
+    public function updatePhoto(Request $request,$auctionId)
     {
         if (Auth::check()){
             $user_id = Auth::id();
@@ -308,7 +312,7 @@ class AuctionController extends Controller
         $auction->description = $request->input('description');
         $auction->save();
         return redirect('admin/auctions');
-}
+    }
 
     public static function destroy($id)
     {
@@ -328,6 +332,172 @@ class AuctionController extends Controller
         $auctions = Auction::all();
         return $auctions;
     }
+    
+    private function uploadImage($request ){
+        //TODO resize img
+       
+        return $request->file('photo')->store('image', 'public');
+    }
+
+    /**
+     * Show the form for creating a new auction.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Request $request)
+    {
+        //$this->authorize('create', Auction::class);
+        return view('pages.create_auction', ['categories' => Category::all(), 'manufactors' => Manufactor::all()]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $this->validate($request, [            
+            'photo' => 'required|image|mimes:jpg,png,jpeg',
+            'name' => 'required',
+            'description' => 'required',
+            'manufactor' => 'required',
+            'category' => 'required|integer|min:0',
+            'startdate' => 'required|date',
+            'enddate' => 'required|date',
+            'startvalue' => 'required|numeric',
+            'minbiddiff' => 'required|numeric',
+        ]);
+
+        $image_path = "";
+        try{
+            $errors = [];
+
+            error_log("sss");
+            $auction = new Auction();
+
+            $auction->name = $request->input('name');
+            $auction->description = $request->input('description');
+            $auction->startprice = floatval($request->input('startvalue'));
+            $auction->minbidsdif = floatval($request->input('minbiddiff'));
+
+
+            $auction->startdate = $request->input('startdate');
+            $auction->enddate = $request->input('enddate');
+
+            $auction->owner_id = 2; //TODO: mudar para o id do user logado
+
+            //$this->authorize('store', $auction);
+
+            $now = date('Y-m-d\TH:i:s');
+
+            
+            DB::beginTransaction();
+            DB::statement('SET TRANSACTION ISOLATION LEVEL SERIALIZABLE');
+
+            if($auction->startdate < $now){
+                $errors['startdate_error'] = 'Start date must be after now!';
+                throw new PDOException('startdate error!');
+            }
+
+            if($auction->enddate < $auction->startdate){
+                $errors['enddate_error'] = 'End date must be after Star Date!';
+                throw new PDOException('enddate error!');
+            }
+
+            if($auction->startprice < 0.01){
+                $errors['start_value'] = 'Start value must be at least 0.01!';
+                throw new PDOException('start_value error!');
+            }
+                
+            if($auction->minbidsdif < 0.01){
+                $errors['minbiddiff'] = 'Min Bid difference must be at least 0.01!';
+                throw new PDOException('minbiddiff error!');
+            }
+
+            
+
+            if(!Category::find(intval($request->input('category')))->exists()){
+                $errors['category_error'] = 'Category does not exists!';
+                throw new PDOException('category error!');
+            }
+
+            $auction->category_id = intval($request->input('category'));
+
+            $manufactor_name = ucfirst(strtolower($request->input('manufactor')));
+            $manufactor = Manufactor::where('name', $manufactor_name)->first();
+            if($manufactor === null){
+                $manufactor = Manufactor::firstOrCreate(['name' => $manufactor_name, 'id' => Manufactor::max('id')+1]);
+            }
+
+            $auction->manufactor_id = $manufactor->id;
+            
+            $auction->photo = AuctionController::uploadImage($request);
+            $auction->id = Auction::max('id') + 1;
+
+
+            $auction->save();
+            
+            DB::commit();
+        }catch(PDOException $e){
+
+            error_log($e->getMessage());
+            if($auction->photo!==""){
+                // apagar imagem  
+            }
+
+            DB::rollBack();
+            return redirect('auction/create')->withErrors($errors);
+        }
+
+        return redirect('auction/'.$auction->id);
+
+
+    }
+
+    /**
+     * Display the auction page.
+     *
+     * @param  \App\Models\Auction  $auction
+     * @return \Illuminate\Http\Response
+     */
+    public function show(int $id)
+    {
+        $auction = Auction::find($id);
+        if($auction){
+            //$this->authorize('show', $auction);
+            return view('pages.auction', ['auction' => $auction]);
+        }else{
+            abort(404);
+        }
+    }
+
+    public function bids(Request $request, $id){
+
+        $offset =$request->offset;
+        if($offset!==null){
+            // Validate if a string is a valid number
+
+            if(! preg_match('/^[0-9]+$/', $offset)){
+                abort(404);
+            }   
+        }
+
+        $auction = Auction::find($id);
+        if($auction==null){
+            abort(404);
+        }
+
+        $bids = [];
+        if($offset!==null){
+            $bids = $auction->bids_offset(intval($offset));
+        }else{
+            $bids =$auction->bids;
+        }
+        
+        error_log($bids);
+        return view('partials.bids', ['bids' => $bids]);
+    }
 
 }
-

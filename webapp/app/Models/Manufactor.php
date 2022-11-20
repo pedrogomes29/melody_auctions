@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Manufactor extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name', 'id'];  
+    
+    public $timestamps = false;
 }

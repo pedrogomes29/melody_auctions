@@ -58,9 +58,13 @@ Route::put('api/user/{username}/balance','UserProfileController@updateUserBalanc
 
 // Auction
 Route::get('auction/{auction_id}/edit', 'AuctionController@edit')->name('auction.edit');
+Route::post('/auction/{{$auction->id}}/updatePhoto', 'AuctionController@updatePhoto')->name('auction.updatePhoto');
 Route::put('auction/{auction_id}/edit', 'AuctionController@ownerUpdate')->name('auction.update');
 Route::delete('auction/{auction_id}/edit', 'AuctionController@ownerDelete')->name('auction.delete');
-Route::post('auction/{auction_id}/store', 'AuctionController@store')->name('auction.store');	
+Route::get('auction/{auction_id}', 'AuctionController@show')->where('auction_id', '[0-9]+')->name('auction.show');
+Route::get('auction/create', 'AuctionController@create')->name('auction.showCreate');
+Route::post('auction/create', 'AuctionController@store')->name('auction.store');
+
 
 // Admin
 Route::get('admin/{admin_id}', 'AdminController@show')->name('adminDashboard');
@@ -73,3 +77,11 @@ Route::post('admin/{admin_id}/auctions/{auctions_id}/default_image', 'AdminContr
 
 // Follows
 Route::get('user/{username}/follow', 'FollowController@showFollows')->name('user.follows');
+
+
+// bids
+Route::post('api/auction/{auction_id}/bid', 'BidController@create')->where('auction_id', '[0-9]+')->name('bid.create');
+Route::get('api/auction/{auction_id}/bid', 'AuctionController@bids')->where('auction_id', '[0-9]+')->name('bid.list');
+
+
+

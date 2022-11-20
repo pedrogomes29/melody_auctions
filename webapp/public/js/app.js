@@ -1,36 +1,41 @@
 function addEventListeners() {
     const options = document.querySelectorAll(
-        "#auctionsOrUsers .dropdown-item"
-    );
-    [].forEach.call(options, function (option) {
-        option.addEventListener("click", chooseOption);
-    });
+      "#auctionsOrUsers .dropdown-item"
+  );
+  [].forEach.call(options, function (option) {
+      option.addEventListener("click", chooseOption);
+  });
 
-    const searchInput = document.getElementById("search_bar");
-    searchInput.addEventListener("input", async function () {
-        if (
-            document.querySelector("#auctionsOrUsers > #dropdownMenuButton1")
-                .textContent === "Users"
-        ) {
-            const response = await fetch(
-                "/api/user?search=" + (searchInput.value ?? "")
-            );
-            const users = await response.json();
-            showUsers(users);
-        }
-    });
+  const searchInput = document.getElementById("search_bar");
+  searchInput.addEventListener("input", async function () {
+      if (
+          document.querySelector("#auctionsOrUsers > #dropdownMenuButton1")
+              .textContent === "Users"
+      ) {
+          const response = await fetch(
+              "/api/user?search=" + (searchInput.value ?? "")
+          );
+          const users = await response.json();
+          showUsers(users);
+      }
+  });
 
-    const userProfilePic = document.getElementById("user-profile");
-    if (userProfilePic)
-        userProfilePic.addEventListener("click", seeUserProfile);
+  const userProfilePic = document.getElementById("user-profile");
+  if (userProfilePic)
+      userProfilePic.addEventListener("click", seeUserProfile);
 
-    const adminProfilePic = document.getElementById("admin-profile");
-    if (adminProfilePic)
-        adminProfilePic.addEventListener("click", seeAdminProfile);
+  const adminProfilePic = document.getElementById("admin-profile");
+  if (adminProfilePic)
+      adminProfilePic.addEventListener("click", seeAdminProfile);
 
-    document
-        .getElementById("logo")
-        .addEventListener("click", () => (window.location.href = "/"));
+  document
+      .getElementById("logo")
+      .addEventListener("click", () => (window.location.href = "/"));
+
+  // bids
+  let load_bids = document.querySelector('#bidding_section #load_bids')
+  if (load_bids != null)
+    load_bids.addEventListener('click', load_more_bids);
 }
 
 function seeUserProfile(event) {
@@ -104,6 +109,89 @@ function showUsers(users) {
     }
     if (!dropdown_menu.classList.contains("show"))
         dropdown_menu.classList.add("show");
+
+  
+}
+addEventListeners();
+
+
+// Bids
+
+async function load_more_bids(ev){
+  
+  let offset = ev.target.getAttribute('data-offset');
+  let auction_id = ev.target.getAttribute('data-auction-id');
+  let loading = document.querySelector('#bidding_section #loading');
+
+  if(!auction_id)
+    return;
+
+  if(loading && loading.style.display == "none"){
+    loading.style.display = "block";
+
+    if (offset==null)
+      offset=0;
+
+    let request = await fetch("/api/auction/"+auction_id+"/bid?offset="+(offset));
+    if(request.status == 200){
+      console.log(request);
+
+      let response = await request.text();
+      let bidding_history = document.querySelector('#bidding_section #bidding_history');
+      if(bidding_history && response!=''){
+        bidding_history.innerHTML += response;
+        ev.target.setAttribute('data-offset', offset+1);
+      }
+
+    }
+    loading.style.display = "none";
+  }
+
 }
 
-addEventListeners();
+
+function loadImagePreview(imagecontainer){
+  const container = document.querySelectorAll(imagecontainer)
+
+  for(const c of container){
+      const image = c.querySelector('img');
+      const input = c.querySelector('input[type="file"]');
+
+      if(input && image){
+
+          const loadFile = function() {
+            
+
+            const reader = new FileReader();
+            reader.onload = function(){
+                image.src = reader.result;
+            };
+            reader.readAsDataURL(input.files[0]);            
+          };
+
+          input.addEventListener('change', loadFile);
+          
+
+      }
+
+  }
+
+}
+
+loadImagePreview('.img-preview-container');
+
+
+function form_create_auction(form){
+  console.log(form.querySelector('input[name=startdate]'));
+
+  var startdate = new Date(form.querySelector('input[name=startdate]').value)
+  var userTimezoneOffset = startdate.getTimezoneOffset() * 60000;
+  form.querySelector('input[name=startdate]').value = new Date(startdate.getTime() - userTimezoneOffset).toISOString().slice(0,16);;
+
+  var enddate = new Date(form.querySelector('input[name=enddate]').value)
+  var userTimezoneOffset = enddate.getTimezoneOffset() * 60000;
+  form.querySelector('input[name=enddate]').value =  new Date(enddate.getTime() - userTimezoneOffset).toISOString().slice(0,16);;
+
+  
+  return true;
+}

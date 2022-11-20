@@ -16,7 +16,7 @@
                 </div>
             @endif
         @endif
-        <form id="store" action="/auction/{{$auction->id}}/store" method="POST" enctype="multipart/form-data">
+        <form id="store" action="/auction/{{$auction->id}}/updatePhoto" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
             <div class="text-center">
                 @if ($auction->photo!='')
