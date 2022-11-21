@@ -43,7 +43,7 @@ class AuctionPolicy
      */
     public function update(AuthenticatedUser $user, Auction $auction)
     {
-        //
+        return $user->id == $auction->owner_id && Auth::check();
     }
 
     /**
@@ -55,7 +55,7 @@ class AuctionPolicy
      */
     public function delete(AuthenticatedUser $user, Auction $auction)
     {
-        //
+        return $user->id == $auction->owner_id && Auth::check();
     }
 
     /**
