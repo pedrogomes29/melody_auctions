@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\AuthenticatedUser;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Auth;
 
 class AuthenticatedUserPolicy
 {
@@ -11,7 +12,7 @@ class AuthenticatedUserPolicy
     public function update(AuthenticatedUser $user, AuthenticatedUser $authenticatedUser)
     {
         // only the authenticated user can update their own profile
-        return $authenticatedUser->id === $user->id;
+        return Auth::check() && $authenticatedUser->id === $user->id;
     }
 
     /**
@@ -24,6 +25,6 @@ class AuthenticatedUserPolicy
     public function delete(AuthenticatedUser $user, AuthenticatedUser $authenticatedUser)
     {
         // only the authenticated user can delete their own profile
-        return $authenticatedUser->id === $user->id;
+        return Auth::check() && $authenticatedUser->id === $user->id;
     }
 }

@@ -25,7 +25,7 @@ Route::get('api/auction_json','AuctionController@search_results_json');
 Route::get('api/user','AuthenticatedUserController@search_results');
 
 Route::get('/', 'HomePageController@index')->name('home');
-
+Route::get('/home', 'HomePageController@index');
 // Authentication
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
