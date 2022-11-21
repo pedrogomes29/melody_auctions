@@ -77,7 +77,7 @@ use App\Models\Manufactor;
 
             @endif
 
-            <input @if (!$auction->isOpen()) disabled  @endif type="submit" value="Bid">
+            <input @if (!$auction->isOpen() || !Auth::check()) disabled  @endif type="submit" value="Bid">
           </form>
             
           <section id="bidding_section">

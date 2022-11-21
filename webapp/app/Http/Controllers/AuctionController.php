@@ -283,7 +283,10 @@ class AuctionController extends Controller
      */
     public function create(Request $request)
     {
-        $this->authorize('create', Auction::class);
+        if ( ! Auth::check() || !Auth::user()->can('create', Auction::class)){
+            return redirect()->route('login');
+        }
+
         return view('pages.create_auction', ['categories' => Category::all(), 'manufactors' => Manufactor::all()]);
     }
 
@@ -296,7 +299,9 @@ class AuctionController extends Controller
     public function store(Request $request)
     {
         
-        $this->authorize('store', Auction::class);
+        if ( ! Auth::check() || !Auth::user()->can('create', Auction::class)){
+            return redirect()->route('login');
+        }
 
         $this->validate($request, [            
             'photo' => 'required|image|mimes:jpg,png,jpeg',
@@ -354,7 +359,6 @@ class AuctionController extends Controller
                 throw new PDOException('minbiddiff error!');
             }
 
-            
 
             if(!Category::find(intval($request->input('category')))->exists()){
                 $errors['category_error'] = 'Category does not exists!';
@@ -380,9 +384,8 @@ class AuctionController extends Controller
             DB::commit();
         }catch(PDOException $e){
 
-            error_log($e->getMessage());
             if($auction->photo!==""){
-                // apagar imagem  
+                //TODO apagar imagem  
             }
 
             DB::rollBack();
@@ -402,7 +405,6 @@ class AuctionController extends Controller
      */
     public function show(int $id)
     {
-        $this->authorize('show', Auction::class);
         $auction = Auction::find($id);
         if($auction){
             return view('pages.auction', ['auction' => $auction]);
@@ -412,7 +414,6 @@ class AuctionController extends Controller
     }
 
     public function bids(Request $request, $id){
-        $this->authorize('viewany', Bid::class);
 
         $offset =$request->offset;
         if($offset!==null){
@@ -435,7 +436,6 @@ class AuctionController extends Controller
             $bids =$auction->bids;
         }
         
-        error_log($bids);
         return view('partials.bids', ['bids' => $bids]);
     }
 
