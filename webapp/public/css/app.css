@@ -124,3 +124,13 @@ body header {
     margin: auto;
     max-width: 60em;
 }
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+body > main {
+    flex-grow: 1;
+}
