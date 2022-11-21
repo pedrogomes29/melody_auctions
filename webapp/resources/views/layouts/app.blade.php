@@ -49,7 +49,7 @@
 
         <div class="d-flex flex-row flex-grow-1 m-top">
           <div class="d-flex flex-row flex-grow-1">
-            <div class="flex-grow-1">
+            <div class="flex-grow-1 m-auto">
               <input id="search_bar" class="form-control border-end-0 border rounded-pill" type="search" value=@yield('searchContent')>
               <div id="search_results" class="mx-3">
                 <div class="dropdown-menu bx-3">
