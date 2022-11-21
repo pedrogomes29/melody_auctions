@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\Follow;
 use App\Models\Auction;
 use App\Models\Category;
 use App\Models\Manufactor;
@@ -410,8 +410,9 @@ class AuctionController extends Controller
     {
         $this->authorize('show', Auction::class);
         $auction = Auction::find($id);
+        $followed = Follow::where('auction_id', $id)->get()->contains('authenticated_user_id', Auth::id());
         if($auction){
-            return view('pages.auction', ['auction' => $auction]);
+            return view('pages.auction', ['auction' => $auction, 'followed' => $followed]);
         }else{
             abort(404);
         }

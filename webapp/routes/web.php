@@ -64,6 +64,8 @@ Route::delete('auction/{auction_id}/edit', 'AuctionController@ownerDelete')->nam
 Route::get('auction/{auction_id}', 'AuctionController@show')->where('auction_id', '[0-9]+')->name('auction.show');
 Route::get('auction/create', 'AuctionController@create')->name('auction.showCreate');
 Route::post('auction/create', 'AuctionController@store')->name('auction.store');
+Route::post('api/follow', 'FollowController@store')->name('follow.store');
+Route::delete('api/follow', 'FollowController@destroy')->name('follow.destroy');
 
 
 // Admin
