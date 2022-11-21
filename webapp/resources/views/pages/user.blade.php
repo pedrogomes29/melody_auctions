@@ -136,9 +136,11 @@
                     <input type="number" name="balance" id="balance-input" placeholder="Balance" required min="1">
                     <button id="add" type="submit" class="btn btn-primary">Add</button>
                 </form>
-                <script src={{ asset('js/edit.js') }}></script>
+                <script src="{{ asset('js/edit.js') }}"></script>
             </div>
         @endif
+
+        <!--
         @if (Auth::id() == $user->id)
             <form id="delete-user"action="{{ route('user.delete', $user->username) }}" method="POST">
                 @csrf
@@ -146,6 +148,8 @@
                 <button type="submit" class="btn btn-danger">Delete Account</button>
             </form>
         @endif
+
+        -->
     </section>
     <div id='owned-auctions' class="m-4">
         @if(count($auctions)>0)
