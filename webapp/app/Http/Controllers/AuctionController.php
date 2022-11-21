@@ -158,7 +158,7 @@ class AuctionController extends Controller
     public function ownerUpdate(Request $request, $auctionId)
     {
         $auction = Auction::find($auctionId);
-        if (!$this->can('update', $auction)){
+        if (! Auth::check() || Auth::user()->can('update', $auction)){
             $success = true;
             $auction = Auction::find($auctionId);
 
@@ -169,6 +169,11 @@ class AuctionController extends Controller
                 'startDate' => 'required|date',
                 'endDate' => 'required|date',
             ]);
+
+            if ($auction->cancelled == 1){
+                $errors['auctioncancelled'] = 'Auction has been cancelled';
+                $success = false;
+            }
 
             $auction->name = $request->input('name');
             $auction->description = $request->input('description');
@@ -211,32 +216,47 @@ class AuctionController extends Controller
             } else {
                 $auction->enddate = $inputEndDate; 
             }
-
-            
             if ($success){
                 $auction->save();
             }
-            return view('pages.auction_edit', ['auction' => $auction])->withErrors($errors);
+            if (isset($errors)) return view('pages.auction_edit', ['auction' => $auction])->withErrors($errors);
+            return view('pages.auction_edit', ['auction' => $auction]);
         }
         return redirect()->route('home');
     }
     public function ownerDelete($auctionId)
     {
         $auction = Auction::find($auctionId);
-        if (!$this->can('delete', $auction)){
-            $auction->delete();
-            return redirect('/');
+        if (! Auth::check() || Auth::user()->can('delete', $auction)){ 
+            if ($auction->cancelled){
+                $errors['auctioncancelled'] = 'Auction has already been cancelled';
+                return view('pages.auction_edit', ['auction' => $auction])->withErrors($errors);
+            }
+            if ($auction->notStarted()){
+                $auction->cancelled = 1;
+                $auction->save();
+                return redirect('/');
+            } else {
+                $erros['cantdelete'] = 'Cannot delete an auction that has already started';
+                return view('pages.auction_edit', ['auction' => $auction])->withErrors($errors);
+            }
         }
         return redirect()->route('home');
     }
+    
+
 
     public function updatePhoto(Request $request,$auctionId)
     {
         $auction = Auction::find($auctionId);
-        if (!$this->can('update', $auction)){
+        if (! Auth::check() || Auth::user()->can('update', $auction)){
             $validated = $request->validate([
                 'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
+            if ($auction->cancelled) {
+                $errors['auctioncancelled'] = 'Auction has been cancelled';
+                return view('pages.auction_edit', ['auction' => $auction])->withErrors($errors);
+            }
             $image_path = $request->file('photo')->store('auctions','public');
             $auction->photo = $image_path;
             $auction->save();
