@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('scripts')
-    <script type="text/javascript" src={{ asset('js/generic_search_bar.js') }} defer> </script>
-    <script type="text/javascript" src={{ asset('js/register.js') }} defer> </script>
-    <script type="text/javascript" src={{ asset('js/profile_pic.js') }} defer> </script>
-    <script type="text/javascript" src={{ asset('js/add_balance.js') }} defer> </script>
+    <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
+    <script type="text/javascript" src="{{ asset('js/register.js') }}" defer> </script>
+    <script type="text/javascript" src="{{ asset('js/profile_pic.js') }}" defer> </script>
+    <script type="text/javascript" src="{{ asset('js/add_balance.js') }}" defer> </script>
 @endsection
 @section('styles')
     <link href="{{ asset('css/profile.css') }}" rel="stylesheet">

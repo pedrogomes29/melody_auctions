@@ -182,15 +182,14 @@ loadImagePreview('.img-preview-container');
 
 
 function form_create_auction(form){
-  console.log(form.querySelector('input[name=startdate]'));
 
-  var startdate = new Date(form.querySelector('input[name=startdate]').value)
+  var startdate = new Date(form.querySelector('input[name=startDate]').value)
   var userTimezoneOffset = startdate.getTimezoneOffset() * 60000;
-  form.querySelector('input[name=startdate]').value = new Date(startdate.getTime() - userTimezoneOffset).toISOString().slice(0,16);;
+  form.querySelector('input[name=startDate]').value = new Date(startdate.getTime() - userTimezoneOffset).toISOString().slice(0,16);;
 
-  var enddate = new Date(form.querySelector('input[name=enddate]').value)
+  var enddate = new Date(form.querySelector('input[name=endDate]').value)
   var userTimezoneOffset = enddate.getTimezoneOffset() * 60000;
-  form.querySelector('input[name=enddate]').value =  new Date(enddate.getTime() - userTimezoneOffset).toISOString().slice(0,16);;
+  form.querySelector('input[name=endDate]').value =  new Date(enddate.getTime() - userTimezoneOffset).toISOString().slice(0,16);;
 
   
   return true;

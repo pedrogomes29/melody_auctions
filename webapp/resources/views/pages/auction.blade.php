@@ -3,7 +3,9 @@
 use App\Models\Manufactor;
 ?>
 @extends('layouts.app')
-
+@section('scripts')
+    <script type="text/javascript" src="{{ asset('js/auction.js') }}" defer> </script>
+@endsection
 
 @section('content')
   <article class='auction'>
@@ -51,7 +53,17 @@ use App\Models\Manufactor;
         <section id = "bid_auction">
           <?php $last_bidder = $auction->getLastBidder();?>
           
-          <p><strong>End Date:</strong> {{ $auction->enddate }}</p>
+          
+          
+          @if ($auction->isOpen())
+            <p><strong>Auctions ends in </strong> <span date-date="{{ $auction->enddate }}" id="auction_countdown"></span></p>
+          @elseif ($auction->isClosed())
+            <p><strong>Auction ended </strong> {{ $auction->enddate }}</p>
+          @else
+            <p><strong>Auction starts in </strong> <span date-date="{{ $auction->startdate }}" id="auction_countdown"></span></p>
+          @endif
+
+
           <p><strong>Current Price:</strong> {{ $auction->currentprice ?? $auction->startprice }}</p>
           <p><strong>Last Bidder:</strong> 
             @if ($last_bidder)

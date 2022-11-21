@@ -309,8 +309,8 @@ class AuctionController extends Controller
             'description' => 'required',
             'manufactor' => 'required',
             'category' => 'required|integer|min:0',
-            'startdate' => 'required|date',
-            'enddate' => 'required|date',
+            'startDate' => 'required|date',
+            'endDate' => 'required|date',
             'startvalue' => 'required|numeric',
             'minbiddiff' => 'required|numeric',
         ]);
@@ -327,8 +327,8 @@ class AuctionController extends Controller
             $auction->minbidsdif = floatval($request->input('minbiddiff'));
 
 
-            $auction->startdate = $request->input('startdate');
-            $auction->enddate = $request->input('enddate');
+            $auction->startdate = $request->input('startDate');
+            $auction->enddate = $request->input('endDate');
 
 
             $auction->owner_id = Auth::id();
