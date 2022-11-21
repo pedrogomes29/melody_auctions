@@ -433,13 +433,13 @@ paths:
         - 'M02: Auctions'
       parameters:
         - in: query
-          name: ongoing
-          description: boolean with ongoing flag value
+          name: type
+          description: type of auction (uninitiated,active or closed)
           schema:
-            type: boolean
+            type: string
           required: false
         - in: query
-          name: query
+          name: search
           description: String to use for full-text search
           schema:
             type: string
@@ -464,9 +464,9 @@ paths:
           required: false
         - in: query
           name: order
-          description: magnitude of prices to be displayed
+          description: Order to be used displaying auctions
           schema:
-            type: integer
+            type: string
           required: false
       responses:
         '200':
@@ -534,38 +534,8 @@ paths:
         - 'M02: Auctions'
       parameters:
         - in: query
-          name: ongoing
-          description: boolean with ongoing flag value
-          schema:
-            type: boolean
-          required: false
-        - in: query
-          name: query
+          name: search
           description: String to use for full-text search
-          schema:
-            type: string
-          required: false
-        - in: query
-          name: categoryId
-          description: id of the category of the auction
-          schema:
-            type: integer
-          required: false
-        - in: query
-          name: minPrice
-          description: minimum bid price
-          schema:
-            type: integer
-          required: false
-        - in: query
-          name: maxPrice
-          description: maximum bid price
-          schema:
-            type: integer
-          required: false
-        - in: query
-          name: order
-          description: Order to be used displaying auctions
           schema:
             type: string
           required: false
@@ -594,13 +564,13 @@ paths:
         - 'M02: Auctions'
       parameters:
         - in: query
-          name: ongoing
-          description: boolean with ongoing flag value
+          name: type
+          description: type of auction (uninitiated,active or closed)
           schema:
-            type: boolean
+            type: string
           required: false
         - in: query
-          name: query
+          name: search
           description: String to use for full-text search
           schema:
             type: string
@@ -1105,4 +1075,3 @@ paths:
       responses:
         '200':
           description: 'Ok. Show log-in UI'
-
