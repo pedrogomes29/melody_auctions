@@ -17,6 +17,10 @@ use App\Models\Manufactor;
           <h3 style="color: red">Closed</h3>
         @else
           <h3 style="color: #da9465;">Not started yet</h3>
+          @if (Auth::check() && Auth::User()->id === $auction->owner_id)
+            <a href="{{ url('auction/'.$auction->id.'/edit') }}" class="btn btn-warning" role="button">Edit Auction</a>
+            
+          @endif
         @endif
           
 
@@ -45,14 +49,11 @@ use App\Models\Manufactor;
         </section>
 
         <section id = "bid_auction">
-          <?php $last_bidder = $auction->getLastBidder();
-            error_log("LAST BIDEER");
-            error_log($last_bidder);
-          ?>
-
-          <p>End Date: {{ $auction->enddate }}</p>
-          <p>Current Price: {{ $auction->currentprice ?? $auction->startprice }}</p>
-          <p>Last Bidder: 
+          <?php $last_bidder = $auction->getLastBidder();?>
+          
+          <p><strong>End Date:</strong> {{ $auction->enddate }}</p>
+          <p><strong>Current Price:</strong> {{ $auction->currentprice ?? $auction->startprice }}</p>
+          <p><strong>Last Bidder:</strong> 
             @if ($last_bidder)
              <a href="{{url('/user/'.$last_bidder->id)}}">{{$last_bidder->firstname . ' '. $last_bidder->lastname }}</a>
             @else
@@ -76,8 +77,13 @@ use App\Models\Manufactor;
               </div>
 
             @endif
-
+            <?php
+              error_log(Auth::User());
+              error_log( $auction);
+            ?>
+            
             <input @if (!$auction->isOpen() || !Auth::check()) disabled  @endif type="submit" value="Bid">
+            
           </form>
             
           <section id="bidding_section">
