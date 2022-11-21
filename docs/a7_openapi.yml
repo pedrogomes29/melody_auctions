@@ -470,7 +470,7 @@ paths:
           required: false
       responses:
         '200':
-          description: 'Ok. Show view Auction UI'
+          description: 'Ok. Show view Auctions UI'
     post:
       operationId: R207
       summary: 'R207: Auction Creation'
