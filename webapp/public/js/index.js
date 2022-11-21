@@ -53,9 +53,14 @@ function addEventListeners() {
     });
 
     const onGoingButton = document.getElementById("ongoing-button");
-    onGoingButton.addEventListener("click", clickOnGoing);
+    if (onGoingButton) onGoingButton.addEventListener("click", clickOnGoing);
+
+    const uninitiatedButton = document.getElementById("uninitiated-button");
+    if (uninitiatedButton)
+        uninitiatedButton.addEventListener("click", clickUninitiated);
+
     const closedButton = document.getElementById("closed-button");
-    closedButton.addEventListener("click", clickClosed);
+    if (closedButton) closedButton.addEventListener("click", clickClosed);
 
     const auctions = document.getElementsByClassName("card");
     [].forEach.call(auctions, function (auction) {
@@ -77,6 +82,20 @@ function chooseCategory(event) {
               }));
 }
 
+function clickUninitiated() {
+    const searchInput = document.getElementById("search_bar");
+    window.location.href =
+        "/auction?" +
+        (search == ""
+            ? encodeForAjax({
+                  search: searchInput.value,
+                  type: "uninitiated",
+              })
+            : encodeForAjax({
+                  type: "uninitiated",
+              }));
+}
+
 function clickOnGoing() {
     const searchInput = document.getElementById("search_bar");
     window.location.href =
@@ -84,10 +103,10 @@ function clickOnGoing() {
         (search == ""
             ? encodeForAjax({
                   search: searchInput.value,
-                  ongoing: 1,
+                  type: "active",
               })
             : encodeForAjax({
-                  ongoing: 1,
+                  type: "active",
               }));
 }
 
@@ -98,10 +117,10 @@ function clickClosed() {
         (search == ""
             ? encodeForAjax({
                   search: searchInput.value,
-                  ongoing: 0,
+                  type: "closed",
               })
             : encodeForAjax({
-                  ongoing: 0,
+                  type: "closed",
               }));
 }
 

@@ -1,8 +1,6 @@
-#ongoing-button {
-    border-radius: 1.5rem;
-}
-
-#closed-button {
+#ongoing-button,
+#closed-button,
+#uninitiated-button {
     border-radius: 1.5rem;
 }
 

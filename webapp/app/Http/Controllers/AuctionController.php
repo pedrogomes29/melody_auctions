@@ -24,38 +24,53 @@ class AuctionController extends Controller
             $categoryId = $request->categoryId;
     
             $useSearch = !is_null($search);
-            $useCategory = $categoryId !=='-1' && !is_null($categoryId);
-            $useOnGoing = $request->ongoing!=='-1' && !is_null($request->ongoing);
-            $onGoing = $request->ongoing==1;
+            $useCategory = !is_null($categoryId);
+            $useType = !is_null($request->type);
             $offset = (int)$request->offset??0;
             DB::beginTransaction();
             DB::statement('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY');
             
-            $auctionsAfterFilter = null;
+            $auctionsAfterFilter = Auction::where('canceled','<>',1);
 
             if ($useSearch)
-                $auctionsAfterFilter = Auction::whereRaw('tsvectors @@ plainto_tsquery(\'english\', ?)', $search);
-            else
-                $auctionsAfterFilter = Auction::query();
+                $auctionsAfterFilter = $auctionsAfterFilter->whereRaw('tsvectors @@ plainto_tsquery(\'english\', ?)', $search);
             
             if($useCategory)
                 $auctionsAfterFilter->where('category_id',$categoryId);
             
-            if($useOnGoing){
-                if($onGoing)
-                    $auctionsAfterFilter->whereRaw('enddate > CURRENT_TIMESTAMP');
-                else
-                    $auctionsAfterFilter->whereRaw('enddate <= CURRENT_TIMESTAMP');
+            if($useType){
+                if($request->type==="uninitiated")
+                    $auctionsAfterFilter->where('startdate','>',now());
+                elseif($request->type==="active")
+                    $auctionsAfterFilter->where('enddate','>',now())
+                                        ->where('startdate','<',now());
+                elseif($request->type==="closed")
+                    $auctionsAfterFilter->where('enddate','<',now());
             }
 
            
             $nrAuctions = $auctionsAfterFilter->count();
             
-            $auctions = $auctionsAfterFilter->selectRaw('id, enddate, name AS productName, currentprice + minbidsdif AS minBid, photo,
+            $auctions = $auctionsAfterFilter->selectRaw('id,
+                                                        CASE 
+                                                            WHEN CURRENT_TIMESTAMP < startdate THEN startdate
+                                                            ELSE enddate
+                                                        END
+                                                        as date,
+                                                        name AS productName,
+                                                        CASE WHEN currentPrice IS NULL
+                                                            THEN startPrice
+                                                            ELSE currentprice+minbidsdif
+                                                        END AS minBid,
+                                                        photo,
                                                         CASE WHEN CURRENT_TIMESTAMP < enddate
                                                             THEN 1
                                                             ELSE 0
-                                                        END AS active');
+                                                        END AS active,
+                                                        CASE WHEN CURRENT_TIMESTAMP < startdate
+                                                            THEN 1
+                                                            ELSE 0
+                                                        END AS uninitiated');
             if($useSearch){
                 $auctions->orderByRaw('ts_rank(tsvectors, plainto_tsquery(\'english\', ?)) DESC,name', [$search]);                         
             }else{
@@ -63,11 +78,12 @@ class AuctionController extends Controller
             }
 
             $auctions = $auctions->offset($offset*10)->limit(10)->get();
+
+
             DB::commit();
             return [$auctions,$nrAuctions];
         }
         catch(PDOException $e){
-
             error_log($e->getMessage());
             DB::rollBack();
         }
@@ -99,7 +115,7 @@ class AuctionController extends Controller
         $search = $request->search;
         $offset = ((int)$request->offset) ?? 0;
         [$auctions,$nrAuctions]=$this->search_auctions_helper($request);
-        
+
         $categories = Category::select('name','id')
                                 ->orderBy('name')
                                 ->get();
@@ -115,13 +131,14 @@ class AuctionController extends Controller
             $categoryName = $categoryName[0]->name;
         }
 
-        $onGoingText = $request->ongoing==='1'?'Active':($request->ongoing==='0'?'Closed':'None selected');
+        $typeText = ucfirst($request->type??"none selected");
+
         return view('pages.auctions')
             ->with('nrAuctions',$nrAuctions)
             ->with('auctions',$auctions)
             ->with('search',$search)
-            ->with('onGoing',$request->ongoing)
-            ->with('onGoingText',$onGoingText)
+            ->with('type',$request->type)
+            ->with('typeText',$typeText)
             ->with('categoryId',$request->categoryId)
             ->with('categoryName',$categoryName)
             ->with('categories',$categories)

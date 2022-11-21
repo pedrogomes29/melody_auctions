@@ -63,8 +63,8 @@
             </span>
           </div>
           <div id="auctionsOrUsers" class="dropdown ms-3 me-5">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Auctions</button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="auctionsOrUsersButton" data-bs-toggle="dropdown" aria-expanded="false">Auctions</button>
+            <ul class="dropdown-menu" aria-labelledby="auctionsOrUsersButton">
               <li><p class="dropdown-item chosen">Auctions</p></li>
               <li><p class="dropdown-item">Users</p></li>
             </ul>

@@ -1,4 +1,4 @@
-.container{
+.container {
     width: 30%;
     height: 100%;
     display: flex;
@@ -7,11 +7,10 @@
     justify-content: center;
 }
 
-.upload-btn{
+.upload-btn {
     margin-top: 2.5em;
-
 }
 
-#store{
+#store {
     margin-bottom: 0em;
 }

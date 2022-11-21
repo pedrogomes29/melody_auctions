@@ -15,35 +15,84 @@ class HomePageController extends Controller
 
     public function index(Request $request){
 
+
+        $uninitiated_auctions = Auction::selectRaw('id,
+                                                    CASE 
+                                                        WHEN CURRENT_TIMESTAMP < startdate THEN startdate
+                                                        ELSE enddate
+                                                    END
+                                                    as date,
+                                                    name AS productName,
+                                                    CASE WHEN currentPrice IS NULL
+                                                        THEN startPrice
+                                                        ELSE currentprice+minbidsdif
+                                                    END AS minBid,
+                                                    photo,
+                                                    CASE WHEN CURRENT_TIMESTAMP < enddate
+                                                        THEN 1
+                                                        ELSE 0
+                                                    END AS active,
+                                                    CASE WHEN CURRENT_TIMESTAMP < startdate
+                                                        THEN 1
+                                                        ELSE 0
+                                                    END AS uninitiated')
+                                                    ->where('startdate','>',now())
+                                                    ->where('canceled','<>',1)
+                                                    ->take(10)
+                                                    ->get();;
+
+
+
         $active_auctions = Auction::selectRaw(' id,
-                                                enddate,
                                                 CASE 
-                                                WHEN CURRENT_TIMESTAMP < enddate
+                                                    WHEN CURRENT_TIMESTAMP < startdate THEN startdate
+                                                    ELSE enddate
+                                                END
+                                                as date,
+                                                name AS productName,
+                                                CASE WHEN currentPrice IS NULL
+                                                    THEN startPrice
+                                                    ELSE currentprice+minbidsdif
+                                                END AS minBid,
+                                                photo,
+                                                CASE WHEN CURRENT_TIMESTAMP < enddate
                                                     THEN 1
                                                     ELSE 0
-                                                    END
-                                                AS active,
-                                                name AS productName,
-                                                currentprice + minbidsdif AS minBid,
-                                                photo')
-                                    ->where('enddate','>',now())
-                                    ->take(10)
-                                    ->get();
+                                                END AS active,
+                                                CASE WHEN CURRENT_TIMESTAMP < startdate
+                                                    THEN 1
+                                                    ELSE 0
+                                                END AS uninitiated')
+                                                ->where('enddate','>',now())
+                                                ->where('startdate','<',now())
+                                                ->where('canceled','<>',1)
+                                                ->take(10)
+                                                ->get();
 
         $closed_auctions = Auction::selectRaw(' id,
-                                                enddate,
                                                 CASE 
-                                                WHEN CURRENT_TIMESTAMP < enddate
+                                                    WHEN CURRENT_TIMESTAMP < startdate THEN startdate
+                                                    ELSE enddate
+                                                END
+                                                as date,
+                                                name AS productName,
+                                                CASE WHEN currentPrice IS NULL
+                                                    THEN currentprice
+                                                    ELSE currentprice+minbidsdif
+                                                END AS minBid,
+                                                photo,
+                                                CASE WHEN CURRENT_TIMESTAMP < enddate
                                                     THEN 1
                                                     ELSE 0
-                                                END
-                                                AS active,
-                                                name AS productName,
-                                                currentprice + minbidsdif AS minBid,
-                                                photo')
-                                    ->where('enddate','<',now())
-                                    ->take(10)
-                                    ->get();
+                                                END AS active,
+                                                CASE WHEN CURRENT_TIMESTAMP < startdate
+                                                    THEN 1
+                                                    ELSE 0
+                                                END AS uninitiated')
+                                                ->where('enddate','<',now())
+                                                ->where('canceled','<>',1)
+                                                ->take(10)
+                                                ->get();
 
 
         $categories = Category::select('name','id')
@@ -51,6 +100,7 @@ class HomePageController extends Controller
                                 ->get();
 
         return view('pages.index')
+                ->with('uninitiated_auctions',$uninitiated_auctions)
                 ->with('active_auctions',$active_auctions)
                 ->with('closed_auctions',$closed_auctions)
                 ->with('categories',$categories);

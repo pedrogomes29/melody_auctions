@@ -11,7 +11,7 @@ function addEventListeners() {
     let searchInput = document.getElementById("search_bar");
     searchInput.addEventListener("input", async function () {
         if (
-            document.querySelector("#auctionsOrUsers > #dropdownMenuButton1")
+            document.querySelector("#auctionsOrUsers > #auctionsOrUsersButton")
                 .textContent === "Auctions"
         ) {
             const response = await fetch(
@@ -34,7 +34,7 @@ function addEventListeners() {
 function search() {
     let searchInput = document.getElementById("search_bar");
     if (
-        document.querySelector("#auctionsOrUsers > #dropdownMenuButton1")
+        document.querySelector("#auctionsOrUsers > #auctionsOrUsersButton")
             .textContent === "Auctions"
     ) {
         location.replace(

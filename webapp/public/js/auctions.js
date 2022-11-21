@@ -64,22 +64,22 @@ function addEventListeners() {
         category.addEventListener("click", chooseCategory);
     });
 
-    const ongoingOptions = document.querySelectorAll("#ongoing .dropdown-item");
-    [].forEach.call(ongoingOptions, function (ongoingOption) {
-        ongoingOption.addEventListener("click", chooseOngoingOption);
+    const typeOptions = document.querySelectorAll("#type .dropdown-item");
+    [].forEach.call(typeOptions, function (typeOption) {
+        typeOption.addEventListener("click", chooseTypeOption);
     });
 
     addAuctionListeners();
 
     searchInput.addEventListener("input", async function () {
         if (
-            document.querySelector("#auctionsOrUsers > #dropdownMenuButton1")
+            document.querySelector("#auctionsOrUsers > #auctionsOrUsersButton")
                 .textContent === "Auctions"
         ) {
             let search;
             if (
                 document.querySelector(
-                    "#auctionsOrUsers > #dropdownMenuButton1"
+                    "#auctionsOrUsers > #auctionsOrUsersButton"
                 ).textContent === "Auctions"
             ) {
                 search = searchInput.value ?? "";
@@ -101,83 +101,56 @@ function addEventListeners() {
 async function chooseCategory(event) {
     previous_category = document.querySelector("#category .chosen");
     if (previous_category) previous_category.classList.remove("chosen");
-    const selected = document.querySelector("#category > #dropdownMenuButton2");
+    const selected = document.querySelector("#category > #categoryButton");
     selected.textContent = event.target.textContent;
     event.target.classList.add("chosen");
     offset = 0;
 
     const categoryElement = document.querySelector("#category .chosen");
-    let categoryId;
-    if (categoryElement) categoryId = categoryElement.id.split("-")[1];
-    else categoryId = -1;
-
     const url = new URL(window.location);
-    url.searchParams.set("categoryId", categoryId);
+    if (categoryElement)
+        url.searchParams.set("categoryId", categoryElement.id.split("-")[1]);
     window.history.replaceState({}, "", url);
 
     getAuctions();
 }
 
-async function chooseOngoingOption(event) {
-    previous_category = document.querySelector("#ongoing .chosen");
+async function chooseTypeOption(event) {
+    previous_category = document.querySelector("#type .chosen");
     if (previous_category) previous_category.classList.remove("chosen");
-    const selected = document.querySelector("#ongoing > #dropdownMenuButton3");
+    const selected = document.querySelector("#type > #typeButton");
     selected.textContent = event.target.textContent;
     event.target.classList.add("chosen");
     offset = 0;
 
-    const ongoingString = document.querySelector(
-        "#ongoing #dropdownMenuButton3"
-    ).textContent;
-    const ongoing =
-        ongoingString === "None selected"
-            ? -1
-            : ongoingString === "Active"
-            ? 1
-            : 0;
-    const url = new URL(window.location);
-    url.searchParams.set("ongoing", ongoing);
-    window.history.replaceState({}, "", url);
+    const type = document.querySelector("#type #typeButton").textContent;
+
+    if (type !== "None selected") {
+        const url = new URL(window.location);
+        url.searchParams.set("type", type.toLowerCase());
+        window.history.replaceState({}, "", url);
+    }
 
     getAuctions();
 }
 
 async function getAuctions(offset = 0) {
+    let params = {};
     const searchInput = document.getElementById("search_bar");
-    let search;
     if (
-        document.querySelector("#auctionsOrUsers > #dropdownMenuButton1")
+        document.querySelector("#auctionsOrUsers > #auctionsOrUsersButton")
             .textContent === "Auctions"
-    ) {
-        search = searchInput.value ?? "";
-    } else {
-        search = "";
-    }
+    )
+        params.search = searchInput.value ?? "";
+
     const categoryElement = document.querySelector("#category .chosen");
-    let categoryId;
-    if (categoryElement) categoryId = categoryElement.id.split("-")[1];
-    else categoryId = -1;
+    if (categoryElement) params.categoryId = categoryElement.id.split("-")[1];
 
-    const ongoingString = document.querySelector(
-        "#ongoing #dropdownMenuButton3"
-    ).textContent;
+    const type = document.querySelector("#type #typeButton").textContent;
+    if (type !== "None selected") params.type = type.toLowerCase();
 
-    const ongoing =
-        ongoingString === "None selected"
-            ? -1
-            : ongoingString === "Active"
-            ? 1
-            : 0;
-
-    const response = await fetch(
-        "/api/auction_html?" +
-            encodeForAjax({
-                search: search,
-                categoryId: categoryId,
-                ongoing: ongoing,
-                offset: offset,
-            })
-    );
+    params.offset = offset;
+    const response = await fetch("/api/auction_html?" + encodeForAjax(params));
     const newAuctions = await response.text();
     if (offset > 0) {
         const current_auctions_footer =
@@ -187,18 +160,28 @@ async function getAuctions(offset = 0) {
         );
 
         const current_auctions = document.querySelector(
-            "#auctions :first-child"
+            "#auctions :nth-child(2)"
         );
 
         let aux = document.createElement("div");
         aux.innerHTML = newAuctions;
-
         const appended_auctions = aux.children[0];
         const new_footer = aux.children[1];
-
         current_auctions.innerHTML += appended_auctions.innerHTML;
         document.getElementById("auctions").appendChild(new_footer);
-    } else document.getElementById("auctions").innerHTML = newAuctions;
+    } else {
+        let nrAuctionsHTML = document.getElementById("nrAuctions");
+
+        let aux = document.createElement("div");
+        aux.innerHTML = newAuctions; //element representing the fetched html
+        const nrAuctions =
+            aux.children[1].firstElementChild.textContent.split(" ")[3]; //gets number of auctions from the footer of the fetched HTML(Showing x of y results)
+        nrAuctionsHTML.textContent = nrAuctions + " results";
+        let auctions = document.getElementById("auctions");
+        auctions.innerHTML = newAuctions;
+
+        auctions.prepend(nrAuctionsHTML);
+    }
 
     addAuctionListeners();
 
