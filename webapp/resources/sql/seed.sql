@@ -102,6 +102,7 @@ CREATE TABLE auctions (
 	enddate timestamp NOT NULL,
 	winner_id int4 NULL,
 	tsvectors tsvector NULL,
+	cancelled bool NOT NULL default false,
 	CONSTRAINT auctions_check CHECK ((currentprice >= startprice)),
 	CONSTRAINT auctions_check1 CHECK ((lastbidsdate >= startdate)),
 	CONSTRAINT auctions_check2 CHECK ((enddate >= startdate)),

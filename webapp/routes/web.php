@@ -25,7 +25,7 @@ Route::get('api/auction_json','AuctionController@search_results_json');
 Route::get('api/user','AuthenticatedUserController@search_results');
 
 Route::get('/', 'HomePageController@index')->name('home');
-
+Route::get('/home', 'HomePageController@index');
 // Authentication
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
@@ -58,7 +58,7 @@ Route::put('api/user/{username}/balance','UserProfileController@updateUserBalanc
 
 // Auction
 Route::get('auction/{auction_id}/edit', 'AuctionController@edit')->name('auction.edit');
-Route::post('/auction/{{$auction->id}}/updatePhoto', 'AuctionController@updatePhoto')->name('auction.updatePhoto');
+Route::post('/auction/{auction_id}/updatePhoto', 'AuctionController@updatePhoto')->name('auction.updatePhoto');
 Route::put('auction/{auction_id}/edit', 'AuctionController@ownerUpdate')->name('auction.update');
 Route::delete('auction/{auction_id}/edit', 'AuctionController@ownerDelete')->name('auction.delete');
 Route::get('auction/{auction_id}', 'AuctionController@show')->where('auction_id', '[0-9]+')->name('auction.show');
