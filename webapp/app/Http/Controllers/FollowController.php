@@ -85,22 +85,6 @@ class FollowController extends Controller
         //
     }
     public function showFollows($username){
-        $auctions_owned = AuthenticatedUser::where('username', $username)
-                                            ->firstOrFail()
-                                            ->auctions()
-                                            ->selectRaw('  id,
-                                                            enddate,
-                                                            CASE 
-                                                            WHEN CURRENT_TIMESTAMP < enddate
-                                                                THEN 1
-                                                                ELSE 0
-                                                            END
-                                                            AS active,
-                                                            name AS productName,
-                                                            currentprice + minbidsdif AS minBid,
-                                                            photo')
-                                            ->get();
-        dd($auctions_owned);
         $auctions = AuthenticatedUser::where('username', $username)
                                     ->firstOrFail()
                                     ->followed_auctions()

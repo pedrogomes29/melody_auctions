@@ -10,21 +10,24 @@ class UserProfileController extends Controller
 {
     public function showUserProfile($username)
     {
+        $auctions_owned = AuthenticatedUser::where('username', $username)
+                                            ->firstOrFail()
+                                            ->auctions()
+                                            ->selectRaw('  id,
+                                                            enddate,
+                                                            CASE 
+                                                            WHEN CURRENT_TIMESTAMP < enddate
+                                                                THEN 1
+                                                                ELSE 0
+                                                            END
+                                                            AS active,
+                                                            name AS productName,
+                                                            currentprice + minbidsdif AS minBid,
+                                                            photo')
+                                            ->get();
         $user = AuthenticatedUser::where('username',$username)->firstOrFail();
-        return view('pages.user', ['user' => $user]);
-    }
-    public function showUserEditForm($username)
-    {
-        $id = AuthenticatedUser::where('username',$username)->firstOrFail()->id;
-        if(Auth::id() == $id)
-        {
-            $user = AuthenticatedUser::where('username',$username)->firstOrFail();;
-            return view('pages.user-edit', ['user' => $user]);
-        }
-        else
-        {
-            return redirect()->route('home');
-        }
+
+        return view('pages.user', ['user' => $user, 'auctions' => $auctions_owned]);
     }
 
     public function updateUserProfile(Request $request, $username)
