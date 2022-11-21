@@ -100,7 +100,6 @@ class FollowController extends Controller
                                                             currentprice + minbidsdif AS minBid,
                                                             photo')
                                             ->get();
-        dd($auctions_owned);
         $auctions = AuthenticatedUser::where('username', $username)
                                     ->firstOrFail()
                                     ->followed_auctions()
