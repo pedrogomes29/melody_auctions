@@ -9,13 +9,6 @@
         @foreach ($errors->all() as $error)
                 <div class="alert alert-danger" role="alert">{{ $error }}</div>
         @endforeach
-        @if (isset($success))
-            @if (!$success)
-                <div class="alert alert-danger" role="alert">
-                    Invalid dates!
-                </div>
-            @endif
-        @endif
         <form id="store" action="/auction/{{$auction->id}}/updatePhoto" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
             <div class="text-center">
