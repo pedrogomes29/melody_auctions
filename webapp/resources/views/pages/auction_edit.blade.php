@@ -52,7 +52,7 @@
                 <input name="endDate" id="auctionEnd" type="datetime-local" class="form-control" value="{{$auction->enddate}}">
             </div>
             <div class="text-center">
-                <button type="submit" class="btn btn-warning">Update</button>
+                <button style="margin-top: 1em" type="submit" class="btn btn-warning">Update</button>
             </div>
         </form>
         <form id="delete" action="/auction/{{$auction->id}}/edit" method="POST">
