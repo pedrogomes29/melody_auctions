@@ -314,7 +314,7 @@ paths:
                   description: 'Unauthorized. You need to be an admin'
                   value: '/login'
 
-  /auction/{id}/update:
+  /auction/{id}/edit:
     get:
       operationId: R202
       summary: 'R202: Auction Update Form'
@@ -324,39 +324,18 @@ paths:
       parameters:
         - in: query
           name: id
-          description: id of the auction to be updated
+          description: id of the auction to be edited
           schema:
             type: integer
           required: true
       responses:
         '200':
-          description: 'Ok. Show auction creation UI'
-        '401':
+          description: 'Ok. Show auction edit UI'
+        '403':
           description: 'You must be the auction owner or an admin'
-
-  /auction/{id}:
-    get:
-      operationId: R203
-      summary: 'R203: View auction'
-      description: 'Show the individual auction. Access: PUB'
-      tags:
-        - 'M02: Auctions'
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          required: true
-          description: Numeric ID of the auction to get
-            
-      responses:
-        '200':
-          description: 'Ok. Show view Auction UI'
-        '404':
-          description: 'Auction Not found'
-
+    
     put:
-      operationId: R204
+      operationId: R203
       summary: 'R204: Auction Update'
       description: 'Processes the auction update form . Access: OWN ADM'
       tags:
@@ -396,13 +375,13 @@ paths:
               examples:
                 302Success:
                   description: 'Successful update. Redirect to auction UI.'
-                  value: '/auction/{id}'
+                  value: '/auction/{id}/edit'
                 302Failure:
                   description: 'Failed update. Redirect to auction UI.'
-                  value: '/auction/{id}'
+                  value: '/auction/{id}/edit'
 
     delete:
-      operationId: R205
+      operationId: R204
       summary: 'R205: Delete auction'
       description: 'Delete auction. Access: OWN ADM'
       tags:
@@ -416,13 +395,64 @@ paths:
                 type: string
               examples:
                 302Success:
-                  description: 'Successful deletion. Redirect to auctions page'
-                  value: '/auction'
+                  description: 'Successful deletion. Redirect to / page'
+                  value: '/'
                 302Failure:
-                  description: 'Failed to delete auction. Redirect to auction that wasnt deleted.'
-                  value: '/auction/{id}'
-        '401':
-          description: 'You must be the auction owner or an admin'
+                  description: 'Failed to delete auction. Redirect to Auction UI.'
+                  value: '/auction/{id}/edit'
+
+  /auction/{id}/updatePhoto:
+    post:
+      operationId: R211
+      summary: 'R211: Update auction photo'
+      description: 'Update auction photo. Access: OWN ADM'
+      tags:
+        - 'M02: Auctions'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                photo:
+                  type: string
+                  format: binary
+      responses:
+        '302':
+          description: 'Redirect after processing the new auction photo.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful update. Redirect to auction UI.'
+                  value: '/auction/{id}/edit'
+                302Failure:
+                  description: 'Failed update. Redirect to auction UI.'
+                  value: '/auction/{id}/edit'
+
+  /auction/{id}:
+    get:
+      operationId: R205
+      summary: 'R203: View auction'
+      description: 'Show the individual auction. Access: PUB'
+      tags:
+        - 'M02: Auctions'
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: Numeric ID of the auction to get
+            
+      responses:
+        '200':
+          description: 'Ok. Show view Auction UI'
+        '404':
+          description: 'Auction Not found'
       
   /auction:
     get:
@@ -860,7 +890,7 @@ paths:
           description: 'Ok. Show auctions being followed UI'
 # M05: Admin Area and Reports
     
-  /admin:
+  /admin/{id}:
     get:
       operationId: R501
       summary: 'R501: Admin Page'
@@ -880,8 +910,117 @@ paths:
               examples:
                 302Failure:
                   description: 'Unauthorized. You need to be an admin'
-                  value: '/login'
+                  value: '/admin/login'
   
+  /admin/{adminid}/auctions/{auctionid}:
+    get:
+      operationId: R502
+      summary: 'R502: Admin Auction Page'
+      description: 'Admin page to manage the web aplication. Access: ADM'
+      tags:
+        - 'M05: Admin Area and Reports'
+
+      responses:
+        '200':
+          description: 'Ok. Show admin auction page'
+        '302':
+          description: 'Redirect because is an unauthorized user '
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Failure:
+                  description: 'Unauthorized. You need to be an admin'
+                  value: '/admin/login'
+    
+    put:
+      operationId: R506
+      summary: 'R506: Admin Edit Auction'
+      description: 'Admin edit auction. Access: ADM'
+      tags:
+        - 'M05: Admin Area and Reports'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+              required:
+                - title
+                - description
+      responses:
+        '302':
+          description: 'Redirect after processing the new auction information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful edit of auction. Redirect to admins auction edit UI .'
+                  value: '/auctions/{auctionid}/auctions/{auctionid}'
+                302Failure:
+                  description: 'Failed edit of auction. Redirect to admin auction page.'
+                  value: '/admin/{adminid}/auctions/{auctionid}'
+    delete: 
+      operationId: R507
+      summary: 'R507: Admin Delete Auction'
+      description: 'Admin delete auction. Access: ADM'
+      tags:
+        - 'M05: Admin Area and Reports'
+      responses:
+        '302':
+          description: 'Redirect after processing the new auction information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful delete of auction. Redirect to admins auction page .'
+                  value: '/admin/{adminid}/auctions'
+                302Failure:
+                  description: 'Failed delete of auction. Redirect to admin auction page.'
+                  value: '/admin/{adminid}/auctions/{auctionid}'
+  /admin/{adminid}/auctions/{auctionid}/defautl_image:
+    post:
+      operationId: R508
+      summary: 'R508: Admin Set Default Image'
+      description: 'Admin set default image. Access: ADM'
+      tags:
+        - 'M05: Admin Area and Reports'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                imageid:
+                  type: integer
+              required:
+                - imageid
+      responses:
+        '302':
+          description: 'Redirect after processing the new auction information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful set default image of auction. Redirect to admins auction edit UI .'
+                  value: '/admin/{adminid}/auctions/{auctionid}'
+                302Failure:
+                  description: 'Failed set default image of auction. Redirect to admin auction page.'
+                  value: '/admin/{adminid}/auctions/{auctionid}'
+    
 
   /admin/report:
     get:
@@ -939,7 +1078,7 @@ paths:
               examples:
                 302Failure:
                   description: 'Unauthorized. You need to be an admin'
-                  value: '/login'
+                  value: '/admin/login'
 
   /admin/report/{id}:
     get:
@@ -961,7 +1100,7 @@ paths:
               examples:
                 302Failure:
                   description: 'Unauthorized. You need to be an admin'
-                  value: '/login'
+                  value: '/admin/login'
 
         '404':
           description: 'Report Not Found'
@@ -995,7 +1134,7 @@ paths:
                   value: '/admin/report/{id}'
                 302Failure:
                   description: 'Unauthorized. You need to be an admin'
-                  value: '/login'
+                  value: '/admin/login'
 
   /user/{username}/report:
     post:

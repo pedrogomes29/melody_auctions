@@ -24,7 +24,7 @@
                 <button type="submit" class="btn btn-primary upload-btn">Upload</button>
             </div>    
         </form>
-        <form id="update" action="/auction/{{$auction->id}}/edit" method="POST">
+        <form id="update" action="/auction/{{$auction->id}}/edit"  onsubmit="return form_create_auction(this)" method="POST">
             {{ csrf_field() }}
             @method('PUT')
             <div class="form-group">

@@ -297,8 +297,9 @@ class AuctionController extends Controller
     public static function destroy($id)
     {
         $auction = Auction::find($id);
-        $auction->delete();
-        return redirect('admin/auctions');
+        $auction->cancelled = 1;
+        $auction->save();
+        return redirect('admin/');
     }
   
     public static function find($id)
