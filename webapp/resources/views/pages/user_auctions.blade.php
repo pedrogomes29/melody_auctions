@@ -12,7 +12,11 @@
 
 @section('content')
     <div id='auctions' class='flex-grow-1'>
-        <h1 id="nrAuctions">{{count($auctions)}} auctions owned </h1>
+        @if(count($auctions)===1)
+            <h1 id="nrAuctions">{{count($auctions)}} auction owned </h1>
+        @else
+            <h1 id="nrAuctions">{{count($auctions)}} auctions owned </h1>
+        @endif
         @include('partials.auctions', ['auctions' => $auctions])
     </div>
 @endsection

@@ -36,7 +36,7 @@
                     {{ csrf_field() }}
                     <label class="block mb-4">
                         <span style="display:none" class="sr-only">Choose File</span>
-                        <input required onchange="previewImage(this);" style="display:none" id="imageUpload" type="file" name="image"
+                        <input required style="display:none" id="imageUpload" type="file" name="image"
                             class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
                         @error('image')
                         <span class="text-red-600 text-sm">{{ $message }}</span>
@@ -151,14 +151,14 @@
 
         -->
     </section>
-    <div id='owned-auctions' class="m-4">
-        @if(count($auctions)>0)
-            <h2>Auctions owned</h2>
+    @if(count($auctions)>0)
+        <section id='owned-auctions'>
+            <h1>Auctions owned</h1>
             <div class="ms-1">  
                     @include('partials.auctions', ['auctions' => $auctions])
             </div>
             <button id="owned-button" type="button" class="ms-5 mt-5 btn btn-dark btn-rounded">See all auctions owned</button>
-        @endif
-    </div>
+        </section>
+    @endif
 </section>
 @endsection

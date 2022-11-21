@@ -9,28 +9,28 @@ field.addEventListener("keypress", function (event) {
 
 const pic = document.getElementById("prof_pic");
 pic.addEventListener("click", () => {
-    const form = document.getElementById("image_form");
-    if (form.style.display === "none") {
-        // 👇️ this SHOWS the form
-        form.style.display = "block";
-    } else {
-        // 👇️ this HIDES the form
-        form.style.display = "none";
-    }
     const imageUpload = document.getElementById("imageUpload");
     imageUpload.click();
 });
 
-function previewImage(input) {
+const imageUpload = document.getElementById("imageUpload");
+imageUpload.addEventListener("change", previewImage);
+
+function previewImage() {
     const file = document.querySelector("input[type=file]").files[0];
+    console.log(file);
     const reader = new FileReader();
 
     reader.addEventListener(
         "load",
         function () {
             // convert image file to base64 string
-            document.getElementById("real_pic").src = reader.result;
-            document.getElementById("default_pic").src = reader.result;
+            const form = document.getElementById("image_form");
+            if (document.getElementById("real_pic"))
+                document.getElementById("real_pic").src = reader.result;
+            if (document.getElementById("default_pic"))
+                document.getElementById("default_pic").src = reader.result;
+            form.style.display = "block";
         },
         false
     );
@@ -76,6 +76,7 @@ form.addEventListener("submit", async (e) => {
 });
 
 const auctions_owned_button = document.getElementById("owned-button");
-auctions_owned_button.addEventListener("click", (e) => {
-    window.location.href += "/auction";
-});
+if (auctions_owned_button)
+    auctions_owned_button.addEventListener("click", (e) => {
+        window.location.href += "/auction";
+    });

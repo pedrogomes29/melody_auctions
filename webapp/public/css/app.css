@@ -18,9 +18,9 @@
     border-radius: 3.5rem;
 }
 
-img.auction_search_img{
-  width: 20em;
-  height: 20em;
+img.auction_search_img {
+    width: 20em;
+    height: 20em;
 }
 
 .dropdown-item.chosen {
@@ -78,54 +78,49 @@ body header {
     cursor: pointer;
 }
 
-
 /*Auctions*/
 
-.auction{
-  color: black;
+.auction {
+    color: black;
 }
 
-.auction header{
-  background-color: white;
-
+.auction header {
+    background-color: white;
 }
 
-.auction main{
-  background-color: rgb(244, 239, 239);
+.auction main {
+    background-color: rgb(244, 239, 239);
 }
 
-.auction .owner_info{
-  font-size: 1.5em;
-  margin-top: 1em;
+.auction .owner_info {
+    font-size: 1.5em;
+    margin-top: 1em;
 }
 
-#bid_auction{
-  position: sticky;
-  top: 0;
-  height: fit-content;
-  background: #FFFFFF;
-  padding: 1em;
+#bid_auction {
+    position: sticky;
+    top: 0;
+    height: fit-content;
+    background: #ffffff;
+    padding: 1em;
 }
 
-.auction .owner_info img{
-  width: 3em;
-  margin-right: 1em;
-  height: auto;
+.auction .owner_info img {
+    width: 3em;
+    margin-right: 1em;
+    height: auto;
 }
 
-#auction_information{
-  
-  display: grid;
-  grid-template-columns: 80% 20%;
+#auction_information {
+    display: grid;
+    grid-template-columns: 80% 20%;
 }
 
-#auction_img{
-  height: 30em;
+#auction_img {
+    height: 30em;
 }
 
-
-
-.form-create{
-  margin: auto;
-  max-width: 60em;
+.form-create {
+    margin: auto;
+    max-width: 60em;
 }
