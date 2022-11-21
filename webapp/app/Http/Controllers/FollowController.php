@@ -6,7 +6,7 @@ use App\Models\Follow;
 use App\Models\Auction;
 use Illuminate\Http\Request;
 use App\Models\AuthenticatedUser;
-
+use Illuminate\Support\Facades\Auth;
 class FollowController extends Controller
 {
     /**
@@ -37,7 +37,12 @@ class FollowController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('create', Follow::class);
+        $follow = new Follow();
+        $follow->authenticated_user_id = Auth::id();
+        $follow->auction_id = $request->input('auction_id');
+        $follow->save();
+        return redirect()->route('auction.show', ['auction_id' => $request->input('auction_id')]);
     }
 
     /**
@@ -80,9 +85,12 @@ class FollowController extends Controller
      * @param  \App\Models\Follow  $follow
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Follow $follow)
+    public function destroy(Request $request)
     {
-        //
+        $this->authorize('delete', Follow::class);
+        $follow = Follow::where('authenticated_user_id', Auth::id())->where('auction_id', $request->input('auction_id'));
+        $follow->delete();
+        return redirect()->route('auction.show', ['auction_id' => $request->input('auction_id')]);
     }
     public function showFollows($username){
         $auctions = AuthenticatedUser::where('username', $username)

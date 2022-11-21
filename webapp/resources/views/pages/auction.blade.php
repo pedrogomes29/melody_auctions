@@ -79,7 +79,20 @@ use App\Models\Manufactor;
 
             <input @if (!$auction->isOpen()) disabled  @endif type="submit" value="Bid">
           </form>
-            
+          @if (!$followed)
+          <form method="post" action ="{{ route('follow.store', ['id' => $auction->id]) }}">
+               {{ csrf_field() }}
+               <input type="hidden" name="auction_id" value="{{ $auction->id }}">
+               <input @if (!Auth::check()) disabled  @endif type="submit" value="Follow">
+          </form>
+          @else
+          <form method="post" action ="{{ route('follow.destroy', ['id' => $auction->id]) }}">
+               {{ csrf_field() }}
+               {{ method_field('DELETE') }}
+               <input type="hidden" name="auction_id" value="{{ $auction->id }}">
+               <input @if (!Auth::check()) disabled  @endif type="submit" value="Unfollow">
+          </form>
+          @endif
           <section id="bidding_section">
 
             <a class="btn "  data-bs-toggle="collapse" href="#bid_list" role="button" aria-expanded="false" aria-controls="bid_list">
