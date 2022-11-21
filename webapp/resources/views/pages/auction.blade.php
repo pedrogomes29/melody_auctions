@@ -67,7 +67,7 @@ use App\Models\Manufactor;
           <p><strong>Current Price:</strong> {{ $auction->currentprice ?? $auction->startprice }}</p>
           <p><strong>Last Bidder:</strong> 
             @if ($last_bidder)
-             <a href="{{url('/user/'.$last_bidder->id)}}">{{$last_bidder->firstname . ' '. $last_bidder->lastname }}</a>
+             <a href="{{url('/user/'.$last_bidder->username)}}">{{$last_bidder->firstname . ' '. $last_bidder->lastname }}</a>
             @else
               No one has bid yet.
             @endif

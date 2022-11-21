@@ -2,7 +2,7 @@
 
 @section('title', 'Auctions')
 @section('scripts')
-    <script type="text/javascript" src={{ asset('js/auctions.js') }} defer> </script>
+    <script type="text/javascript" src="{{ asset('js/auctions.js') }}" defer> </script>
 @endsection
 
 @section('styles')

@@ -64,7 +64,7 @@ class FollowPolicy
      * @param  \App\Models\Follow  $follow
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(AuthenticatedUser $authenticatedUser, Follow $follow)
+    public function delete(AuthenticatedUser $authenticatedUser)
     {
         return Auth::check();
     }
