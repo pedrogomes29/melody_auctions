@@ -528,7 +528,7 @@ paths:
   /api/auction_json:
     get:
       operationId: R208
-      summary: 'R208: Search Auctions API'
+      summary: 'R208: Search Auctions JSON API'
       description: 'Searches for auctions and returns the results as JSON. Access: PUB'
       tags:
         - 'M02: Auctions'
@@ -557,9 +557,9 @@ paths:
 
   /api/auction_html:
     get:
-      operationId: R208
-      summary: 'R208: Search Auctions API'
-      description: 'Searches for auctions and returns the results as JSON. Access: PUB'
+      operationId: R209
+      summary: 'R209: Search Auctions HTML API'
+      description: 'Searches for auctions and returns the results as HTML. Access: PUB'
       tags:
         - 'M02: Auctions'
       parameters:
@@ -629,8 +629,8 @@ paths:
     
   /user/{username}/auction:
     get:
-      operationId: R209
-      summary: 'R209: View user auctions'
+      operationId: R210
+      summary: 'R210: View user auctions'
       description: 'Show user auctions. Access: USR'
       tags:
         - 'M02: Auctions'
