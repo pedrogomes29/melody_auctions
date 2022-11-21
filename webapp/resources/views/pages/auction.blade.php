@@ -28,8 +28,10 @@ use App\Models\Manufactor;
           
 
         <div class="owner_info">
-          <img src="{{URL('/images/default-profile.png')}}" class="rounded-circle">
-          {{ $auction->owner->firstname }}  {{ $auction->owner->lastname }} 
+          <a href="{{URL('user/'.$auction->owner->username)}}" class="link-dark text-decoration-none">
+            <img src="{{URL('/images/default-profile.png')}}" class="rounded-circle">
+            {{ $auction->owner->firstname }}  {{ $auction->owner->lastname }} 
+          </a>
         </div>
       </div>
     </header>
