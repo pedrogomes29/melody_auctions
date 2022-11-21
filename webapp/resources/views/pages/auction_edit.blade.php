@@ -28,7 +28,7 @@
                 <button type="submit" class="btn btn-primary upload-btn">Upload</button>
             </div>    
         </form>
-        <form id="update" action="/auction/{{$auction->id}}/edit"  onsubmit="return form_create_auction(this)" method="POST">
+        <form id="update" action="/auction/{{$auction->id}}"  onsubmit="return form_create_auction(this)" method="POST">
             {{ csrf_field() }}
             @method('PUT')
             <div class="form-group">
@@ -55,7 +55,7 @@
                 <button type="submit" class="btn btn-warning">Update</button>
             </div>
         </form>
-        <form id="delete" action="/auction/{{$auction->id}}/edit" method="POST">
+        <form id="delete" action="/auction/{{$auction->id}}" method="POST">
             {{ csrf_field() }}
             @method('DELETE')
             <button type="submit" class="btn btn-danger">Delete</button>

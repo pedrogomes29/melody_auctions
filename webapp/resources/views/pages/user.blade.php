@@ -1,9 +1,7 @@
 @extends('layouts.app')
 @section('scripts')
     <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
-    <script type="text/javascript" src="{{ asset('js/register.js') }}" defer> </script>
-    <script type="text/javascript" src="{{ asset('js/profile_pic.js') }}" defer> </script>
-    <script type="text/javascript" src="{{ asset('js/add_balance.js') }}" defer> </script>
+    <script type="text/javascript" src="{{ asset('js/user_profile.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/auctions.js') }}" defer> </script>
 @endsection
 @section('styles')
@@ -149,10 +147,14 @@
             </form>
         @endif
     </section>
-    <section class="auctions-followed">
-        <h1 class="title"> {{sizeof($auctions).' '}}Auctions Owned</h1>
-        <section class="auctions-list">
-            @include('partials.auctions', ['auctions' => $auctions])   
-    </section>
+    <div id='owned-auctions' class="m-4">
+        @if(count($auctions)>0)
+            <h2>Auctions owned</h2>
+            <div class="ms-1">  
+                    @include('partials.auctions', ['auctions' => $auctions])
+            </div>
+            <button id="owned-button" type="button" class="ms-5 mt-5 btn btn-dark btn-rounded">See all auctions owned</button>
+        @endif
+    </div>
 </section>
 @endsection

@@ -34,10 +34,42 @@ class UserProfileController extends Controller
                                                             ELSE 0
                                                         END AS uninitiated,
                                                         cancelled')
+                                            ->take(10)
                                             ->get();
+        
         $user = AuthenticatedUser::where('username',$username)->firstOrFail();
 
         return view('pages.user', ['user' => $user, 'auctions' => $auctions_owned]);
+    }
+
+    public function showUserAuctions($username){
+        $auctions_owned = AuthenticatedUser::where('username', $username)
+                                            ->firstOrFail()
+                                            ->auctions()
+                                            ->selectRaw('id,
+                                                        CASE 
+                                                            WHEN CURRENT_TIMESTAMP < startdate THEN startdate
+                                                            ELSE enddate
+                                                        END
+                                                        as date,
+                                                        name AS productName,
+                                                        CASE WHEN currentPrice IS NULL
+                                                            THEN startPrice
+                                                            ELSE currentprice+minbidsdif
+                                                        END AS minBid,
+                                                        photo,
+                                                        CASE WHEN CURRENT_TIMESTAMP < enddate
+                                                            THEN 1
+                                                            ELSE 0
+                                                        END AS active,
+                                                        CASE WHEN CURRENT_TIMESTAMP < startdate
+                                                            THEN 1
+                                                            ELSE 0
+                                                        END AS uninitiated,
+                                                        cancelled')
+                                            ->get();
+
+        return view('pages.user_auctions', ['auctions' => $auctions_owned]);
     }
 
     public function updateUserProfile(Request $request, $username)

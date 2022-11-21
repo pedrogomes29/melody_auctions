@@ -1,6 +1,4 @@
-
-function start_countDown(countdown){
-    console.log(countdown);
+function start_countDown(countdown) {
     const endDate = new Date(countdown.getAttribute("date-date")).getTime();
     const x = window.setInterval(function () {
         // Get today's date and time
@@ -14,7 +12,9 @@ function start_countDown(countdown){
 
         // Time calculations for days, hours, minutes and seconds
         const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const hours = Math.floor(
+            (timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
         const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
@@ -36,11 +36,9 @@ function start_countDown(countdown){
     }, 1000);
 }
 
-
-function add_countDown(){
+function add_countDown() {
     const countd = document.querySelector("#bid_auction #auction_countdown");
-    
-    start_countDown(countd);
+    if (countd) start_countDown(countd);
 }
 
 add_countDown();

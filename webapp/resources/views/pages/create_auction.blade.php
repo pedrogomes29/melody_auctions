@@ -11,7 +11,7 @@
 
     <main>
 
-      <form class="form-create" method="post" action="{{ url('auction/create') }}" onsubmit="return form_create_auction(this)" enctype="multipart/form-data">
+      <form class="form-create" method="post" action="{{ url('auction') }}" onsubmit="return form_create_auction(this)" enctype="multipart/form-data">
 
         <div class="mb-3 img-preview-container">
           <label for="auction_image" class="form-label ">Auction image</label>
