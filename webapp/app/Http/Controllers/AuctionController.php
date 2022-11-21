@@ -30,7 +30,7 @@ class AuctionController extends Controller
             DB::beginTransaction();
             DB::statement('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY');
             
-            $auctionsAfterFilter = Auction::where('canceled','<>',1);
+            $auctionsAfterFilter = Auction::where('cancelled','<>',1);
 
             if ($useSearch)
                 $auctionsAfterFilter = $auctionsAfterFilter->whereRaw('tsvectors @@ plainto_tsquery(\'english\', ?)', $search);

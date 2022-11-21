@@ -120,14 +120,14 @@ CREATE INDEX auctions_price ON auctions USING btree (currentprice);
 CREATE INDEX auctions_search_idx ON auctions USING gist (tsvectors);
 
 
-Drop TABLE if exists auctions_canceled_notifications cascade;
+Drop TABLE if exists auctions_cancelled_notifications cascade;
 
-CREATE TABLE auctions_canceled_notifications (
+CREATE TABLE auctions_cancelled_notifications (
 	notification_id int4 NOT NULL,
 	auction_id int4 NOT NULL,
-	CONSTRAINT auctionscancelednotifications_pkey PRIMARY KEY (notification_id),
-	CONSTRAINT auctionscancelednotifications_auction_id_fkey FOREIGN KEY (auction_id) REFERENCES auctions(id),
-	CONSTRAINT auctionscancelednotifications_notification_id_fkey FOREIGN KEY (notification_id) REFERENCES authenticated_users
+	CONSTRAINT auctionscancellednotifications_pkey PRIMARY KEY (notification_id),
+	CONSTRAINT auctionscancellednotifications_auction_id_fkey FOREIGN KEY (auction_id) REFERENCES auctions(id),
+	CONSTRAINT auctionscancellednotifications_notification_id_fkey FOREIGN KEY (notification_id) REFERENCES authenticated_users
 (id)
 );
 
@@ -629,8 +629,8 @@ insert into notifications (id, date, beenread) values (4, '2022-7-16 12:54:32.14
 --admin
 insert into admins (id, firstname, lastname, username,password, email,photo, description, contact)  values (1, 'Lorrie', 'Bartosch', 'lbartosch0', '$2a$12$LFXiwEpPbt3t8F9aq4x/veWrfvdEFWzx.Qx/ZT7qN9rZBwXvk5YOK','lbartosh@123.com', '' ,'Life is a wild ride', '921412112');
 
---auctions_canceled_notifications
-insert into auctions_canceled_notifications (notification_id, auction_id) values (1, 1);
+--auctions_cancelled_notifications
+insert into auctions_cancelled_notifications (notification_id, auction_id) values (1, 1);
 
 --auctions_ended_notifications
 insert into auctions_ended_notifications (notification_id, auction_id) values (2, 2);

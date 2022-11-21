@@ -37,7 +37,7 @@ class HomePageController extends Controller
                                                         ELSE 0
                                                     END AS uninitiated')
                                                     ->where('startdate','>',now())
-                                                    ->where('canceled','<>',1)
+                                                    ->where('cancelled','<>',1)
                                                     ->take(10)
                                                     ->get();;
 
@@ -65,7 +65,7 @@ class HomePageController extends Controller
                                                 END AS uninitiated')
                                                 ->where('enddate','>',now())
                                                 ->where('startdate','<',now())
-                                                ->where('canceled','<>',1)
+                                                ->where('cancelled','<>',1)
                                                 ->take(10)
                                                 ->get();
 
@@ -90,7 +90,7 @@ class HomePageController extends Controller
                                                     ELSE 0
                                                 END AS uninitiated')
                                                 ->where('enddate','<',now())
-                                                ->where('canceled','<>',1)
+                                                ->where('cancelled','<>',1)
                                                 ->take(10)
                                                 ->get();
 

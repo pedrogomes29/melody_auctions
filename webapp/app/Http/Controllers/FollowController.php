@@ -88,17 +88,26 @@ class FollowController extends Controller
         $auctions = AuthenticatedUser::where('username', $username)
                                     ->firstOrFail()
                                     ->followed_auctions()
-                                    ->selectRaw('  id,
-                                                    enddate,
-                                                    CASE 
-                                                    WHEN CURRENT_TIMESTAMP < enddate
-                                                        THEN 1
-                                                        ELSE 0
-                                                    END
-                                                    AS active,
-                                                    name AS productName,
-                                                    currentprice + minbidsdif AS minBid,
-                                                    photo')
+                                    ->selectRaw('id,
+                                                CASE 
+                                                    WHEN CURRENT_TIMESTAMP < startdate THEN startdate
+                                                    ELSE enddate
+                                                END
+                                                as date,
+                                                name AS productName,
+                                                CASE WHEN currentPrice IS NULL
+                                                    THEN startPrice
+                                                    ELSE currentprice+minbidsdif
+                                                END AS minBid,
+                                                photo,
+                                                CASE WHEN CURRENT_TIMESTAMP < enddate
+                                                    THEN 1
+                                                    ELSE 0
+                                                END AS active,
+                                                CASE WHEN CURRENT_TIMESTAMP < startdate
+                                                    THEN 1
+                                                    ELSE 0
+                                                END AS uninitiated')
                                     ->get();
         return view('pages.follows')->with('auctions', $auctions)->with('username', $username);
     }
