@@ -124,8 +124,7 @@
                     </button>
                 </form>
             </div>
-        </section>
-        @if(Auth::id() == $user->id)
+            @if(Auth::id() == $user->id)
             <div id="balance">
                 <h2 id="current_balance">
                     Balance:  <output id="actual_balance">{{$user->balance }}</output> $
@@ -141,6 +140,7 @@
                 <script src="{{ asset('js/edit.js') }}"></script>
             </div>
         @endif
+        </section>
 
         <!--
         @if (Auth::id() == $user->id)
