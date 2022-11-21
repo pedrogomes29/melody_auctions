@@ -12,10 +12,10 @@
       <form class="form-create" method="post" action="{{ url('auction/create') }}" onsubmit="return form_create_auction(this)" enctype="multipart/form-data">
 
         <div class="mb-3 img-preview-container">
-          <label for="formFileSm" class="form-label ">Auction image</label>
-          <img src="https://www.groupestate.gr/images/joomlart/demo/default.jpg" class="img-fluid mx-auto d-block" alt="...">
+          <label for="auction_image" class="form-label ">Auction image</label>
+          <img id="auction_img" src="{{url('/images/default_auction.jpg')}}" class="img-fluid mx-auto d-block " alt="...">
           <br>
-          <input required name="photo" class="form-control" type="file" id="auction_img" accept="image/png, image/jpeg">
+          <input required name="photo" class="form-control" type="file" id="auction_image" accept="image/png, image/jpeg">
         </div>
 
         <div class="mb-3">

@@ -3,7 +3,9 @@
 use App\Models\Manufactor;
 ?>
 @extends('layouts.app')
-
+@section('scripts')
+    <script type="text/javascript" src="{{ asset('js/auction.js') }}" defer> </script>
+@endsection
 
 @section('content')
   <article class='auction'>
@@ -17,6 +19,10 @@ use App\Models\Manufactor;
           <h3 style="color: red">Closed</h3>
         @else
           <h3 style="color: #da9465;">Not started yet</h3>
+          @if (Auth::check() && Auth::User()->id === $auction->owner_id)
+            <a href="{{ url('auction/'.$auction->id.'/edit') }}" class="btn btn-warning" role="button">Edit Auction</a>
+            
+          @endif
         @endif
           
 
@@ -45,14 +51,21 @@ use App\Models\Manufactor;
         </section>
 
         <section id = "bid_auction">
-          <?php $last_bidder = $auction->getLastBidder();
-            error_log("LAST BIDEER");
-            error_log($last_bidder);
-          ?>
+          <?php $last_bidder = $auction->getLastBidder();?>
+          
+          
+          
+          @if ($auction->isOpen())
+            <p><strong>Auctions ends in </strong> <span date-date="{{ $auction->enddate }}" id="auction_countdown"></span></p>
+          @elseif ($auction->isClosed())
+            <p><strong>Auction ended </strong> {{ $auction->enddate }}</p>
+          @else
+            <p><strong>Auction starts in </strong> <span date-date="{{ $auction->startdate }}" id="auction_countdown"></span></p>
+          @endif
 
-          <p>End Date: {{ $auction->enddate }}</p>
-          <p>Current Price: {{ $auction->currentprice ?? $auction->startprice }}</p>
-          <p>Last Bidder: 
+
+          <p><strong>Current Price:</strong> {{ $auction->currentprice ?? $auction->startprice }}</p>
+          <p><strong>Last Bidder:</strong> 
             @if ($last_bidder)
              <a href="{{url('/user/'.$last_bidder->id)}}">{{$last_bidder->firstname . ' '. $last_bidder->lastname }}</a>
             @else
@@ -76,8 +89,13 @@ use App\Models\Manufactor;
               </div>
 
             @endif
-
-            <input @if (!$auction->isOpen()) disabled  @endif type="submit" value="Bid">
+            <?php
+              error_log(Auth::User());
+              error_log( $auction);
+            ?>
+            
+            <input @if (!$auction->isOpen() || !Auth::check()) disabled  @endif type="submit" value="Bid">
+            
           </form>
           @if (!$followed)
           <form method="post" action ="{{ route('follow.store', ['id' => $auction->id]) }}">

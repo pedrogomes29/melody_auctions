@@ -18,6 +18,11 @@
     border-radius: 3.5rem;
 }
 
+img.auction_search_img{
+  width: 20em;
+  height: 20em;
+}
+
 .dropdown-item.chosen {
     display: none;
 }
@@ -115,7 +120,7 @@ body header {
 }
 
 #auction_img{
-  max-height: 50vh;
+  height: 30em;
 }
 
 
