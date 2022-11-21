@@ -103,3 +103,6 @@ button{
     display: flex;
     flex-direction: row;
 }
+#alter-info{
+    width: 40em;
+}
