@@ -4,6 +4,7 @@ use App\Models\Manufactor;
 ?>
 @extends('layouts.app')
 @section('scripts')
+    <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/auction.js') }}" defer> </script>
 @endsection
 

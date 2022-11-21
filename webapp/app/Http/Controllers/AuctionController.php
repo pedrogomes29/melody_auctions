@@ -33,8 +33,8 @@ class AuctionController extends Controller
             $auctionsAfterFilter = Auction::where('cancelled','<>',1);
 
             if ($useSearch)
-                $auctionsAfterFilter = $auctionsAfterFilter->whereRaw('tsvectors @@ plainto_tsquery(\'english\', ?)', $search);
-            
+                $auctionsAfterFilter = $auctionsAfterFilter->whereRaw('tsvectors @@ to_tsquery(\'english\', ?)', $search.':*');
+
             if($useCategory)
                 $auctionsAfterFilter->where('category_id',$categoryId);
             
@@ -72,7 +72,7 @@ class AuctionController extends Controller
                                                             ELSE 0
                                                         END AS uninitiated');
             if($useSearch){
-                $auctions->orderByRaw('ts_rank(tsvectors, plainto_tsquery(\'english\', ?)) DESC,name', [$search]);                         
+                $auctions->orderByRaw('ts_rank(tsvectors, to_tsquery(\'english\', ?)) DESC,name', [$search.':*']);                         
             }else{
                 $auctions->orderBy('name');
             }
@@ -105,8 +105,8 @@ class AuctionController extends Controller
     public function search_results_json(Request $request){
         $query = $request->search;
         return  response()->json(Auction::select('name','description','id')
-                                        ->whereRaw('tsvectors @@ plainto_tsquery(\'english\', ?)', [$query])
-                                        ->orderByRaw('ts_rank(tsvectors, plainto_tsquery(\'english\', ?)) DESC', [$query])
+                                        ->whereRaw('tsvectors @@ to_tsquery(\'english\', ?)', [$query.':*'])
+                                        ->orderByRaw('ts_rank(tsvectors, to_tsquery(\'english\', ?)) DESC', [$query.':*'])
                                         ->take(10)
                                         ->get());
     }
