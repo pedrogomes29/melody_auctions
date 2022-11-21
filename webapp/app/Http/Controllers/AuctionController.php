@@ -183,10 +183,18 @@ class AuctionController extends Controller
                 $nowDate = substr($nowDate, 0, -3); // remove last 3 digits to be according to the dates saved in the database
             
                 // check if the input date and the auction start date is in the future //check if input date is the current one stored in the database
-                if ((Carbon::parse($inputStartDate)->gt(Carbon::now()) && Carbon::parse($auction->startdate)->gt(Carbon::now())) || $auction->startdate == $inputStartDate) { 
-                    $auction->startdate = $inputStartDate; 
-                } else {
+                if ($auction->startdate == $inputStartDate){
+                    $auction->startdate = $inputStartDate;
+                }
+                else if (Carbon::parse($auction->startdate)->lt(Carbon::now())){
+                    $errors['auctionStarted'] = 'The auction has already started';
                     $success = false;
+                }
+                else if (Carbon::parse($inputStartDate)->lt(Carbon::now())) { 
+                    $errors['inputStartDate'] = 'The start date must be in the future';
+                    $success = false; 
+                }   else {
+                    $auction->startdate = $inputStartDate;
                 }
 
                 // End date
@@ -194,17 +202,23 @@ class AuctionController extends Controller
                 $inputEndDate = substr($inputEndDate, 0, -3); // remove last 3 digits to be according to the dates saved in the database
 
                 // check if the input date and the auction start date is in the future //check if input date is the current one stored in the database
-                if ((Carbon::parse($inputEndDate)->gt(Carbon::now()) && Carbon::parse($auction->startdate)->gt(Carbon::now())) || $auction->enddate == $inputEndDate) { 
+                if ($auction->enddate == $inputEndDate){
                     $auction->enddate = $inputEndDate; 
-                } else {
+                } else if (Carbon::parse($auction->startdate)->lt(Carbon::now())){
+                    $errors['auctionStarted'] = 'The auction has already started';
                     $success = false;
+                } else if (Carbon::parse($inputEndDate)->lt(Carbon::now())) {
+                    $errors['inputEndDate'] = 'The end date must be in the future';
+                    $success = false; 
+                } else {
+                    $auction->enddate = $inputEndDate; 
                 }
 
                 
                 if ($success){
                     $auction->save();
                 }
-                return view('pages.auction_edit', ['auction' => $auction, 'success' => $success]);
+                return view('pages.auction_edit', ['auction' => $auction])->withErrors($errors);
             }
         }
         return redirect()->route('home');
