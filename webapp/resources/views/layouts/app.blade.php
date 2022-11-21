@@ -34,9 +34,10 @@
 
       <header class="d-flex flex-row justify-content-between align-items-center pb-3 mb-5">
         <img
-          src= "{{ asset('default_images/auction.svg')}}"
+          src= "{{ asset('default_images/logo_high.svg') }}"
           id="logo"
           height="60"
+          width="150"
           class="m-3"
           alt="Melody auctions Logo"
         />
