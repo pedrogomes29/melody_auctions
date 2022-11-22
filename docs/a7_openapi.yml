@@ -47,12 +47,12 @@ paths:
             schema:
               type: object
               properties:
-                usernameOrEmail: 
+                email: 
                   type: string 
                 password:   
                   type: string
               required:
-                - usernameOrEmail
+                - email
                 - password
  
       responses:
@@ -122,18 +122,12 @@ paths:
                   type: string
                 contact:
                   type: string
-                description:
-                  type: string
-                picture:
-                  type: string
-                  format: binary
               required:
                 - name
                 - username
                 - email
                 - password
                 - contact
-                - description
 
       responses:
         '302':
@@ -154,24 +148,13 @@ paths:
     get:
       operationId: R106
       summary: 'R106: View user profile'
-      description: 'Show the individual user profile. Access: USR'
+      description: 'Show the individual user profile. Access: Pub'
       tags:
         - 'M01: Authentication and Profile'
-
       responses:
-        '302':
-          description: 'Redirect after processing the new user information.'
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Success:
-                  description: 'Successful authentication. Redirect to user profile.'
-                  value: '/users/{username}'
-                302Failure:
-                  description: 'Failed authentication. Redirect to login form.'
-                  value: '/login'
+        '200':
+          description: 'Ok. user profile'
+      
     delete:
       operationId: R107
       summary: 'R107: Delete user'
