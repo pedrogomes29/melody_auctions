@@ -41,7 +41,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Auth'], function () {
     Route::group(['middleware' => 'adminauth'], function () {
         Route::get('/', function () {
             return view('welcome');
-        })->name('adminDashboard');
+        });
 
     });
 });

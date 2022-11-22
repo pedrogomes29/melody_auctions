@@ -12,8 +12,8 @@
 
     <!-- Styles -->
 
-    <link href="{{ asset('css/milligram.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('css/milligram.min.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('css/app.css') }}" rel="stylesheet">
 
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
@@ -27,14 +27,14 @@
         // Fix for Firefox autofocus CSS bug
         // See: http://stackoverflow.com/questions/18943276/html-5-autofocus-messes-up-css-loading/18945951#18945951
     </script>
-    <script type="text/javascript" src="{{ asset('js/app.js') }}" defer></script>
+    <script type="text/javascript" src="{{ secure_asset('js/app.js') }}" defer></script>
     @yield('scripts')
   </head>
     <body>
 
       <header class="d-flex flex-row justify-content-between align-items-center pb-3 mb-5">
         <img
-          src= "{{ asset('default_images/logo_high.svg') }}"
+          src= "{{ secure_asset('default_images/logo_high.svg') }}"
           id="logo"
           height="60"
           width="150"

@@ -9,7 +9,7 @@
     <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
 @endsection
 @section('content')
-<section class="user-profile">
+<section class="user-profile container-fluid">
     <section class="profile">
         <header id="profile-name" >
                 <h1 id="user-name">
@@ -152,7 +152,7 @@
         -->
     </section>
     @if(count($auctions)>0)
-        <section id='owned-auctions'>
+        <section id='owned-auctions' class="container-fluid">
             <h1>Auctions owned</h1>
             <div class="ms-1">  
                     @include('partials.auctions', ['auctions' => $auctions])

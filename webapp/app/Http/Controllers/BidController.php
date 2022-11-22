@@ -70,13 +70,14 @@ class BidController extends Controller
                 throw new PDOException('Cannot bid on an auction that you are the last person to bid!', 1 );
             
 
+            
+            if ($auction->last_price !== null &&  $auction->last_price + $auction->minbidsdif > $bid->value)
+                throw new PDOException('The bid value must be greater than '.$auction->last_price + $auction->minbidsdif.'!' , 1 );
+            
             if($auction->startprice > $bid->value)
                 throw new PDOException('The bid value must be greater than '.$auction->startprice.'!' , 1 );
             
-            if ($auction->last_price !== null &&  $auction->last_price + $auction->mindiff > $bid->value)
-                throw new PDOException('The bid value must be greater than '.$auction->last_price + $auction->mindiff.'!' , 1 );
-            
-
+                
             $bid->id = Bid::max('id') + 1;
             $bid->save();
             

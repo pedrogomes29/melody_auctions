@@ -32,9 +32,9 @@ use App\Models\Manufactor;
         <div class="owner_info">
           <a href="{{URL('user/'.$auction->owner->username)}}" class="link-dark text-decoration-none">
             @if ($auction->owner->photo)
-              <img src="{{ asset('storage/'.$auction->owner->photo) }}" alt="Profile picture" class="rounded-circle" width="50" height="50">
+              <img src="{{ secure_asset('storage/'.$auction->owner->photo) }}" alt="Profile picture" class="rounded-circle" width="50" height="50">
             @else
-              <img src="{{ asset('default_images/default.jpg') }}" alt="Profile picture" class="rounded-circle" width="50" height="50">
+              <img src="{{ secure_asset('default_images/default.jpg') }}" alt="Profile picture" class="rounded-circle" width="50" height="50">
             @endif
             &#64{{ $auction->owner->username }}
           </a>
@@ -47,7 +47,7 @@ use App\Models\Manufactor;
 
       <section id="auction_information" class="container">
         <section id="details">
-          <img id="auction_img" class=".img-fluid mx-auto d-block" src="{{ empty(trim($auction->photo)) ? URL('/images/default_auction.jpg') : asset('storage/' . $auction->photo) }}">
+          <img id="auction_img" class=".img-fluid mx-auto d-block" src="{{ empty(trim($auction->photo)) ? URL('/images/default_auction.jpg') : secure_asset('storage/' . $auction->photo) }}">
           <h2>Manufactor</h2>
           <p>
           {{ Manufactor::find($auction->manufactor_id)->name }}
