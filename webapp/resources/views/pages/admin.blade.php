@@ -23,7 +23,7 @@
       <!-- SIDEBAR USERPIC -->
       <div class="admin-userpic">
           @if ($admin->profile_picture)
-          <img src="{{ asset('storage/pics' . $admin->profile_picture) }}" class="profilepic" alt="User Image">
+          <img src="{{ asset( $admin->profile_picture) }}" class="profilepic" alt="User Image">
           @else
           <img src="{{ asset('default_image/default.jpg') }}"class="default_profilepic" alt="User Image">
           @endif
