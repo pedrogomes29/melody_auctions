@@ -80,12 +80,13 @@ class UserProfileController extends Controller
         }
         $user = AuthenticatedUser::where('username',$username)->firstOrFail();
         $user->email = $request->input('email');
-        $user = AuthenticatedUser::where('username',$username)->firstOrFail();;
         $user->firstname = $request->input('firstname');
         $user->lastname = $request->input('lastname');
         $user->username = $request->input('username');
         $user->description = $request->input('description');
         $user->contact = $request->input('contact');
+        error_log("USER");
+        error_log($user);
         $user->save();
         return redirect()->route('user', ['username' => $user->username]);
 

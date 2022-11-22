@@ -198,7 +198,6 @@ class AuctionController extends Controller
         $auction->description = $request->input('description');
         $auction->minbidsdif = $request->input('minBidDif');
 
-        error_log("Start");
         // Start date
         $inputStartDate = Carbon::parse($request->input('startDate'))->format('Y-m-d H:i:s.u'); // get the start date from the form
         $inputStartDate = substr($inputStartDate, 0, -3); // remove last 3 digits to be according to the dates saved in the database
@@ -220,7 +219,6 @@ class AuctionController extends Controller
             $auction->startdate = $inputStartDate;
         }
 
-        error_log("End");
         // End date
         $inputEndDate = Carbon::parse($request->input('endDate'))->format('Y-m-d H:i:s.u'); // get the end date from the form
         $inputEndDate = substr($inputEndDate, 0, -3); // remove last 3 digits to be according to the dates saved in the database
@@ -239,9 +237,7 @@ class AuctionController extends Controller
         }
 
         
-        error_log("success");
         if ($success){
-            error_log("success");
             $auction->save();
             return response('Updated', 200);
         }
