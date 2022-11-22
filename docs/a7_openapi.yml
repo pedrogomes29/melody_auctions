@@ -114,7 +114,9 @@ paths:
             schema:
               type: object
               properties:
-                name:
+                firstName:
+                  type: string
+                lastName:
                   type: string
                 email:
                   type: string
@@ -123,7 +125,8 @@ paths:
                 contact:
                   type: string
               required:
-                - name
+                - firstName
+                - lastName
                 - username
                 - email
                 - password
@@ -188,7 +191,9 @@ paths:
             schema:
               type: object
               properties:
-                name:
+                firstName:
+                  type: string
+                lastName:
                   type: string
                 email:
                   type: string
@@ -202,7 +207,8 @@ paths:
                   type: string
                   format: binary
               required:
-                - name
+                - firstName
+                - lastName
                 - username
                 - email
                 - password
