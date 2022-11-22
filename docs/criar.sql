@@ -120,7 +120,7 @@ CREATE TABLE auction_canceled_notification (
 	auctionid int4 NOT NULL,
 	CONSTRAINT auctioncancelednotification_pkey PRIMARY KEY (notificationid),
 	CONSTRAINT auctioncancelednotification_auctionid_fkey FOREIGN KEY (auctionid) REFERENCES auction(id),
-	CONSTRAINT auctioncancelednotification_notificationid_fkey FOREIGN KEY (notificationid) REFERENCES authenticated_user(id)
+	CONSTRAINT auctioncancelednotification_notificationid_fkey FOREIGN KEY (notificationid) REFERENCES notification(id)
 );
 
 Drop TABLE if exists auction_ended_notification cascade;
@@ -130,7 +130,7 @@ CREATE TABLE auction_ended_notification (
 	auctionid int4 NOT NULL,
 	CONSTRAINT auctionendednotification_pkey PRIMARY KEY (notificationid),
 	CONSTRAINT auctionendednotification_auctionid_fkey FOREIGN KEY (auctionid) REFERENCES auction(id),
-	CONSTRAINT auctionendednotification_notificationid_fkey FOREIGN KEY (notificationid) REFERENCES authenticated_user(id)
+	CONSTRAINT auctionendednotification_notificationid_fkey FOREIGN KEY (notificationid) REFERENCES notification(id)
 );
 
 
@@ -141,7 +141,7 @@ CREATE TABLE auction_ending_notification (
 	auctionid int4 NOT NULL,
 	CONSTRAINT auctionendingnotification_pkey PRIMARY KEY (notificationid),
 	CONSTRAINT auctionendingnotification_auctionid_fkey FOREIGN KEY (auctionid) REFERENCES auction(id),
-	CONSTRAINT auctionendingnotification_notificationid_fkey FOREIGN KEY (notificationid) REFERENCES authenticated_user(id)
+	CONSTRAINT auctionendingnotification_notificationid_fkey FOREIGN KEY (notificationid) REFERENCES notification(id)
 );
 
 
