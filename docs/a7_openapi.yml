@@ -239,7 +239,7 @@ paths:
          - 'M01: Authentication and Profile'
       parameters:
         - in: query
-          name: query
+          name: search
           description: String to use for full-text search
           schema:
             type: string
