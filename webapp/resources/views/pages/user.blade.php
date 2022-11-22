@@ -3,6 +3,7 @@
     <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/user_profile.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/auctions.js') }}" defer> </script>
+    <script src="{{ asset('js/edit.js') }}" defer></script>
 @endsection
 @section('styles')
     <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
@@ -30,7 +31,7 @@
                 <img id="default_pic" class="pic"src="{{ asset('default_images/default.jpg') }}"class="default_profilepic" alt="User Image">
                 @endif
             </div>
-            @if(Auth::id() == $user->id)
+            @if(Auth::id() == $user->id || Auth::guard('admin')->user())
             <div style="display:none" id="image_form"class="relative flex items-center min-h-screen justify-center overflow-hidden">
                 <form action="{{ route('user.photo', $user->username) }}" method="POST" enctype="multipart/form-data">
                     {{ csrf_field() }}
@@ -61,7 +62,7 @@
             </div>
             <!-- END SIDEBAR USER TITLE -->
             <div id="alter-info">
-                @if(Auth::id() == $user->id)
+                @if(Auth::id() == $user->id || Auth::guard('admin')->user())
                     <button id="editprofile" class="btn btn-primary">
                         Edit Info
                     </button>
@@ -135,7 +136,6 @@
                     <input type="number" name="balance" id="balance-input" placeholder="Balance" required min="1">
                     <button id="add" type="submit" class="btn btn-primary">Add</button>
                 </form>
-                <script src="{{ asset('js/edit.js') }}"></script>
             </div>
         @endif
         </section>

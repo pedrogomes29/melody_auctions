@@ -75,7 +75,7 @@ class UserProfileController extends Controller
     public function updateUserProfile(Request $request, $username)
     {
         $id = AuthenticatedUser::where('username',$username)->firstOrFail()->id;
-        if (!Auth::check() || !Auth::user()->can('update', AuthenticatedUser::find($id))) {
+        if (! Auth::guard('admin')->user() && (!Auth::check() || !Auth::user()->can('update', AuthenticatedUser::find($id)))) {
             return redirect()->route('home');
         }
         $user = AuthenticatedUser::where('username',$username)->firstOrFail();
