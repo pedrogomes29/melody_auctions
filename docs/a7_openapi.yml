@@ -293,7 +293,7 @@ paths:
         '200':
           description: 'Ok. Show auction creation UI'
         '302':
-          description: 'Redirect because is an unauthorized user '
+          description: 'Redirect because user is not unauthorized  '
           headers:
             Location:
               schema:
@@ -776,7 +776,7 @@ paths:
         '200':
           description: 'Ok. Show user reviews'
         '302':
-          description: 'Redirect because is an unauthorized user '
+          description: 'Redirect because user is not unauthorized  '
           headers:
             Location:
               schema:
@@ -891,7 +891,7 @@ paths:
         '200':
           description: 'Ok. Show admin page'
         '302':
-          description: 'Redirect because is an unauthorized user '
+          description: 'Redirect because user is not unauthorized  '
           headers:
             Location:
               schema:
@@ -913,7 +913,7 @@ paths:
         '200':
           description: 'Ok. Show admin auction page'
         '302':
-          description: 'Redirect because is an unauthorized user '
+          description: 'Redirect because user is not unauthorized  '
           headers:
             Location:
               schema:
@@ -1059,7 +1059,7 @@ paths:
         '200':
           description: 'Ok. Show reports found'
         '302':
-          description: 'Redirect because is an unauthorized user '
+          description: 'Redirect because user is not unauthorized  '
           headers:
             Location:
               schema:
@@ -1081,7 +1081,7 @@ paths:
           description: 'Ok. Show report page'
         
         '302':
-          description: 'Redirect because is an unauthorized user '
+          description: 'Redirect because user is not unauthorized  '
           headers:
             Location:
               schema:
