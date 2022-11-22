@@ -138,7 +138,7 @@
                     <input type="number" name="balance" id="balance-input" placeholder="Balance" required min="1">
                     <button id="add" type="submit" class="btn btn-primary">Add</button>
                 </form>
-                <script src={{ asset('js/edit.js') }}></script>
+                <script src="{{ asset('js/edit.js') }}"></script>
             </div>
         @endif
         @if (Auth::id() == $user->id)

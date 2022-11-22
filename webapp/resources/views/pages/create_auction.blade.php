@@ -59,7 +59,7 @@
 
         <div class="mb-3">
           <label for="startDate">Start Date</label>
-          <input required name="startdate" id="startDate" class="form-control w-auto" type="datetime-local" />
+          <input required name="startDate" id="startDate" class="form-control w-auto" type="datetime-local" />
           @if ($errors->has('startdate_error'))
             <div class="alert alert-danger" role="alert">
               {{ $errors->first('startdate_error') }}
@@ -69,7 +69,7 @@
 
         <div class="mb-3">
           <label for="endDate">End Date</label>
-          <input required name="enddate" id="endDate" class="form-control w-auto" type="datetime-local" />
+          <input required name="endDate" id="endDate" class="form-control w-auto" type="datetime-local" />
           @if ($errors->has('enddate_error'))
             <div class="alert alert-danger" role="alert">
               {{ $errors->first('enddate_error') }}

@@ -14,14 +14,16 @@ use App\Models\Manufactor;
       <div class="container">
         <h1> {{ $auction->name }}</h1>
 
-        @if ($auction->isOpen())
+        @if ($auction->cancelled)
+          <h3 style="color: red">Cancelled</h3>
+        @elseif ($auction->isOpen())
           <h3 style="color: green">Open</h3>
         @elseif ($auction->isClosed())
           <h3 style="color: red">Closed</h3>
         @else
           <h3 style="color: #da9465;">Not started yet</h3>
-          @if (Auth::check() && Auth::User()->id === $auction->owner_id)
-            <a href="{{ url('auction/'.$auction->id.'/edit') }}" class="btn btn-warning" role="button">Edit Auction</a>
+          @if (!$auction->cancelled && Auth::check() && Auth::User()->id === $auction->owner_id)
+            <a href="{{ url('auction/'.$auction->id.'/edit') }}" class="btn btn-warning" role="button" data-bs-toggle="modal" data-bs-target="#edit_popup">Edit Auction</a>
             
           @endif
         @endif
@@ -55,13 +57,14 @@ use App\Models\Manufactor;
           <?php $last_bidder = $auction->getLastBidder();?>
           
           
-          
-          @if ($auction->isOpen())
-            <p><strong>Auctions ends in </strong> <span date-date="{{ $auction->enddate }}" id="auction_countdown"></span></p>
-          @elseif ($auction->isClosed())
-            <p><strong>Auction ended </strong> {{ $auction->enddate }}</p>
-          @else
-            <p><strong>Auction starts in </strong> <span date-date="{{ $auction->startdate }}" id="auction_countdown"></span></p>
+          @if (!$auction->cancelled)
+            @if ($auction->isOpen())
+              <p><strong>Auctions ends in </strong> <span date-date="{{ $auction->enddate }}" id="auction_countdown"></span></p>
+            @elseif ($auction->isClosed())
+              <p><strong>Auction ended </strong> {{ $auction->enddate }}</p>
+            @else
+              <p><strong>Auction starts in </strong> <span date-date="{{ $auction->startdate }}" id="auction_countdown"></span></p>
+            @endif
           @endif
 
 
@@ -137,6 +140,21 @@ use App\Models\Manufactor;
           </section>
         </section>
       </section>
+
+      @extends('partials.popup', ['POPUP_ID' => "edit_popup", 'POPUP_TITLE_ID' => "edit_popup_title", 'POPUP_TITLE' => "Edit Auction"])
+      @section('popup-body')
+        @include('partials.auction_edit', ['auction' => $auction])
+      @endsection
+
+      @section('popup-footer')
+        
+        <button data-csrf="{{csrf_token()}}" data-auction="/auction/{{$auction->id}}/edit" onclick="deleteAuction(this)" class="btn btn-danger">Delete</button>
+        
+
+        <div class="text-center">
+            <button type="submit" onclick="updateAuction(this)" class="btn btn-warning">Update</button>
+        </div>
+      @endsection
 
     </main>
 
