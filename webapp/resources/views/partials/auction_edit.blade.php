@@ -23,7 +23,7 @@
             </div>   
         </div> 
     </form>
-    <form id="update" action="/auction/{{$auction->id}}/edit"  method="POST">
+    <form id="update" action="/auction/{{$auction->id}}"  method="POST">
         {{ csrf_field() }}
         @method('PUT')
         <div class="form-group">

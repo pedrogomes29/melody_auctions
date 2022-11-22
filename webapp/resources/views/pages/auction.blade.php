@@ -154,7 +154,7 @@ use App\Models\Manufactor;
 
       @section('popup-footer')
         
-        <button data-csrf="{{csrf_token()}}" data-auction="/auction/{{$auction->id}}/edit" onclick="deleteAuction(this)" class="btn btn-danger">Delete</button>
+        <button data-csrf="{{csrf_token()}}" data-auction="/auction/{{$auction->id}}" onclick="deleteAuction(this)" class="btn btn-danger">Delete</button>
         
 
         <div class="text-center">
