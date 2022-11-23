@@ -106,6 +106,7 @@ class AuctionController extends Controller
         $query = $request->search;
         return  response()->json(Auction::select('name','description','id')
                                         ->whereRaw('tsvectors @@ to_tsquery(\'english\', ?)', [$query.':*'])
+                                        ->where('cancelled','<>',1)
                                         ->orderByRaw('ts_rank(tsvectors, to_tsquery(\'english\', ?)) DESC', [$query.':*'])
                                         ->take(10)
                                         ->get());
