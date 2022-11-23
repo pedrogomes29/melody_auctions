@@ -74,7 +74,7 @@
         @if (Auth::check())
           <div id= "user-profile" class="{{Auth::user()->username}} profile-userpic me-3">
               @if (Auth::user()->photo !="")
-                <img class="rounded-circle" src="{{ asset('storage/' . Auth::user()->photo) }}" class="profilepic" alt="User Image">
+                <img class="rounded-circle" src="{{ asset(Auth::user()->photo) }}" class="profilepic" alt="User Image">
               @else
                 <img class="rounded-circle" src="{{ asset('default_images/default.jpg') }}"class="default_profilepic" alt="User Image">
               @endif
@@ -82,7 +82,7 @@
         @elseif(Auth::guard('admin')->user())
           <div id= "admin-profile" class="{{Auth::guard('admin')->user()->id  }} profile-userpic me-3">
             @if ( Auth::guard('admin')->user()->photo!="")
-              <img class="rounded-circle" src="{{ asset('storage/' . Auth::guard('admin')->user()->photo) }}" class="profilepic" alt="User Image">
+              <img class="rounded-circle" src="{{ asset(Auth::guard('admin')->user()->photo) }}" class="profilepic" alt="User Image">
             @else
               <img class="rounded-circle" src="{{ asset('default_images/default.jpg') }}"class="default_profilepic" alt="User Image">
             @endif

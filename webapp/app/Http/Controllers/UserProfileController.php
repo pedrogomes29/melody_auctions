@@ -75,17 +75,18 @@ class UserProfileController extends Controller
     public function updateUserProfile(Request $request, $username)
     {
         $id = AuthenticatedUser::where('username',$username)->firstOrFail()->id;
-        if (!Auth::check() || !Auth::user()->can('update', AuthenticatedUser::find($id))) {
+        if (! Auth::guard('admin')->user() && (!Auth::check() || !Auth::user()->can('update', AuthenticatedUser::find($id)))) {
             return redirect()->route('home');
         }
         $user = AuthenticatedUser::where('username',$username)->firstOrFail();
         $user->email = $request->input('email');
-        $user = AuthenticatedUser::where('username',$username)->firstOrFail();;
         $user->firstname = $request->input('firstname');
         $user->lastname = $request->input('lastname');
         $user->username = $request->input('username');
         $user->description = $request->input('description');
         $user->contact = $request->input('contact');
+        error_log("USER");
+        error_log($user);
         $user->save();
         return redirect()->route('user', ['username' => $user->username]);
 
@@ -122,9 +123,15 @@ class UserProfileController extends Controller
         $this->validate($request, [
             'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
-        $image_path = $request->file('image')->store('image', 'public');
+        // TROCAMOS PQ NO SERVIDOR DE LBAW APAGA AS FOTOS DE 30 EM 30 MIN
+        // $image_path = $request->file('image')->store('image', 'public');
+        
+        $file = $request->file('image');
+        $image_path= date('YmdHi').$file->getClientOriginalName();
+        $file->move(public_path('images/profile'), $image_path);
+
         $user = AuthenticatedUser::where('username',$username)->firstOrFail();
-        $user->photo = $image_path;
+        $user->photo = 'images/profile/'.$image_path;
         $user->save();
         session()->flash('success', 'Image Upload successfully');
         return redirect()->route('user', ['username' => $user->username]);

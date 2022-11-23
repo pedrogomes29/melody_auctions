@@ -106,7 +106,6 @@ class AuctionController extends Controller
         $query = $request->search;
         return  response()->json(Auction::select('name','description','id')
                                         ->whereRaw('tsvectors @@ to_tsquery(\'english\', ?)', [$query.':*'])
-                                        ->where('cancelled','<>',1)
                                         ->orderByRaw('ts_rank(tsvectors, to_tsquery(\'english\', ?)) DESC', [$query.':*'])
                                         ->take(10)
                                         ->get());
@@ -175,113 +174,134 @@ class AuctionController extends Controller
 
     public function ownerUpdate(Request $request, $auctionId)
     {
+        error_log("ownerUpdate");
         $auction = Auction::find($auctionId);
-        if (! Auth::check() || Auth::user()->can('update', $auction)){
-            $success = true;
-            $auction = Auction::find($auctionId);
+        $this->authorize('update', $auction);
 
-            $validated = $request->validate([
-                'name' => 'required|max:50',
-                'description' => 'required',
-                'minBidDif' => 'required|numeric|min:0.01',
-                'startDate' => 'required|date',
-                'endDate' => 'required|date',
-            ]);
+        $success = true;
+        $auction = Auction::find($auctionId);
 
-            if ($auction->cancelled == 1){
-                $errors['auctioncancelled'] = 'Auction has been cancelled';
-                $success = false;
-            }
-
-            $auction->name = $request->input('name');
-            $auction->description = $request->input('description');
-            $auction->minbidsdif = $request->input('minBidDif');
-
-            // Start date
-            $inputStartDate = Carbon::parse($request->input('startDate'))->format('Y-m-d H:i:s.u'); // get the start date from the form
-            $inputStartDate = substr($inputStartDate, 0, -3); // remove last 3 digits to be according to the dates saved in the database
-            $nowDate = Carbon::now()->format('Y-m-d H:i:s.u'); // get current date
-            $nowDate = substr($nowDate, 0, -3); // remove last 3 digits to be according to the dates saved in the database
-        
-            // check if the input date and the auction start date is in the future //check if input date is the current one stored in the database
-            if ($auction->startdate == $inputStartDate){
-                $auction->startdate = $inputStartDate;
-            }
-            else if (Carbon::parse($auction->startdate)->lt(Carbon::now())){
-                $errors['auctionStarted'] = 'The auction has already started';
-                $success = false;
-            }
-            else if (Carbon::parse($inputStartDate)->lt(Carbon::now())) { 
-                $errors['inputStartDate'] = 'The start date must be in the future';
-                $success = false; 
-            }   else {
-                $auction->startdate = $inputStartDate;
-            }
-
-            // End date
-            $inputEndDate = Carbon::parse($request->input('endDate'))->format('Y-m-d H:i:s.u'); // get the end date from the form
-            $inputEndDate = substr($inputEndDate, 0, -3); // remove last 3 digits to be according to the dates saved in the database
-
-            // check if the input date and the auction start date is in the future //check if input date is the current one stored in the database
-            if ($auction->enddate == $inputEndDate){
-                $auction->enddate = $inputEndDate; 
-            } else if (Carbon::parse($auction->startdate)->lt(Carbon::now())){
-                $errors['auctionStarted'] = 'The auction has already started';
-                $success = false;
-            } else if (Carbon::parse($inputEndDate)->lt(Carbon::now())) {
-                $errors['inputEndDate'] = 'The end date must be in the future';
-                $success = false; 
-            } else {
-                $auction->enddate = $inputEndDate; 
-            }
-            if ($success){
-                $auction->save();
-            }
-            if (isset($errors)) return view('pages.auction_edit', ['auction' => $auction])->withErrors($errors);
-            return view('pages.auction_edit', ['auction' => $auction]);
+        $validated = $request->validate([
+            'name' => 'required|max:50',
+            'description' => 'required',
+            'minBidDif' => 'required|numeric|min:0.01',
+            'startDate' => 'required|date',
+            'endDate' => 'required|date',
+        ]);
+        $errors = [];
+        if ($auction->cancelled == 1){
+            $errors[] = 'Auction has been cancelled';
+            $success = false;
         }
-        return redirect()->route('home');
+
+        $auction->name = $request->input('name');
+        $auction->description = $request->input('description');
+        $auction->minbidsdif = $request->input('minBidDif');
+
+        // Start date
+        $inputStartDate = Carbon::parse($request->input('startDate'))->format('Y-m-d H:i:s.u'); // get the start date from the form
+        $inputStartDate = substr($inputStartDate, 0, -3); // remove last 3 digits to be according to the dates saved in the database
+        $nowDate = Carbon::now()->format('Y-m-d H:i:s.u'); // get current date
+        $nowDate = substr($nowDate, 0, -3); // remove last 3 digits to be according to the dates saved in the database
+    
+        // check if the input date and the auction start date is in the future //check if input date is the current one stored in the database
+        if ($auction->startdate == $inputStartDate){
+            $auction->startdate = $inputStartDate;
+        }
+        else if (Carbon::parse($auction->startdate)->lt(Carbon::now())){
+            $errors[] = 'The auction has already started';
+            $success = false;
+        }
+        else if (Carbon::parse($inputStartDate)->lt(Carbon::now())) { 
+            $errors[] = 'The start date must be in the future';
+            $success = false; 
+        }   else {
+            $auction->startdate = $inputStartDate;
+        }
+
+        // End date
+        $inputEndDate = Carbon::parse($request->input('endDate'))->format('Y-m-d H:i:s.u'); // get the end date from the form
+        $inputEndDate = substr($inputEndDate, 0, -3); // remove last 3 digits to be according to the dates saved in the database
+
+        // check if the input date and the auction start date is in the future //check if input date is the current one stored in the database
+        if ($auction->enddate == $inputEndDate){
+            $auction->enddate = $inputEndDate; 
+        } else if (Carbon::parse($auction->startdate)->lt(Carbon::now())){
+            $errors[] = 'The auction has already started';
+            $success = false;
+        } else if (Carbon::parse($inputEndDate)->lt(Carbon::now())) {
+            $errors[] = 'The end date must be in the future';
+            $success = false; 
+        } else {
+            $auction->enddate = $inputEndDate; 
+        }
+
+        
+        if ($success){
+            $auction->save();
+            return response('Updated', 200);
+        }
+
+        
+        error_log("JSON");
+
+        
+        error_log("End JSON");
+
+        return response()->json(['error' => $errors], 400);
     }
     public function ownerDelete($auctionId)
     {
         $auction = Auction::find($auctionId);
-        if (! Auth::check() || Auth::user()->can('delete', $auction)){ 
-            if ($auction->cancelled){
-                $errors['auctioncancelled'] = 'Auction has already been cancelled';
-                return view('pages.auction_edit', ['auction' => $auction])->withErrors($errors);
-            }
-            if ($auction->notStarted()){
-                $auction->cancelled = 1;
-                $auction->save();
-                return redirect('/');
-            } else {
-                $erros['cantdelete'] = 'Cannot delete an auction that has already started';
-                return view('pages.auction_edit', ['auction' => $auction])->withErrors($errors);
-            }
+        $this->authorize('delete', $auction);
+        if ($auction->cancelled){
+            return response()->json(['error' => 'Cannot delete an auction that has been cancelled'], 400);
         }
-        return redirect()->route('home');
+        if ($auction->notStarted()){
+            $auction->cancelled = 1;
+            $auction->save();
+            return response('Deleted', 200);
+        } else {
+            return response()->json(['error' => 'Cannot delete an auction that has already started'], 400);
+        }
+
+        return response()->json(['error' => 'Unauthorized'], 403);
     }
     
 
 
     public function updatePhoto(Request $request,$auctionId)
     {
+
+        error_log("updatePhoto");
         $auction = Auction::find($auctionId);
-        if (! Auth::check() || Auth::user()->can('update', $auction)){
-            $validated = $request->validate([
-                'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            ]);
-            if ($auction->cancelled) {
-                $errors['auctioncancelled'] = 'Auction has been cancelled';
-                return view('pages.auction_edit', ['auction' => $auction])->withErrors($errors);
-            }
-            $image_path = $request->file('photo')->store('auctions','public');
-            $auction->photo = $image_path;
-            $auction->save();
-            return redirect()->route('auction.edit',$auctionId);
-            
+        $this->authorize('update', $auction);
+
+        error_log("AUTHORIZE");
+        $validated = $request->validate([
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+        ]);
+        
+        if ($auction->cancelled) {
+            return response()->json(['error' => 'Auction has been cancelled'], 400);
         }
-        return redirect()->route('home');
+
+        if ($auction->notStarted()){
+            // $image_path = $request->file('photo')->store('auctions','public');
+            $file = $request->file('photo');
+            $image_path= date('YmdHi').$file->getClientOriginalName();
+            $file->move(public_path('images/auction'), $image_path);
+
+            $auction->photo = 'images/auction/'.$image_path;
+            $auction->save();
+            error_log($auction);
+    
+            return response('Updated Photo', 200);
+        } 
+
+        return response()->json(['error' => 'Cannot update an auction that has already started'], 400);
+    
+        
     }
 
 
@@ -318,7 +338,14 @@ class AuctionController extends Controller
     private function uploadImage($request ){
         //TODO resize img
        
-        return $request->file('photo')->store('image', 'public');
+        $file = $request->file('photo');
+        $image_path= date('YmdHi').$file->getClientOriginalName();
+        $file->move(public_path('images/auction'), $image_path);
+
+        return 'images/auction/'.$image_path;
+
+        //TROCAMOS PQ NO SERVIDOR DE LBAW APAGA AS FOTOS DE 30 EM 30 MIN
+        //return $request->file('photo')->store('image', 'public');
     }
 
     /**

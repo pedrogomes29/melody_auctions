@@ -11,7 +11,7 @@
             {{ csrf_field() }}
             <div class="text-center">
                 @if ($auction->photo)
-                    <img class="img-thumbnail " src="{{ asset('storage/' . $auction->photo) }}" alt="Auction Photo">
+                    <img class="img-thumbnail " src="{{ asset( $auction->photo) }}" alt="Auction Photo">
                 @else
                     <img class="img-thumbnail " src="{{ asset('default_image/default_auction.jpg') }}" alt="Auction Photo">
                 @endif

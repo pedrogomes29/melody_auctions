@@ -14,14 +14,16 @@ use App\Models\Manufactor;
       <div class="container">
         <h1> {{ $auction->name }}</h1>
 
-        @if ($auction->isOpen())
+        @if ($auction->cancelled)
+          <h3 style="color: red">Cancelled</h3>
+        @elseif ($auction->isOpen())
           <h3 style="color: green">Open</h3>
         @elseif ($auction->isClosed())
           <h3 style="color: red">Closed</h3>
         @else
           <h3 style="color: #da9465;">Not started yet</h3>
-          @if (Auth::check() && Auth::User()->id === $auction->owner_id)
-            <a href="{{ url('auction/'.$auction->id.'/edit') }}" class="btn btn-warning" role="button">Edit Auction</a>
+          @if (!$auction->cancelled && Auth::check() && Auth::User()->id === $auction->owner_id)
+            <a href="{{ url('auction/'.$auction->id.'/edit') }}" class="btn btn-warning" role="button" data-bs-toggle="modal" data-bs-target="#edit_popup">Edit Auction</a>
             
           @endif
         @endif
@@ -30,7 +32,7 @@ use App\Models\Manufactor;
         <div class="owner_info">
           <a href="{{URL('user/'.$auction->owner->username)}}" class="link-dark text-decoration-none">
             @if ($auction->owner->photo)
-              <img src="{{ asset('storage/'.$auction->owner->photo) }}" alt="Profile picture" class="rounded-circle" width="50" height="50">
+              <img src="{{ asset($auction->owner->photo) }}" alt="Profile picture" class="rounded-circle" width="50" height="50">
             @else
               <img src="{{ asset('default_images/default.jpg') }}" alt="Profile picture" class="rounded-circle" width="50" height="50">
             @endif
@@ -45,7 +47,7 @@ use App\Models\Manufactor;
 
       <section id="auction_information" class="container">
         <section id="details">
-          <img id="auction_img" class=".img-fluid mx-auto d-block" src="{{ empty(trim($auction->photo)) ? URL('/images/default_auction.jpg') : asset('storage/' . $auction->photo) }}">
+          <img id="auction_img" class=".img-fluid mx-auto d-block" src="{{ empty(trim($auction->photo)) ? URL('/images/default_auction.jpg') : asset($auction->photo) }}">
           <h2>Manufactor</h2>
           <p>
           {{ Manufactor::find($auction->manufactor_id)->name }}
@@ -61,13 +63,14 @@ use App\Models\Manufactor;
           <?php $last_bidder = $auction->getLastBidder();?>
           
           
-          
-          @if ($auction->isOpen())
-            <p><strong>Auctions ends in </strong> <span date-date="{{ $auction->enddate }}" id="auction_countdown"></span></p>
-          @elseif ($auction->isClosed())
-            <p><strong>Auction ended </strong> {{ $auction->enddate }}</p>
-          @else
-            <p><strong>Auction starts in </strong> <span date-date="{{ $auction->startdate }}" id="auction_countdown"></span></p>
+          @if (!$auction->cancelled)
+            @if ($auction->isOpen())
+              <p><strong>Auctions ends in </strong> <span date-date="{{ $auction->enddate }}" id="auction_countdown"></span></p>
+            @elseif ($auction->isClosed())
+              <p><strong>Auction ended </strong> {{ $auction->enddate }}</p>
+            @else
+              <p><strong>Auction starts in </strong> <span date-date="{{ $auction->startdate }}" id="auction_countdown"></span></p>
+            @endif
           @endif
 
 
@@ -124,6 +127,8 @@ use App\Models\Manufactor;
               Show Bidding List
             </a>
 
+
+
             <div class="collapse" id ="bid_list">
     
               <div id="bidding_history" class="list-group mt-1">
@@ -141,6 +146,21 @@ use App\Models\Manufactor;
           </section>
         </section>
       </section>
+
+      @extends('partials.popup', ['POPUP_ID' => "edit_popup", 'POPUP_TITLE_ID' => "edit_popup_title", 'POPUP_TITLE' => "Edit Auction"])
+      @section('popup-body')
+        @include('partials.auction_edit', ['auction' => $auction])
+      @endsection
+
+      @section('popup-footer')
+        
+        <button data-csrf="{{csrf_token()}}" data-auction="/auction/{{$auction->id}}" onclick="deleteAuction(this)" class="btn btn-danger">Delete</button>
+        
+
+        <div class="text-center">
+            <button type="submit" onclick="updateAuction(this)" class="btn btn-warning">Update</button>
+        </div>
+      @endsection
 
     </main>
 
