@@ -3,13 +3,12 @@
     <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/user_profile.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/auctions.js') }}" defer> </script>
-    <script src="{{ asset('js/edit.js') }}" defer></script>
 @endsection
 @section('styles')
     <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
 @endsection
 @section('content')
-<section class="user-profile container-fluid">
+<section class="user-profile">
     <section class="profile">
         <header id="profile-name" >
                 <h1 id="user-name">
@@ -26,12 +25,12 @@
             <!-- SIDEBAR USERPIC -->
             <div id= "prof_pic" class="profile-userpic">
                 @if ($user->photo)
-                <img id="real_pic" class="pic"src="{{ asset($user->photo) }}" class="profilepic" alt="User Image">
+                <img id="real_pic" class="pic"src="{{ asset('storage/' . $user->photo) }}" class="profilepic" alt="User Image">
                 @else
                 <img id="default_pic" class="pic"src="{{ asset('default_images/default.jpg') }}"class="default_profilepic" alt="User Image">
                 @endif
             </div>
-            @if(Auth::id() == $user->id || Auth::guard('admin')->user())
+            @if(Auth::id() == $user->id)
             <div style="display:none" id="image_form"class="relative flex items-center min-h-screen justify-center overflow-hidden">
                 <form action="{{ route('user.photo', $user->username) }}" method="POST" enctype="multipart/form-data">
                     {{ csrf_field() }}
@@ -62,7 +61,7 @@
             </div>
             <!-- END SIDEBAR USER TITLE -->
             <div id="alter-info">
-                @if(Auth::id() == $user->id || Auth::guard('admin')->user())
+                @if(Auth::id() == $user->id)
                     <button id="editprofile" class="btn btn-primary">
                         Edit Info
                     </button>
@@ -136,6 +135,7 @@
                     <input type="number" name="balance" id="balance-input" placeholder="Balance" required min="1">
                     <button id="add" type="submit" class="btn btn-primary">Add</button>
                 </form>
+                <script src="{{ asset('js/edit.js') }}"></script>
             </div>
         @endif
         </section>
@@ -152,7 +152,7 @@
         -->
     </section>
     @if(count($auctions)>0)
-        <section id='owned-auctions' class="container-fluid">
+        <section id='owned-auctions'>
             <h1>Auctions owned</h1>
             <div class="ms-1">  
                     @include('partials.auctions', ['auctions' => $auctions])

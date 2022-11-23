@@ -21,7 +21,7 @@ class Auction extends Model
     }
 
     public function bids(){
-        return $this->hasMany(Bid::class)->orderBy('value', 'desc');
+        return $this->hasMany(Bid::class);
     }
 
     public function bids_offset(int $offset){

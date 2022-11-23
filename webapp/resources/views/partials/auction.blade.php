@@ -20,9 +20,9 @@
         @endif
         <div class="text-center">
         @if(trim($auction->photo)!=="")
-            <img height=200px width=250px class="img-fluid auction_search_img" src="{{ asset($auction->photo)}}"></img>
+            <img height=200px width=250px class="img-fluid auction_search_img" src={{ asset('storage/' . $auction->photo)}}></img>
         @else
-            <img height=200px width=250px class="img-fluid auction_search_img" src="{{ asset('default_images/auction_default.svg' )}}"></img>
+            <img height=200px width=250px class="img-fluid auction_search_img" src={{ asset('default_images/auction_default.svg' )}}></img>
         @endif
         </div>
         <div class="card-body">

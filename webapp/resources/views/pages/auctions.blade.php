@@ -12,7 +12,7 @@
 @section('searchContent',$search)
 
 @section('content')
-    <div class="d-flex flex-row container-fluid">
+    <div class="d-flex flex-row">
         <div class="d-flex flex-column flex-shrink-0 p-3 px-5 me-5 border-right border-dark position-sticky">
             <div id="category"class="dropdown my-3">
                 <h1>Category</h1>
@@ -33,7 +33,7 @@
                 </ul>
             </div>
         </div>
-        <div id='auctions' class='container-fluid flex-grow-1'>
+        <div id='auctions' class='flex-grow-1'>
             <h1 id="nrAuctions">{{$nrAuctions}} results </h1>
             @include('partials.auctions', ['auctions' => $auctions,'nrAuctions'=>$nrAuctions,'offset'=>$offset])
         </div>
