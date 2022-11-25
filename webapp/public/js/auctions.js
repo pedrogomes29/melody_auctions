@@ -93,9 +93,6 @@ function addEventListeners() {
             getAuctions();
         }
     });
-
-    const loadMore = document.getElementById("load-more");
-    if (loadMore) loadMore.addEventListener("click", load_more);
 }
 
 async function chooseCategory(event) {
@@ -175,7 +172,7 @@ async function getAuctions(offset = 0) {
         let aux = document.createElement("div");
         aux.innerHTML = newAuctions; //element representing the fetched html
         const nrAuctions =
-            aux.children[1].firstElementChild.textContent.split(" ")[3]; //gets number of auctions from the footer of the fetched HTML(Showing x of y results)
+            aux.children[1].lastElementChild.textContent.split(" ")[3]; //gets number of auctions from the footer of the fetched HTML(Showing x of y results)
         nrAuctionsHTML.textContent = nrAuctions + " results";
         let auctions = document.getElementById("auctions");
         auctions.innerHTML = newAuctions;
@@ -197,6 +194,8 @@ function addAuctionListeners() {
     [].forEach.call(auctions, function (auction) {
         auction.addEventListener("click", chooseAuction);
     });
+    const loadMore = document.getElementById("load-more");
+    if (loadMore) loadMore.addEventListener("click", load_more);
 }
 
 async function load_more() {
