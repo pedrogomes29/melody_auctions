@@ -109,3 +109,13 @@ button {
     margin-left: 4em;
     flex-grow: 1;
 }
+
+
+
+/* User Profile tabs*/
+
+.user-profile .nav-link{
+    height: 5em;
+    align-items:center;
+    justify-content:center;
+}
