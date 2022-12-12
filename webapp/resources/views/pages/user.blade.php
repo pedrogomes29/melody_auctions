@@ -67,7 +67,13 @@
                         Edit Info
                     </button>
                 @endif
+                @if (Auth::id() && Auth::id() != $user->id)
+                <button id="review-btn" class="btn btn-primary">
+                    Review User
+                </button>
+                @endif
                     <a href="{{route('user.follows', $user->username)}}"> <button id="showFollowedAuctions" class="btn btn-primary">Show Followed Auctions</button> </a>
+                    <a href="{{route('user.reviews', $user->username)}}"> <button id="showReviews" class="btn btn-primary">Show User Reviews</button> </a>
                 <form style="display:none" id="edituser" method="POST" action="{{ route('user.update', $user->username) }}">
                     {{ csrf_field() }}
                     @method('PUT')
