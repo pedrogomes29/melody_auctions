@@ -165,7 +165,7 @@ class AuctionController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
+     *  the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Auction  $auction
@@ -287,7 +287,9 @@ class AuctionController extends Controller
         }
 
         if ($auction->notStarted()){
-            $image_path = $request->file('photo')->store('auctions','public');
+            $image_path = AuctionController::uploadImage($request);
+            
+            error_log("updatePhoto");
             /*$file = $request->file('photo');
             $image_path= date('YmdHi').$file->getClientOriginalName();
             $file->move(public_path('images/auction'), $image_path);
@@ -345,7 +347,7 @@ class AuctionController extends Controller
         return 'images/auction/'.$image_path;*/
 
         //TROCAMOS PQ NO SERVIDOR DE LBAW APAGA AS FOTOS DE 30 EM 30 MIN
-        return $request->file('photo')->store('image', 'public');
+        return 'storage/' . $request->file('photo')->store('image', 'public');
     }
 
     /**
