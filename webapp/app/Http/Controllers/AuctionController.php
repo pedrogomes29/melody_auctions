@@ -287,12 +287,12 @@ class AuctionController extends Controller
         }
 
         if ($auction->notStarted()){
-            // $image_path = $request->file('photo')->store('auctions','public');
-            $file = $request->file('photo');
+            $image_path = $request->file('photo')->store('auctions','public');
+            /*$file = $request->file('photo');
             $image_path= date('YmdHi').$file->getClientOriginalName();
             $file->move(public_path('images/auction'), $image_path);
-
-            $auction->photo = 'images/auction/'.$image_path;
+            */
+            $auction->photo = $image_path;
             $auction->save();
             error_log($auction);
     
@@ -338,14 +338,14 @@ class AuctionController extends Controller
     private function uploadImage($request ){
         //TODO resize img
        
-        $file = $request->file('photo');
+        /*$file = $request->file('photo');
         $image_path= date('YmdHi').$file->getClientOriginalName();
         $file->move(public_path('images/auction'), $image_path);
 
-        return 'images/auction/'.$image_path;
+        return 'images/auction/'.$image_path;*/
 
         //TROCAMOS PQ NO SERVIDOR DE LBAW APAGA AS FOTOS DE 30 EM 30 MIN
-        //return $request->file('photo')->store('image', 'public');
+        return $request->file('photo')->store('image', 'public');
     }
 
     /**

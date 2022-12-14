@@ -124,14 +124,14 @@ class UserProfileController extends Controller
             'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
         // TROCAMOS PQ NO SERVIDOR DE LBAW APAGA AS FOTOS DE 30 EM 30 MIN
-        // $image_path = $request->file('image')->store('image', 'public');
+        $image_path = $request->file('image')->store('image', 'public');
         
-        $file = $request->file('image');
+        /*$file = $request->file('image');
         $image_path= date('YmdHi').$file->getClientOriginalName();
-        $file->move(public_path('images/profile'), $image_path);
+        $file->move(public_path('images/profile'), $image_path);*/
 
         $user = AuthenticatedUser::where('username',$username)->firstOrFail();
-        $user->photo = 'images/profile/'.$image_path;
+        $user->photo = $image_path;
         $user->save();
         session()->flash('success', 'Image Upload successfully');
         return redirect()->route('user', ['username' => $user->username]);
