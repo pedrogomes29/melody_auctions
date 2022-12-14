@@ -39,6 +39,10 @@ return [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
                 'useTLS' => true,
             ],
+            'options' => [
+  'cluster' => 'eu',
+  'useTLS' => true
+],
         ],
 
         'ably' => [
