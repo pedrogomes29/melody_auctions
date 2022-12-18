@@ -12,9 +12,9 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-
 use PDOException;
 use Carbon\Carbon;	
+use App\Events\AuctionCancelled;
 
 class AuctionController extends Controller
 {
@@ -260,6 +260,7 @@ class AuctionController extends Controller
         if ($auction->notStarted()){
             $auction->cancelled = 1;
             $auction->save();
+            AuctionCancelled::dispatch(now(),$auction);
             return response('Deleted', 200);
         } else {
             return response()->json(['error' => 'Cannot delete an auction that has already started'], 400);
@@ -294,8 +295,6 @@ class AuctionController extends Controller
 
             $auction->photo = 'images/auction/'.$image_path;
             $auction->save();
-            error_log($auction);
-    
             return response('Updated Photo', 200);
         } 
 
@@ -320,6 +319,7 @@ class AuctionController extends Controller
         $auction = Auction::find($id);
         $auction->cancelled = 1;
         $auction->save();
+        AuctionCancelled::dispatch(now(),$auction);
         return redirect('admin/');
     }
   
