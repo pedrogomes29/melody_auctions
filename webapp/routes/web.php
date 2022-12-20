@@ -58,8 +58,11 @@ Route::put('api/user/{username}/balance','UserProfileController@updateUserBalanc
 
 // Auction
 Route::post('/auction/{auction_id}/updatePhoto', 'AuctionController@updatePhoto')->name('auction.updatePhoto');
+Route::post('/auction/{auction_id}/defaultImage', 'AuctionController@defaultImage')->name('auction.defaultImage');
 Route::put('auction/{auction_id}', 'AuctionController@ownerUpdate')->name('auction.update');
 Route::delete('auction/{auction_id}', 'AuctionController@ownerDelete')->name('auction.delete');
+Route::put('auction/{auction_id}/admin', 'AuctionController@adminUpdate')->name('auction.adminUpdate');
+Route::delete('auction/{auction_id}/admin', 'AuctionController@adminDelete')->name('auction.adminDelete');
 Route::get('auction/{auction_id}', 'AuctionController@show')->where('auction_id', '[0-9]+')->name('auction.show');
 Route::get('auction/create', 'AuctionController@create')->name('auction.showCreate');
 Route::post('auction', 'AuctionController@store')->name('auction.store');

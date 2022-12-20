@@ -42,8 +42,8 @@ class AuctionPolicy
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(AuthenticatedUser $user, Auction $auction)
-    {
-        return $user->id == $auction->owner_id && Auth::check();
+    {   
+        return $user->id == $auction->owner_id && Auth::check() || Auth::guard('admin')->user();
     }
 
     /**

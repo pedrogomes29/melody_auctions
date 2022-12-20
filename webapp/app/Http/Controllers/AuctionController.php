@@ -268,7 +268,35 @@ class AuctionController extends Controller
         return response()->json(['error' => 'Unauthorized'], 403);
     }
     
+    public function adminUpdate(Request $request, $auctionId)
+    {
+        if (Auth::guard('admin')->user()){
+            $validated = $request->validate([
+                'name' => 'required|max:50',
+                'description' => 'required',
+            ]);
 
+            $auction = Auction::find($auctionId);
+            $auction->name = $request->input('name');
+            $auction->description = $request->input('description');
+            $auction->save();
+            return response('Updated', 200);
+        } else {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+    }
+
+    public function adminDelete(Request $request, $auctionId)
+    {
+        if (Auth::guard('admin')->user()){
+            $auction = Auction::find($auctionId);
+            $auction->cancelled = 1;
+            $auction->save();
+            return response('Deleted', 200);
+        } else {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+    }
 
     public function updatePhoto(Request $request,$auctionId)
     {
@@ -306,6 +334,21 @@ class AuctionController extends Controller
         
     }
 
+    public function defaultImage(Request $request,$auctionId)
+    {
+        $auction = Auction::find($auctionId);
+        if (! Auth::guard('admin')->user()){
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $auction = Auction::find($auctionId);
+
+        $auction->photo = '';
+        $auction->save();
+        
+        
+        return response('Updated Photo', 200);
+    }
 
 
     public static function update(Request $request, $id)
