@@ -81,6 +81,9 @@ class BidController extends Controller
             $bid->save();
             
             DB::commit();
+            event(new NewBidNotification( $bid )); // send bid notification to all users in the auction
+        
+        // guarda na base de dados
         }catch(PDOException $e){
             error_log($e->getMessage());
             
@@ -88,6 +91,7 @@ class BidController extends Controller
             return redirect()->back()->withErrors(['bid_error' => $e->getMessage()]);
         }
         
+
         return redirect()->back()->withErrors(['bid_success' => 'The bid was successfully made! :)']);
     }
 

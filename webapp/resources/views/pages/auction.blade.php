@@ -6,6 +6,8 @@ use App\Models\Manufactor;
 @section('scripts')
     <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/auction.js') }}" defer> </script>
+    <script src="https://js.pusher.com/7.2/pusher.min.js" defer></script>
+    <script type="text/javascript" src="{{ asset('js/ws_bid.js') }}" defer> </script>
 @endsection
 
 @section('content')
