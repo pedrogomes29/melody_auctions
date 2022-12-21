@@ -1,3 +1,36 @@
+function timeSince(date) {
+    const localTime = new Date().getTime();
+    const localOffset = new Date().getTimezoneOffset() * 60000;
+
+    const now = localTime + localOffset;
+
+    const seconds = (now - date) / 1000;
+
+    let interval = seconds / 31536000;
+
+    if (interval > 1) {
+        return `${Math.floor(interval)} year${interval >= 2 ? "s" : ""} ago`;
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+        return `${Math.floor(interval)} month${interval >= 2 ? "s" : ""} ago`;
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+        return `${Math.floor(interval)} day${interval >= 2 ? "s" : ""} ago`;
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+        return `${Math.floor(interval)} hour${interval >= 2 ? "s" : ""} ago`;
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+        return `${Math.floor(interval)} minute${interval >= 2 ? "s" : ""} ago`;
+    }
+    if (seconds > 10) return `${Math.floor(seconds)} seconds ago`;
+    else return "just now";
+}
+
 function addEventListeners() {
     const options = document.querySelectorAll(
         "#auctionsOrUsers .dropdown-item"
@@ -35,6 +68,25 @@ function addEventListeners() {
     // bids
     let load_bids = document.querySelector("#bidding_section #load_bids");
     if (load_bids != null) load_bids.addEventListener("click", load_more_bids);
+
+    const notificationBell = document.getElementById("notificationBell");
+    notificationBell.addEventListener("click", clickNotificationBell);
+
+    const auctionNotifications = document.querySelectorAll(".sec");
+    [].forEach.call(auctionNotifications, function (auctionNotification) {
+        auctionNotification.addEventListener("click", chooseNotification);
+    });
+}
+
+function clickNotificationBell() {
+    if (
+        document
+            .getElementById("notifications")
+            .classList.toggle("showNotifications")
+    ) {
+        markNotificationsAsRead();
+        updateNotificationTimeSince();
+    } else markNotificationsAsReadDOM();
 }
 
 function seeUserProfile(event) {
@@ -64,6 +116,10 @@ window.onclick = function (event) {
         if (dropdown_menu.classList.contains("show"))
             dropdown_menu.classList.remove("show");
     }
+
+    if (!event.target.matches("#notificationsContainer *")) {
+        markNotificationsAsReadDOM();
+    }
 };
 
 window.onscroll = function () {
@@ -72,7 +128,22 @@ window.onscroll = function () {
     );
     if (dropdown_menu.classList.contains("show"))
         dropdown_menu.classList.remove("show");
+
+    markNotificationsAsReadDOM();
 };
+
+async function markNotificationsAsReadDOM() {
+    const nofications = document.getElementById("notifications");
+    if (nofications.classList.contains("showNotifications"))
+        nofications.classList.remove("showNotifications");
+    window.setInterval(function () {
+        const auctionNotifications = document.querySelectorAll(".sec");
+        [].forEach.call(auctionNotifications, function (auctionNotification) {
+            if (auctionNotification.classList.contains("new"))
+                auctionNotification.classList.remove("new");
+        });
+    }, 500);
+}
 
 function showUsers(users) {
     console.log(users);
@@ -185,4 +256,42 @@ function form_create_auction(form) {
         .slice(0, 16);
 
     return true;
+}
+
+async function markNotificationsAsRead() {
+    document.getElementById("numberOfNotifications").innerText = "";
+    const response = await fetch(
+        window.location.protocol +
+            "//" +
+            window.location.host +
+            `/api/notifications/${window.User.id}`,
+        {
+            method: "put",
+            headers: {
+                "X-CSRF-TOKEN": document
+                    .querySelector('meta[name="csrf-token"]')
+                    .getAttribute("content"),
+            },
+        }
+    );
+    console.log(await response.json());
+}
+
+function updateNotificationTimeSince() {
+    const everyNotificationTimeSince = document.querySelectorAll(
+        "#notifications .notificationContent.sub"
+    );
+    [].forEach.call(
+        everyNotificationTimeSince,
+        function (notificationTimeSince) {
+            const notificationDate = new Date(
+                notificationTimeSince.nextElementSibling.textContent
+            ).getTime();
+            notificationTimeSince.innerText = timeSince(notificationDate);
+        }
+    );
+}
+
+function chooseNotification(event) {
+    window.location.href = "/auction/" + event.currentTarget.id;
 }

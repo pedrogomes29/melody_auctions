@@ -73,6 +73,16 @@ CREATE TABLE notifications (
 	CONSTRAINT notifications_pkey PRIMARY KEY (id)
 );
 
+Drop TABLE if exists authenticated_user_notification cascade;
+
+CREATE TABLE authenticated_user_notification(
+	authenticated_user_id int4 NOT NULL,
+	notification_id int4 NOT NULL,
+	CONSTRAINT authenticated_user_notification_authenticated_user_id_fkey FOREIGN KEY (authenticated_user_id) REFERENCES authenticated_users,
+	CONSTRAINT authenticated_user_notification_notification_id_fkey FOREIGN KEY (notification_id) REFERENCES notifications,
+	CONSTRAINT authenticated_user_notification_pkey PRIMARY KEY (authenticated_user_id, notification_id)
+);
+
 
 Drop TABLE if exists reports_states cascade;
 
@@ -640,3 +650,9 @@ insert into auctions_ending_notifications (notification_id, auction_id) values (
 
 --bids_notifications
 insert into bids_notifications (notification_id, bid_id) values (4, 1);
+
+insert into authenticated_user_notification(authenticated_user_id,notification_id) values (5,1);
+insert into authenticated_user_notification(authenticated_user_id,notification_id) values (5,2);
+insert into authenticated_user_notification(authenticated_user_id,notification_id) values (5,3);
+insert into authenticated_user_notification(authenticated_user_id,notification_id) values (5,4);
+

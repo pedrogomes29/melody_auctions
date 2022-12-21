@@ -85,4 +85,7 @@ Route::post('api/auction/{auction_id}/bid', 'BidController@create')->where('auct
 Route::get('api/auction/{auction_id}/bid', 'AuctionController@bids')->where('auction_id', '[0-9]+')->name('bid.list');
 
 
+//notifications
+Route::put('api/notifications/{userId}','NotificationController@markAsRead')->name('notifications.markAsRead');
+
 
