@@ -10,12 +10,16 @@ use Exception;
 class NotificationController extends Controller
 {
 
-    public function create($date)
+    public static function create($date,$users)
     {
         $notification = new Notification();
         $notification->date=now();
         $notification->beenread=false;
+        $notification->id = Notification::max('id') + 1;
         $notification->save();
+        foreach($users as $user){
+            $user->notifications()->save($notification);
+        }
         return $notification->id;
     }
 

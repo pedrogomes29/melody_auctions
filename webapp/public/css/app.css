@@ -209,7 +209,6 @@ a:visited {
     -webkit-box-shadow: 10px 10px 23px 0px rgba(0, 0, 0, 0.2);
     -moz-box-shadow: 10px 10px 23px 0px rgba(0, 0, 0, 0.1);
     box-shadow: 10px 10px 23px 0px rgba(0, 0, 0, 0.1);
-    cursor: context-menu;
 }
 
 #notifications.showNotifications {
@@ -375,6 +374,6 @@ a:visited {
     }
 }
 
-#notificationsContainer.notify {
+#notificationsBellContainer.notify {
     animation: ring 4s ease-in-out;
 }

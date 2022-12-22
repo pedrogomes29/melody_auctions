@@ -3,10 +3,9 @@
 namespace App\Listeners;
 
 use App\Events\AuctionEnding;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Http\Controllers\AuctionEndingNotificationController;
 
-class SendAuctionEndingNotification
+class StoreAuctionEndingNotification
 {
     /**
      * Create the event listener.
@@ -26,6 +25,6 @@ class SendAuctionEndingNotification
      */
     public function handle(AuctionEnding $event)
     {
-        //
+        AuctionEndingNotificationController::createAuctionEndingNotification($event->notification_date,$event->auction->id, $event->users);
     }
 }

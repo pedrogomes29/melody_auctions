@@ -9,4 +9,5 @@ class BidsNotification extends Model
 {
     use HasFactory;
     public $timestamps = false;
+
 }

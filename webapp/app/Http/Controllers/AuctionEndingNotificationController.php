@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 
-class AuctionsCancelledNotificationController extends NotificationController
+class AuctionEndingNotificationController extends NotificationController
 {
-    public static function createAuctionCancelledNotification($date,$auctionID,$users)
+    public static function createAuctionEndingNotification($date,$auctionID,$users)
     {
         $notificationID = parent::create($date,$users);
-        DB::table('auctions_cancelled_notifications')->insert(
+        DB::table('auctions_ending_notifications')->insert(
             [
                 'auction_id' => $auctionID,
                 'notification_id' => $notificationID
@@ -16,4 +16,3 @@ class AuctionsCancelledNotificationController extends NotificationController
         );
     }
 }
-

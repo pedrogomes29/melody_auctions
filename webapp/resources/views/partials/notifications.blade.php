@@ -1,8 +1,10 @@
 <div id = "notificationsContainer">
     <div id = "notBtn" href = "#">
         <!--Number supports double digets and automaticly hides itself when there is nothing between divs -->
-        <div id = "numberOfNotifications">{{$numUnreadNotifications?:''}}</div>
-        <i id="notificationBell" class="fa fa-bell fa-4x" aria-hidden="true"></i>
+        <div id="notificationsBellContainer">
+            <div id = "numberOfNotifications">{{$numUnreadNotifications?:''}}</div>
+            <i id="notificationBell" class="fa fa-bell fa-4x" aria-hidden="true"></i>
+        </div>
         <div id = "notifications">
             <div class = "display">
                 @if(count($notifications)==0)

@@ -12,7 +12,11 @@
             @break
 
         @case('AuctionEnded')
-            <div class = "notificationContent">Auction {{$notification->auction->name}} ended</div>
+            @if($notification->winner)
+                <div class = "notificationContent">{{$notification->winner}} has won {{$notification->auction->name}}</div>
+            @else
+                <div class = "notificationContent">Auction {{$notification->auction->name}} has ended with no bids</div>
+            @endif
             @break
 
         @case('AuctionEnding')

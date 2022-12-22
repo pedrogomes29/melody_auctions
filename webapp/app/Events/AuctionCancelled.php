@@ -17,6 +17,8 @@ class AuctionCancelled implements ShouldBroadcast
     public $notification_date;
     public $auction;
 
+    public $users;
+
     /**
      * Create a new event instance.
      *
@@ -25,6 +27,7 @@ class AuctionCancelled implements ShouldBroadcast
     public function __construct($date,$auction){
         $this->notification_date=$date;
         $this->auction = $auction;
+        $this->users = $auction->followers()->get();
     }
 
 
@@ -36,11 +39,12 @@ class AuctionCancelled implements ShouldBroadcast
     public function broadcastOn()
     {
 
-        $channels = [new PrivateChannel('users.'.$this->auction->owner_id)];
-        foreach($this->auction->followers()->get() as $follower){
-            array_push($channels,new PrivateChannel('users.'.$follower->id));
+        $channels = [];
+        foreach($this->users as $user){
+            array_push($channels,new PrivateChannel('users.'.$user->id));
         }
 
         return $channels;
+
     }
 }   

@@ -136,7 +136,7 @@ async function markNotificationsAsReadDOM() {
     const nofications = document.getElementById("notifications");
     if (nofications.classList.contains("showNotifications"))
         nofications.classList.remove("showNotifications");
-    window.setInterval(function () {
+    window.setTimeout(function () {
         const auctionNotifications = document.querySelectorAll(".sec");
         [].forEach.call(auctionNotifications, function (auctionNotification) {
             if (auctionNotification.classList.contains("new"))

@@ -20,6 +20,10 @@ class NewBid implements ShouldBroadcast
     public $auction;
     public $bidder;
 
+    public $bid_id;
+
+    private $users;
+
     /**
      * Create a new event instance.
      *
@@ -29,6 +33,9 @@ class NewBid implements ShouldBroadcast
         $this->notification_date=$date;
         $this->auction = $auction;
         $this->bidder = AuthenticatedUser::find($bid->authenticated_user_id)->username;
+        $this->bid_id = $bid->id;
+        $this->users = $this->auction->followers()->where('id', '<>', Auth::id())->get();
+        $this->users->push(AuthenticatedUser::find($this->auction->owner_id));
     }
 
 
@@ -39,13 +46,12 @@ class NewBid implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-
-        $channels = [new PrivateChannel('users.'.$this->auction->owner_id)];
-        foreach($this->auction->followers()->get() as $follower){
-            if($follower->id!=Auth::id())
-                array_push($channels,new PrivateChannel('users.'.$follower->id));
+        $channels = [];
+        foreach($this->users as $user){
+            array_push($channels,new PrivateChannel('users.'.$user->id));
         }
 
         return $channels;
+
     }
 }

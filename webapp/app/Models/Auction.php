@@ -63,7 +63,6 @@ class Auction extends Model
         
         if($bid === null)
             return null;
-        error_log($bid->bidder);
         return $bid->bidder;
     }
 

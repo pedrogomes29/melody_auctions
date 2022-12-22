@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AuctionEnded;
+use App\Events\AuctionEnding;
 use App\Models\Follow;
 use App\Models\Auction;
 use App\Models\Category;
@@ -512,4 +514,30 @@ class AuctionController extends Controller
         return view('partials.bids', ['bids' => $bids]);
     }
 
+
+    public static function notifyEndingFunctions(){
+        $endingAuctions = Auction::where('enddate', '<', date("Y-m-d H:i:s", strtotime('-30 minutes')))
+                                 ->where('already_notified_ending',false)
+                                 ->get();
+        foreach ($endingAuctions as $auction) {
+            $auction->already_notified_ending = true;
+            $auction->save();
+            AuctionEnding::dispatch(now(), $auction);
+        }
+
+    }
+    public static function notifyEndedFunctions(){
+        
+        $endedAuctions = Auction::where('enddate','<',now())
+                                ->where('already_notified_ended',false)->get();
+
+        foreach ($endedAuctions as $auction) {
+            $bidder = $auction->getLastBidder();
+            if($bidder)
+                $auction->winner_id = $bidder->id;
+            $auction->already_notified_ended = true;
+            $auction->save();
+            AuctionEnded::dispatch(now(), $auction);
+        }
+    }
 }

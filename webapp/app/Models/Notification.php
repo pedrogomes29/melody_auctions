@@ -11,7 +11,7 @@ class Notification extends Model
     use HasFactory;
     public $timestamps = false;
 
-    protected function auction(): Attribute
+    public function auction(): Attribute
     {
         return Attribute::make(
             get: function(){
@@ -32,7 +32,7 @@ class Notification extends Model
         );
     }
 
-    protected function bidder(): Attribute{
+    public function bidder(): Attribute{
         return Attribute::make(
             get:function(){
                 $bidNotification = $this->hasOne(BidsNotification::class)->first();

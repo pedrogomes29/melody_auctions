@@ -3,10 +3,9 @@
 namespace App\Listeners;
 
 use App\Events\NewBid;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use App\Http\Controllers\BidsNotificationController;
 
-class SendNewBidNotification
+class StoreBidNotification
 {
     /**
      * Create the event listener.
@@ -26,6 +25,6 @@ class SendNewBidNotification
      */
     public function handle(NewBid $event)
     {
-        //
+        BidsNotificationController::createBidNotification($event->notification_date, $event->bid_id, $event->users);
     }
 }

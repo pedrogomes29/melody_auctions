@@ -61,15 +61,18 @@ function insertNotification(type, auction, notificationDateResponse, bidder) {
     notificationMessage.classList.add("notificationContent");
     switch (type) {
         case "AuctionCancelled":
-            notificationMessage.innerText = `${auction.name} was cancelled`;
+            notificationMessage.innerText = `Auction ${auction.name} was cancelled`;
             break;
 
         case "AuctionEnded":
-            notificationMessage.innerText = `${auction.name} ended`;
+            if (bidder)
+                notificationMessage.innerText = `${binner} has won ${auction.name}`;
+            else
+                notificationMessage.innerText = `Auction ${auction.name} has ended with no bids`;
             break;
 
         case "AuctionEnding":
-            notificationMessage.innerText = `${auction.name} is ending in less than 30 minutes`;
+            notificationMessage.innerText = `Auction ${auction.name} is ending in less than 30 minutes`;
             break;
 
         case "Bid":
@@ -102,6 +105,10 @@ function insertNotification(type, auction, notificationDateResponse, bidder) {
         container.innerHTML = "";
     }
     container.insertBefore(notification, container.firstChild);
+    notification.addEventListener(
+        "click",
+        () => (window.location.href = "/auction/" + auction.id)
+    );
 }
 
 function incrementNotificationCount() {
@@ -112,9 +119,12 @@ function incrementNotificationCount() {
     const count = countHTML ? parseInt(countHTML) : 0;
     numberOfNotifications.innerText = count + 1;
 
-    notificationContainer = document.getElementById("notificationsContainer");
-    notificationContainer.classList.remove("notify");
-    notificationContainer.classList.add("notify");
+    notificationsBellContainer = document.getElementById(
+        "notificationsBellContainer"
+    );
+    notificationsBellContainer.classList.remove("notify");
+    notificationsBellContainer.offsetHeight;
+    notificationsBellContainer.classList.add("notify");
 }
 
 Echo.private(`users.${window.User.id}`).listen("AuctionCancelled", (e) => {
@@ -125,4 +135,19 @@ Echo.private(`users.${window.User.id}`).listen("AuctionCancelled", (e) => {
 Echo.private(`users.${window.User.id}`).listen("NewBid", (e) => {
     incrementNotificationCount();
     insertNotification("Bid", e.auction, e.notification_date, e.bidder);
+});
+
+Echo.private(`users.${window.User.id}`).listen("AuctionEnded", (e) => {
+    incrementNotificationCount();
+    insertNotification(
+        "AuctionEnded",
+        e.auction,
+        e.notification_date,
+        e.winnner
+    );
+});
+
+Echo.private(`users.${window.User.id}`).listen("AuctionEnding", (e) => {
+    incrementNotificationCount();
+    insertNotification("AuctionEnding", e.auction, e.notification_date);
 });

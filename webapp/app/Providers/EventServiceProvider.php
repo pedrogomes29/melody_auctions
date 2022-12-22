@@ -2,6 +2,14 @@
 
 namespace App\Providers;
 
+use App\Events\AuctionCancelled;
+use App\Events\AuctionEnded;
+use App\Events\AuctionEnding;
+use App\Events\NewBid;
+use App\Listeners\StoreAuctionCancelledNotification;
+use App\Listeners\StoreAuctionEndedNotification;
+use App\Listeners\StoreAuctionEndingNotification;
+use App\Listeners\StoreBidNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -18,7 +26,20 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        AuctionCancelled::class=>[
+            StoreAuctionCancelledNotification::class
+        ],
+        AuctionEnded::class=>[
+            StoreAuctionEndedNotification::class
+        ],
+        AuctionEnding::class=>[
+            StoreAuctionEndingNotification::class
+        ],
+        NewBid::class=>[
+            StoreBidNotification::class
         ]
+
     ];
 
     /**
