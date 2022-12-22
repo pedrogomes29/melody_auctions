@@ -106,7 +106,7 @@ use App\Models\Manufactor;
               error_log( $auction);
             ?>
             
-            <input @if (!$auction->isOpen() || !Auth::check()) disabled  @endif type="submit" value="Bid">
+            <input @if (!$auction->isOpen() || !Auth::check() || (Auth::check() && Auth::User()->id === $auction->owner_id)) disabled  @endif type="submit" value="Bid">
             
           </form>
           @if (!$followed)
