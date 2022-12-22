@@ -29,7 +29,7 @@
     </script>
     <script type="text/javascript" src="{{ asset('js/default.js') }}" defer></script>
     <script type="text/javascript" src="{{ asset('js/app.js') }}" defer></script>
-    @if($loggedIn)
+    @if($loggedIn && !$isAdmin)
       <script>
         window.User = {
             id: {{$userId}}

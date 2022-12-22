@@ -164,7 +164,7 @@ a:visited {
 
 #notificationsContainer {
     position: relative;
-    margin-right: 2em;
+    margin-right: 2.5em;
     z-index: 1;
     display: inline-block;
 }
@@ -264,6 +264,7 @@ a:visited {
 }
 
 .notificationPhoto {
+    margin-top: 3px;
     padding-left: 15px;
 }
 

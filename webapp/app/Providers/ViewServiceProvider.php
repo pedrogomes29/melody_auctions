@@ -35,7 +35,7 @@ class ViewServiceProvider extends ServiceProvider
             else{
                 $isAdmin = (bool) Auth::guard('admin')->user();
                 if($isAdmin){
-                    $profilePic = Auth::guard('admin')->user()->photo != "" ?:
+                    $profilePic = Auth::guard('admin')->user()->photo?:
                         'default_images/default.jpg';
                     $identificator = Auth::guard('admin')->user()->id;
                     $view->with('loggedIn',true)
@@ -44,7 +44,8 @@ class ViewServiceProvider extends ServiceProvider
                     ->with('identificator',$identificator);
                 }
                 else{
-                    $profilePic = Auth::user()->photo !=""?:
+                    
+                    $profilePic = Auth::user()->photo ?:
                         'default_images/default.jpg';
                     try{
                         DB::beginTransaction();

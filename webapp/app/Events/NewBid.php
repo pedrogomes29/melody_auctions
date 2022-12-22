@@ -22,7 +22,7 @@ class NewBid implements ShouldBroadcast
 
     public $bid_id;
 
-    private $users;
+    public $users;
 
     /**
      * Create a new event instance.
