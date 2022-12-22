@@ -21,4 +21,8 @@ class AuthenticatedUser extends Authenticatable
     public function followed_auctions() {
         return $this->belongsToMany(Auction::class,'follows');
     }
+
+    public function notifications(){
+        return $this->belongsToMany(Notification::class);
+    }
 }

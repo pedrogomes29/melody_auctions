@@ -24,6 +24,10 @@ class Auction extends Model
         return $this->hasMany(Bid::class)->orderBy('value', 'desc');
     }
 
+    public function followers() {
+        return $this->belongsToMany(AuthenticatedUser::class,'follows');
+    }
+
     public function bids_offset(int $offset){
         return $this->bids()->getQuery()->offset($offset*10)->limit(10)->get();
     }
@@ -59,7 +63,6 @@ class Auction extends Model
         
         if($bid === null)
             return null;
-        error_log($bid->bidder);
         return $bid->bidder;
     }
 

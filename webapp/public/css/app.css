@@ -64,12 +64,12 @@ body header {
     font-size: 1.88rem;
 }
 
-#user-profile:hover,
-#admin-profile:hover {
+#user-profile > img:hover,
+#admin-profile > img:hover {
     cursor: pointer;
 }
-#user-profile img,
-#admin-profile img {
+#user-profile > img,
+#admin-profile > img {
     height: 60px;
     width: 60px;
 }
@@ -133,4 +133,247 @@ body {
 
 body > main {
     flex-grow: 1;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:visited {
+    color: black;
+}
+
+#notifications:hover::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+
+#notifications:hover::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+
+#notifications:hover::-webkit-scrollbar-thumb {
+    background-color: black;
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+#notificationsContainer {
+    position: relative;
+    margin-right: 2em;
+    z-index: 1;
+    display: inline-block;
+}
+
+#numberOfNotifications {
+    height: 2em;
+    width: 2em;
+    background-color: #fa3e3e;
+    border-radius: 1.5em;
+    color: white;
+    text-align: center;
+    position: absolute;
+    top: 1%;
+    right: 1%;
+    padding: 0.2em;
+}
+
+#numberOfNotifications:empty {
+    display: none;
+}
+
+#notBtn {
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+#notifications:hover {
+    overflow-y: scroll;
+}
+
+#notifications {
+    width: 400px;
+    height: 0px;
+    border-radius: 10px;
+    transition: 0.5s;
+    position: absolute;
+    overflow-y: hidden;
+    padding: 0px;
+    right: -30%;
+    margin-top: 5px;
+    background-color: #f4f4f4;
+    -webkit-box-shadow: 10px 10px 23px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 10px 10px 23px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 10px 10px 23px 0px rgba(0, 0, 0, 0.1);
+}
+
+#notifications.showNotifications {
+    height: 60vh;
+}
+
+.content {
+    padding: 20px;
+    color: black;
+    vertical-align: middle;
+    text-align: left;
+}
+
+.display {
+    position: relative;
+}
+
+.cont {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+}
+
+.cont:empty {
+    display: none;
+}
+
+.stick {
+    text-align: center;
+    display: block;
+    font-size: 50pt;
+    padding-top: 70px;
+    padding-left: 80px;
+}
+
+.stick:hover {
+    color: black;
+}
+
+.cent {
+    text-align: center;
+    display: block;
+    margin-top: 2em;
+}
+
+.sec {
+    padding: 25px 10px;
+    background-color: #f4f4f4;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.notificationPhoto {
+    padding-left: 15px;
+}
+
+.auctionPhoto {
+    -webkit-clip-path: circle(50% at 50% 50%);
+    clip-path: circle(50% at 50% 50%);
+    width: 75px;
+    height: 45px;
+    float: left;
+}
+
+.fa-bell:hover {
+    color: #d63031;
+}
+.notificationContent {
+    vertical-align: top;
+    font-size: 1.25rem;
+    padding: 5px 10px 0px 115px;
+}
+
+.sub {
+    font-size: 1rem;
+    color: grey;
+}
+
+.new {
+    border-style: none none solid none;
+    border-color: red;
+}
+
+.sec:hover {
+    background-color: #bfbfbf;
+}
+
+@keyframes ring {
+    0% {
+        transform: rotate(0);
+    }
+    1% {
+        transform: rotate(30deg);
+    }
+    3% {
+        transform: rotate(-28deg);
+    }
+    5% {
+        transform: rotate(34deg);
+    }
+    7% {
+        transform: rotate(-32deg);
+    }
+    9% {
+        transform: rotate(30deg);
+    }
+    11% {
+        transform: rotate(-28deg);
+    }
+    13% {
+        transform: rotate(26deg);
+    }
+    15% {
+        transform: rotate(-24deg);
+    }
+    17% {
+        transform: rotate(22deg);
+    }
+    19% {
+        transform: rotate(-20deg);
+    }
+    21% {
+        transform: rotate(18deg);
+    }
+    23% {
+        transform: rotate(-16deg);
+    }
+    25% {
+        transform: rotate(14deg);
+    }
+    27% {
+        transform: rotate(-12deg);
+    }
+    29% {
+        transform: rotate(10deg);
+    }
+    31% {
+        transform: rotate(-8deg);
+    }
+    33% {
+        transform: rotate(6deg);
+    }
+    35% {
+        transform: rotate(-4deg);
+    }
+    37% {
+        transform: rotate(2deg);
+    }
+    39% {
+        transform: rotate(-1deg);
+    }
+    41% {
+        transform: rotate(1deg);
+    }
+
+    43% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+#notificationsBellContainer.notify {
+    animation: ring 4s ease-in-out;
 }
