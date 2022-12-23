@@ -22,6 +22,6 @@ class Bid extends Model
      * Get the  auction.
      */
     public function auction(){
-        return $this->belongsTo(auction::class, 'auction_id');
+        return $this->belongsTo(Auction::class, 'auction_id');
     }
 }

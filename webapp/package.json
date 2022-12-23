@@ -19,5 +19,8 @@
         "postcss": "^8.1.14",
         "pusher-js": "^7.5.0",
         "sass": "^1.32.11"
+    },
+    "dependencies": {
+        "bootstrap-icons": "^1.10.2"
     }
 }

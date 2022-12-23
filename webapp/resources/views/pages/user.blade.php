@@ -122,7 +122,13 @@
                 </div>
             @endif
             <div class="tab-pane fade" id="nav-bids" role="tabpanel" hash="bids" aria-labelledby="nav-bids-tab" tabindex="0">
-                @include('partials.profile.bids', ['user' => $user])
+                    
+                    <?php
+                        $order = app('request')->input('order') ?? '';
+                        $sort = app('request')->input('sort') ?? '';
+                        $bids = $user->bids($order, $sort);
+                    ?>
+                    @include('partials.profile.bids', ['user' => $user, 'bids' => $bids, 'order' => $order, 'sort' => $sort])
 
             </div>
         </div>
