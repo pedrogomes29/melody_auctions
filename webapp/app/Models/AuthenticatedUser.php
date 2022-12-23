@@ -21,4 +21,11 @@ class AuthenticatedUser extends Authenticatable
     public function followed_auctions() {
         return $this->belongsToMany(Auction::class,'follows');
     }
+
+
+    public function bids(String $order = 'bidsdate', String $direction = 'desc' , int $pageSize = 1){
+        $bids_pag = $this->hasMany(Bid::class,'authenticated_user_id')->orderBy($order, $direction)->paginate($pageSize, ['*'], 'bids');
+        
+        return $bids_pag;
+    }
 }

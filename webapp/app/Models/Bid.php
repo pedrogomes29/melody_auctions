@@ -17,4 +17,11 @@ class Bid extends Model
     public function bidder(){
         return $this->belongsTo(AuthenticatedUser::class, 'authenticated_user_id');
     }
+
+    /**
+     * Get the  auction.
+     */
+    public function auction(){
+        return $this->belongsTo(auction::class, 'auction_id');
+    }
 }

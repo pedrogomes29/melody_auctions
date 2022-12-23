@@ -1,9 +1,11 @@
 @extends('layouts.app')
 @section('scripts')
+    <script type="text/javascript" src="{{ asset('js/tabs.js') }}" defer></script>
     <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/user_profile.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/auctions.js') }}" defer> </script>
-    <script src="{{ asset('js/edit.js') }}" defer></script>
+    <script type="text/javascript" src="{{ asset('js/bids.js') }}" defer> </script>
+    <script type="text/javascript" src="{{ asset('js/edit.js') }}" defer></script>
 @endsection
 @section('styles')
     <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
@@ -97,29 +99,32 @@
     <section id="profile_options" class="w-100">
         <nav>
         <div class="nav nav-tabs mb-2" id="nav-tab" role="tablist">
-            <button class="nav-link active" id="nav-auctions-tab" data-bs-toggle="tab" data-bs-target="#nav-auctions" type="button" role="tab" aria-controls="nav-auctions" aria-selected="true">Auctions owned</button>
-            <button class="nav-link" id="nav-followed-tab" data-bs-toggle="tab" data-bs-target="#nav-followed" type="button" role="tab" aria-controls="nav-followed" aria-selected="false">Followed Auctions</button>
+            <button class="nav-link active text-dark" id="nav-auctions-tab" hash="auctions" data-bs-toggle="tab" data-bs-target="#nav-auctions" type="button" role="tab" aria-controls="nav-auctions" aria-selected="true">Auctions owned</button>
+            <button class="nav-link text-dark" id="nav-followed-tab" hash="follows" data-bs-toggle="tab" data-bs-target="#nav-followed" type="button" role="tab" aria-controls="nav-followed" aria-selected="false">Followed Auctions</button>
             
             @if(Auth::id() == $user->id || Auth::guard('admin')->user())
-                <button class="nav-link" id="nav-edit-tab" data-bs-toggle="tab" data-bs-target="#nav-edit" type="button" role="tab" aria-controls="nav-edit" aria-selected="false">Edit Profile</button>
+                <button class="nav-link text-dark" id="nav-edit-tab" hash="edit" data-bs-toggle="tab" data-bs-target="#nav-edit" type="button" role="tab" aria-controls="nav-edit" aria-selected="false">Edit Profile</button>
             @endif
-            <button class="nav-link" id="nav-disabled-tab" data-bs-toggle="tab" data-bs-target="#nav-disabled" type="button" role="tab" aria-controls="nav-disabled" aria-selected="false" disabled>Disabled</button>
+            <button class="nav-link text-dark" id="nav-bids-tab" hash="bids" data-bs-toggle="tab" data-bs-target="#nav-bids" type="button" role="tab" aria-controls="nav-bids" aria-selected="false" >My Bids</button>
         </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-auctions" role="tabpanel" aria-labelledby="nav-auctions-tab" tabindex="0">
+            <div class="tab-pane fade show active" id="nav-auctions" hash="auctions" role="tabpanel" aria-labelledby="nav-auctions-tab" tabindex="0">
                 @include('partials.profile.auctions_owned', ['auctions' => $auctions])
             </div>
-            <div class="tab-pane fade" id="nav-followed" role="tabpanel" aria-labelledby="nav-followed-tab" tabindex="0">
+            <div class="tab-pane fade" id="nav-followed" role="tabpanel" hash="follows" aria-labelledby="nav-followed-tab" tabindex="0">
                 @include('partials.profile.follows', ['auctions' => $user->followed_auctions])
             </div>
             
             @if(Auth::id() == $user->id || Auth::guard('admin')->user())
-                <div class="tab-pane fade" id="nav-edit" role="tabpanel" aria-labelledby="nav-edit-tab" tabindex="0">  
+                <div class="tab-pane fade" id="nav-edit" role="tabpanel" hash="edit" aria-labelledby="nav-edit-tab" tabindex="0">  
                     @include('partials.profile.edit', ['user' => $user, 'errors' => $errors])
                 </div>
             @endif
-            <div class="tab-pane fade" id="nav-disabled" role="tabpanel" aria-labelledby="nav-disabled-tab" tabindex="0">...</div>
+            <div class="tab-pane fade" id="nav-bids" role="tabpanel" hash="bids" aria-labelledby="nav-bids-tab" tabindex="0">
+                @include('partials.profile.bids', ['user' => $user])
+
+            </div>
         </div>
         
     </section>

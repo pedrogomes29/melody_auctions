@@ -81,7 +81,7 @@ class BidController extends Controller
             $bid->save();
             
             DB::commit();
-            event(new NewBidNotification( $bid )); // send bid notification to all users in the auction
+            //event(new NewBidNotification( $bid )); // send bid notification to all users in the auction
         
         // guarda na base de dados
         }catch(PDOException $e){
