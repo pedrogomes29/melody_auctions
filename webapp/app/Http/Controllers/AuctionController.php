@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AuctionEnded;
+use App\Events\AuctionEnding;
 use App\Models\Follow;
 use App\Models\Auction;
 use App\Models\Category;
@@ -12,9 +14,9 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-
 use PDOException;
 use Carbon\Carbon;	
+use App\Events\AuctionCancelled;
 
 class AuctionController extends Controller
 {
@@ -165,7 +167,7 @@ class AuctionController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
+     *  the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Auction  $auction
@@ -260,6 +262,7 @@ class AuctionController extends Controller
         if ($auction->notStarted()){
             $auction->cancelled = 1;
             $auction->save();
+            AuctionCancelled::dispatch(now(),$auction);
             return response('Deleted', 200);
         } else {
             return response()->json(['error' => 'Cannot delete an auction that has already started'], 400);
@@ -287,15 +290,15 @@ class AuctionController extends Controller
         }
 
         if ($auction->notStarted()){
-            // $image_path = $request->file('photo')->store('auctions','public');
-            $file = $request->file('photo');
+            $image_path = AuctionController::uploadImage($request);
+            
+            error_log("updatePhoto");
+            /*$file = $request->file('photo');
             $image_path= date('YmdHi').$file->getClientOriginalName();
             $file->move(public_path('images/auction'), $image_path);
-
-            $auction->photo = 'images/auction/'.$image_path;
+            */
+            $auction->photo = $image_path;
             $auction->save();
-            error_log($auction);
-    
             return response('Updated Photo', 200);
         } 
 
@@ -320,6 +323,7 @@ class AuctionController extends Controller
         $auction = Auction::find($id);
         $auction->cancelled = 1;
         $auction->save();
+        AuctionCancelled::dispatch(now(),$auction);
         return redirect('admin/');
     }
   
@@ -338,14 +342,14 @@ class AuctionController extends Controller
     private function uploadImage($request ){
         //TODO resize img
        
-        $file = $request->file('photo');
+        /*$file = $request->file('photo');
         $image_path= date('YmdHi').$file->getClientOriginalName();
         $file->move(public_path('images/auction'), $image_path);
 
-        return 'images/auction/'.$image_path;
+        return 'images/auction/'.$image_path;*/
 
         //TROCAMOS PQ NO SERVIDOR DE LBAW APAGA AS FOTOS DE 30 EM 30 MIN
-        //return $request->file('photo')->store('image', 'public');
+        return 'storage/' . $request->file('photo')->store('image', 'public');
     }
 
     /**
@@ -512,4 +516,30 @@ class AuctionController extends Controller
         return view('partials.bids', ['bids' => $bids]);
     }
 
+
+    public static function notifyEndingFunctions(){
+        $endingAuctions = Auction::where('enddate', '<', date("Y-m-d H:i:s", strtotime('-30 minutes')))
+                                 ->where('already_notified_ending',false)
+                                 ->get();
+        foreach ($endingAuctions as $auction) {
+            $auction->already_notified_ending = true;
+            $auction->save();
+            AuctionEnding::dispatch(now(), $auction);
+        }
+
+    }
+    public static function notifyEndedFunctions(){
+        
+        $endedAuctions = Auction::where('enddate','<',now())
+                                ->where('already_notified_ended',false)->get();
+
+        foreach ($endedAuctions as $auction) {
+            $bidder = $auction->getLastBidder();
+            if($bidder)
+                $auction->winner_id = $bidder->id;
+            $auction->already_notified_ended = true;
+            $auction->save();
+            AuctionEnded::dispatch(now(), $auction);
+        }
+    }
 }

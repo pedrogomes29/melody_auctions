@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDOException; 
 use Auth;
-
+use App\Events\NewBid;
 class BidController extends Controller
 {
 
@@ -81,6 +81,7 @@ class BidController extends Controller
             $bid->save();
             
             DB::commit();
+            NewBid::dispatch(now(),Auction::find($id),$bid);
         }catch(PDOException $e){
             error_log($e->getMessage());
             

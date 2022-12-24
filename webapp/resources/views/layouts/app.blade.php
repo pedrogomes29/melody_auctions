@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
-   <head>
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,9 +27,18 @@
         // Fix for Firefox autofocus CSS bug
         // See: http://stackoverflow.com/questions/18943276/html-5-autofocus-messes-up-css-loading/18945951#18945951
     </script>
+    <script type="text/javascript" src="{{ asset('js/default.js') }}" defer></script>
     <script type="text/javascript" src="{{ asset('js/app.js') }}" defer></script>
+    @if($loggedIn && !$isAdmin)
+      <script>
+        window.User = {
+            id: {{$userId}}
+        }
+      </script>
+    @endif
     @yield('scripts')
   </head>
+
     <body>
 
       <header class="d-flex flex-row justify-content-between align-items-center pb-3 mb-5">
@@ -71,21 +80,12 @@
             </ul>
           </div>
         </div>
-        @if (Auth::check())
-          <div id= "user-profile" class="{{Auth::user()->username}} profile-userpic me-3">
-              @if (Auth::user()->photo !="")
-                <img class="rounded-circle" src="{{ asset(Auth::user()->photo) }}" class="profilepic" alt="User Image">
-              @else
-                <img class="rounded-circle" src="{{ asset('default_images/default.jpg') }}"class="default_profilepic" alt="User Image">
-              @endif
-          </div>
-        @elseif(Auth::guard('admin')->user())
-          <div id= "admin-profile" class="{{Auth::guard('admin')->user()->id  }} profile-userpic me-3">
-            @if ( Auth::guard('admin')->user()->photo!="")
-              <img class="rounded-circle" src="{{ asset(Auth::guard('admin')->user()->photo) }}" class="profilepic" alt="User Image">
-            @else
-              <img class="rounded-circle" src="{{ asset('default_images/default.jpg') }}"class="default_profilepic" alt="User Image">
-            @endif
+        @if ($loggedIn)
+          @if(!$isAdmin)
+            @include('partials.notifications', ['notifications' => $notifications])
+          @endif
+          <div id= "{{ $isAdmin?'admin':'user' }}-profile" class="{{$identificator}} profile-userpic me-3">
+            <img class="rounded-circle" src="{{ asset($profilePic) }}" class="profilepic" alt="User Image">
           </div>
         @else
           <a id="login" class="button me-5" href="{{ url('/login') }}"> Log in </a>
@@ -95,6 +95,9 @@
         <section id="content">
           @yield('content')
         </section>
+        <div aria-live="polite" aria-atomic="true" class="position-relative">
+          <div id="toast-container" class="toast-container top-0 end-0 p-3"></div>
+        </div>
       </main>
         <footer class="py-3 my-4">
           <ul class="nav justify-content-center border-bottom pb-3 mb-3">

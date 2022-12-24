@@ -84,5 +84,11 @@ Route::get('user/{username}/follow', 'FollowController@showFollows')->name('user
 Route::post('api/auction/{auction_id}/bid', 'BidController@create')->where('auction_id', '[0-9]+')->name('bid.create');
 Route::get('api/auction/{auction_id}/bid', 'AuctionController@bids')->where('auction_id', '[0-9]+')->name('bid.list');
 
+
 // Reviews
 Route::get('user/{username}/reviews', 'ReviewController@showReviews')->name('user.reviews');
+
+
+//notifications
+Route::put('api/notifications/{userId}','NotificationController@markAsRead')->name('notifications.markAsRead');
+
