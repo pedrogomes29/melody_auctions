@@ -12,6 +12,7 @@ class ReviewController extends Controller
 {
     public function showReviews($username){
         $userID = AuthenticatedUser::where('username', $username)->firstOrFail()->id;
-        $reviews = Review::where('reviewed_user_id', $userID)->get();
+        $reviews = Review::where('reviewed_id', $userID)->get();
+        return view('pages.userReviews', ['reviews' => $reviews]);
     }
 }

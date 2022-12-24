@@ -16,6 +16,9 @@ class AuthenticatedUser extends Authenticatable
     public function auctions(){
         return $this->hasMany(Auction::class,'owner_id');
     }
+    public function reviews(){
+        return $this->hasMany(Review::class,'reviewer_id');
+    }
 
 
     public function followed_auctions() {

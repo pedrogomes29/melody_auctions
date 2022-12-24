@@ -242,16 +242,16 @@ Drop TABLE if exists reviews cascade;
 
 CREATE TABLE reviews (
 	id serial4 NOT NULL,
-	reviewserid int4 NOT NULL,
-	reviewsedid int4 NOT NULL,
+	reviewer_id int4 NOT NULL,
+	reviewed_id int4 NOT NULL,
 	reviewsdate date NOT NULL DEFAULT CURRENT_DATE,
 	"comment" varchar(250) NULL,
 	rating int4 NOT NULL,
 	CONSTRAINT reviews_pkey PRIMARY KEY (id),
 	CONSTRAINT reviews_rating_check CHECK (((0 < rating) AND (rating <= 5))),
-	CONSTRAINT reviews_reviewsedid_fkey FOREIGN KEY (reviewsedid) REFERENCES authenticated_users
+	CONSTRAINT reviews_reviewed_id_fkey FOREIGN KEY (reviewed_id) REFERENCES authenticated_users
 (id),
-	CONSTRAINT reviews_reviewserid_fkey FOREIGN KEY (reviewserid) REFERENCES authenticated_users
+	CONSTRAINT reviews_reviewer_id_fkey FOREIGN KEY (reviewer_id) REFERENCES authenticated_users
 (id)
 );
 
@@ -639,9 +639,9 @@ insert into follows (authenticated_user_id, auction_id) values (5, 11);
 
 
 --reviews
-insert into reviews (id, reviewserid, reviewsedid, reviewsdate, comment, rating) values (1, 1, 2, '2022-11-7 14:12:15.544', 'Muito bom', 5);
-insert into reviews (id, reviewserid, reviewsedid, reviewsdate, comment, rating) values (2, 2, 3, '2022-12-5 15:13:43.432', 'Muito bom', 5);
-insert into reviews (id, reviewserid, reviewsedid, reviewsdate, comment, rating) values (3, 3, 4, '2022-10-4 16:43:23.561', 'Muito bom', 5);
+insert into reviews (id, reviewer_id, reviewed_id, reviewsdate, comment, rating) values (1, 1, 2, '2022-11-7 14:12:15.544', 'Muito bom', 5);
+insert into reviews (id, reviewer_id, reviewed_id, reviewsdate, comment, rating) values (2, 2, 3, '2022-12-5 15:13:43.432', 'Muito bom', 5);
+insert into reviews (id, reviewer_id, reviewed_id, reviewsdate, comment, rating) values (3, 3, 4, '2022-10-4 16:43:23.561', 'Muito bom', 5);
 
 
 --notifications
