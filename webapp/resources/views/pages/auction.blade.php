@@ -6,6 +6,7 @@ use App\Models\Manufactor;
 @section('scripts')
     <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/auction.js') }}" defer> </script>
+    <script type="text/javascript" src="{{ asset('js/follow.js') }}" defer> </script>
 @endsection
 
 @section('content')
@@ -107,20 +108,25 @@ use App\Models\Manufactor;
             <input @if (!$auction->isOpen() || !Auth::check()) disabled  @endif type="submit" value="Bid">
             
           </form>
-          @if (!$followed)
-          <form method="post" action ="{{ route('follow.store', ['id' => $auction->id]) }}">
+          <div id="followed-bool" style="display: none">
+            @if(Auth::check())
+              {{$followed}}
+            @endif
+          </div>
+          <div id="auction-id" style="display: none">
+            {{$auction->id}}
+          </div>
+          <form id="follow-form" method="post" action ="{{ route('follow.store', ['id' => $auction->id]) }}" style="display: none">
                {{ csrf_field() }}
                <input type="hidden" name="auction_id" value="{{ $auction->id }}">
                <input @if (!Auth::check()) disabled  @endif type="submit" value="Follow">
           </form>
-          @else
-          <form method="post" action ="{{ route('follow.destroy', ['id' => $auction->id]) }}">
+          <form id="unfollow-form" method="post" action ="{{ route('follow.destroy', ['id' => $auction->id]) }}" style="display: none">
                {{ csrf_field() }}
                {{ method_field('DELETE') }}
                <input type="hidden" name="auction_id" value="{{ $auction->id }}">
                <input @if (!Auth::check()) disabled  @endif type="submit" value="Unfollow">
           </form>
-          @endif
           <section id="bidding_section">
 
             <a class="btn "  data-bs-toggle="collapse" href="#bid_list" role="button" aria-expanded="false" aria-controls="bid_list">
