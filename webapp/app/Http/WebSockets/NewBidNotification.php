@@ -1,12 +1,13 @@
 <?php
-namespace App\Http\Controllers\WebSockets;
+namespace App\Http\WebSockets;
 
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use App\Models\Bid;
 
-class NewBid implements ShouldBroadcast
+class NewBidNotification implements ShouldBroadcast
 {
   use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -14,7 +15,9 @@ class NewBid implements ShouldBroadcast
 
   public function __construct(Bid $bid)
   {
-      $this->message = $message;
+      $this->bid = $bid;
+      $bidder = $bid->bidder;
+    
   }
 
   public function broadcastOn()

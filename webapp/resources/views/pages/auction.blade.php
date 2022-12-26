@@ -76,13 +76,15 @@ use App\Models\Manufactor;
           @endif
 
 
-          <p><strong>Current Price:</strong> {{ $auction->currentprice ?? $auction->startprice }}</p>
+          <p><strong>Current Price:</strong> <span id="current_price"> {{ $auction->currentprice ?? $auction->startprice }} €</span></p>
           <p><strong>Last Bidder:</strong> 
+            <span id="last_bidder">
             @if ($last_bidder)
              <a href="{{url('/user/'.$last_bidder->username)}}">{{$last_bidder->firstname . ' '. $last_bidder->lastname }}</a>
             @else
               No one has bid yet.
             @endif
+            </span>
             </p>
           <form action="{{ url('api/auction/'.$auction->id.'/bid') }}" class="mb-1" method="post" >
             <div class="input-group mb-3">
@@ -133,10 +135,11 @@ use App\Models\Manufactor;
 
             <div class="collapse" id ="bid_list">
     
-              <div id="bidding_history" class="list-group mt-1">
+              <div  class="list-group mt-1">
                 <h3>Bidding History</h3>
-                @include('partials.bids', ['bids' => $auction->bids_offset(0)])
-                
+                <div id="bidding_history">
+                  @include('partials.bids', ['bids' => $auction->bids_offset(0)])
+                </div>
                 
               </div>
               <div id="loading" class="spinner-border " style="display:none" role="status">

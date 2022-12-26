@@ -5,7 +5,8 @@ function convert_bids_localtime(){
     for (var i = 0; i < bids.length; i++) {
         let bid_date = bids[i];        
         // convert bid time to local time
-        const date = new Date(bid_date.innerHTML + ' UTC');
+        console.log('Date:');
+        const date = new Date(new Date(bid_date.innerHTML).getTime() - new Date().getTimezoneOffset()*60*1000);
         bids[i].innerHTML = date.toLocaleString();
     }
 }

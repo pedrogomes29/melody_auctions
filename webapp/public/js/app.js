@@ -137,7 +137,7 @@ async function load_more_bids(ev) {
             );
             if (bidding_history && response != "") {
                 bidding_history.innerHTML += response;
-                ev.target.setAttribute("data-offset", offset + 1);
+                ev.target.setAttribute("data-offset", parseInt(offset) + 1);
             }
         }
         loading.style.display = "none";

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDOException; 
 use Auth;
+use App\Http\WebSockets\NewBidNotification;
 
 class BidController extends Controller
 {
@@ -81,7 +82,7 @@ class BidController extends Controller
             $bid->save();
             
             DB::commit();
-            //event(new NewBidNotification( $bid )); // send bid notification to all users in the auction
+            event(new NewBidNotification( $bid )); // send bid notification to all users in the auction
         
         // guarda na base de dados
         }catch(PDOException $e){
