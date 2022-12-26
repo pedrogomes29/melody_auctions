@@ -3,6 +3,7 @@
     <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/user_profile.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/auctions.js') }}" defer> </script>
+    <script type="text/javascript" src="{{ asset('js/review.js') }}" defer> </script>
     <script src="{{ asset('js/edit.js') }}" defer></script>
 @endsection
 @section('styles')
@@ -66,11 +67,6 @@
                     <button id="editprofile" class="btn btn-primary">
                         Edit Info
                     </button>
-                @endif
-                @if (Auth::id() && Auth::id() != $user->id)
-                <button id="review-btn" class="btn btn-primary">
-                    Review User
-                </button>
                 @endif
                     <a href="{{route('user.follows', $user->username)}}"> <button id="showFollowedAuctions" class="btn btn-primary">Show Followed Auctions</button> </a>
                     <a href="{{route('user.reviews', $user->username)}}"> <button id="showReviews" class="btn btn-primary">Show User Reviews</button> </a>
@@ -143,7 +139,32 @@
                     <button id="add" type="submit" class="btn btn-primary">Add</button>
                 </form>
             </div>
-        @endif
+            @endif
+            @if (Auth::id() && Auth::id() != $user->id)
+            <button id="review-button" class="btn btn-primary">Review</button>
+            <div id="review">
+                <form style="display:none" id="review-form" method="POST" action="{{ route('review.create', $user->username) }}">
+                    {{ csrf_field() }}
+                    <label for="rating">Rating</label>
+                    <input id="rating" type="number" name="rating" value="5" min="1" max="5" required autofocus>
+                    @if ($errors->has('rating'))
+                    <span class="error">
+                        {{ $errors->first('rating') }}
+                    </span>
+                    @endif
+
+                    <label for="comment">Review</label>
+                    <textarea id="comment" name="comment" autofocus></textarea>
+                    @if ($errors->has('review'))
+                    <span class="error">
+                        {{ $errors->first('review') }}
+                    </span>
+                    @endif
+                    <button type="submit" class="btn btn-primary">
+                        Review
+                    </button>
+                </form>
+            @endif
         </section>
 
         <!--

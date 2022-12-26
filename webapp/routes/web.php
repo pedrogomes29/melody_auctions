@@ -87,6 +87,7 @@ Route::get('api/auction/{auction_id}/bid', 'AuctionController@bids')->where('auc
 
 // Reviews
 Route::get('user/{username}/reviews', 'ReviewController@showReviews')->name('user.reviews');
+Route::post('/user/{username}/review', 'ReviewController@create')->name('review.create');
 
 
 //notifications
