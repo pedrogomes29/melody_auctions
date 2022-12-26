@@ -108,6 +108,20 @@ class UserProfileController extends Controller
         $user->save();
         return view('pages.user', ['user' => $user]);
     }
+
+    public function getBids(Request $request,  $username){
+        error_log("getBids1 " . $username);
+        $user = AuthenticatedUser::where('username',$username)->firstOrFail();
+        error_log("getBids2");
+        $order = $request->input('order') ?? 'date';
+        error_log("getBids3");
+        $sort = $request->input('sort') ?? 'desc';
+        error_log("getBids4");
+        // return parcial page bids
+
+        return view('partials.profile.bids', ['user'=>$user,'bids' => $user->bids($order, $sort, 10), 'order' => $order, 'sort' => $sort]);
+    }
+
     public function deleteUserProfile($username)
     {
         $id = AuthenticatedUser::where('username',$username)->firstOrFail()->id;

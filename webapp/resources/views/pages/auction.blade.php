@@ -6,7 +6,12 @@ use App\Models\Manufactor;
 @section('scripts')
     <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/auction.js') }}" defer> </script>
+<<<<<<< HEAD
     <script type="text/javascript" src="{{ asset('js/follow.js') }}" defer> </script>
+=======
+    <script src="https://js.pusher.com/7.2/pusher.min.js" defer></script>
+    <script type="text/javascript" src="{{ asset('js/ws_bid.js') }}" defer> </script>
+>>>>>>> bid_sockets
 @endsection
 
 @section('content')
@@ -75,13 +80,15 @@ use App\Models\Manufactor;
           @endif
 
 
-          <p><strong>Current Price:</strong> {{ $auction->currentprice ?? $auction->startprice }}</p>
+          <p><strong>Current Price:</strong> <span id="current_price"> {{ $auction->currentprice ?? $auction->startprice }} €</span></p>
           <p><strong>Last Bidder:</strong> 
+            <span id="last_bidder">
             @if ($last_bidder)
              <a href="{{url('/user/'.$last_bidder->username)}}">{{$last_bidder->firstname . ' '. $last_bidder->lastname }}</a>
             @else
               No one has bid yet.
             @endif
+            </span>
             </p>
           <form action="{{ url('api/auction/'.$auction->id.'/bid') }}" class="mb-1" method="post" >
             <div class="input-group mb-3">
@@ -105,7 +112,7 @@ use App\Models\Manufactor;
               error_log( $auction);
             ?>
             
-            <input @if (!$auction->isOpen() || !Auth::check()) disabled  @endif type="submit" value="Bid">
+            <input @if (!$auction->isOpen() || !Auth::check() || (Auth::check() && Auth::User()->id === $auction->owner_id)) disabled  @endif type="submit" value="Bid">
             
           </form>
           <div id="followed-bool" style="display: none">
@@ -137,10 +144,11 @@ use App\Models\Manufactor;
 
             <div class="collapse" id ="bid_list">
     
-              <div id="bidding_history" class="list-group mt-1">
+              <div  class="list-group mt-1">
                 <h3>Bidding History</h3>
-                @include('partials.bids', ['bids' => $auction->bids_offset(0)])
-                
+                <div id="bidding_history">
+                  @include('partials.bids', ['bids' => $auction->bids_offset(0)])
+                </div>
                 
               </div>
               <div id="loading" class="spinner-border " style="display:none" role="status">
