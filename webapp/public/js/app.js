@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*
  * ATTENTION: An "eval-source-map" devtool has been used.
  * This devtool is neither made for production nor for readable output files.
@@ -490,7 +489,6 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 	
 /******/ })()
 ;
-=======
 function addEventListeners() {
     const options = document.querySelectorAll(
         "#auctionsOrUsers .dropdown-item"
@@ -673,4 +671,3 @@ function form_create_auction(form){
 
     return true;
 }
->>>>>>> bid_sockets

@@ -21,11 +21,9 @@ class AuthenticatedUser extends Authenticatable
     public function followed_auctions() {
         return $this->belongsToMany(Auction::class,'follows');
     }
-
-<<<<<<< HEAD
     public function notifications(){
         return $this->belongsToMany(Notification::class);
-=======
+    }
 
     public function bids(String $order = 'bidsdate', String $direction = 'desc' , int $pageSize = 10){
         if($direction != 'asc' && $direction != 'desc')
@@ -36,9 +34,7 @@ class AuthenticatedUser extends Authenticatable
         if($order == 'auction')
             return $this->hasMany(Bid::class,'authenticated_user_id')->join('auctions', 'bids.auction_id', '=', 'auctions.id')
                             ->select('bids.*')->orderBy('auctions.name', $direction)->paginate($pageSize, ['*'], 'bids'); 
-            
         else
             return $this->hasMany(Bid::class,'authenticated_user_id')->orderBy($order, $direction)->paginate($pageSize, ['*'], 'bids');
->>>>>>> bid_sockets
     }
 }
