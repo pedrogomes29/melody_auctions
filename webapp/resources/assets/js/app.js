@@ -127,27 +127,29 @@ function incrementNotificationCount() {
     notificationsBellContainer.classList.add("notify");
 }
 
-Echo.private(`users.${window.User.id}`).listen("AuctionCancelled", (e) => {
-    incrementNotificationCount();
-    insertNotification("AuctionCancelled", e.auction, e.notification_date);
-});
+if (window.User) {
+    Echo.private(`users.${window.User.id}`).listen("AuctionCancelled", (e) => {
+        incrementNotificationCount();
+        insertNotification("AuctionCancelled", e.auction, e.notification_date);
+    });
 
-Echo.private(`users.${window.User.id}`).listen("NewBid", (e) => {
-    incrementNotificationCount();
-    insertNotification("Bid", e.auction, e.notification_date, e.bidder);
-});
+    Echo.private(`users.${window.User.id}`).listen("NewBid", (e) => {
+        incrementNotificationCount();
+        insertNotification("Bid", e.auction, e.notification_date, e.bidder);
+    });
 
-Echo.private(`users.${window.User.id}`).listen("AuctionEnded", (e) => {
-    incrementNotificationCount();
-    insertNotification(
-        "AuctionEnded",
-        e.auction,
-        e.notification_date,
-        e.winnner
-    );
-});
+    Echo.private(`users.${window.User.id}`).listen("AuctionEnded", (e) => {
+        incrementNotificationCount();
+        insertNotification(
+            "AuctionEnded",
+            e.auction,
+            e.notification_date,
+            e.winnner
+        );
+    });
 
-Echo.private(`users.${window.User.id}`).listen("AuctionEnding", (e) => {
-    incrementNotificationCount();
-    insertNotification("AuctionEnding", e.auction, e.notification_date);
-});
+    Echo.private(`users.${window.User.id}`).listen("AuctionEnding", (e) => {
+        incrementNotificationCount();
+        insertNotification("AuctionEnding", e.auction, e.notification_date);
+    });
+}

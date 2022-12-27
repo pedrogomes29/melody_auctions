@@ -44,36 +44,29 @@ function add_countDown() {
 
 add_countDown();
 
-
-async function  deleteAuction(obj) {
-
+async function deleteAuction(obj) {
     const response = await fetch(obj.getAttribute("data-auction"), {
-        method: 'delete',
+        method: "delete",
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'X-CSRF-TOKEN': obj.getAttribute("data-csrf")
-        }
-      })
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRF-TOKEN": obj.getAttribute("data-csrf"),
+        },
+    });
 
-    if(response.status == 400){
+    if (response.status == 400) {
         const errors = await response.json();
         const popuperror = document.querySelector("#popupError");
         popuperror.innerHTML = errors.error;
         popuperror.style.display = "block";
-        document.querySelector(".modal-body").scrollTop=0
-
-    }
-    else if(response.status == 200){
+        document.querySelector(".modal-body").scrollTop = 0;
+    } else if (response.status == 200) {
         location.reload();
-    }else{
+    } else {
         location.reload();
     }
-
 }
 
-
-async function  updateAuction(obj) {
-
+async function updateAuction(obj) {
     const formElement = document.querySelector("#update");
 
     const data = new URLSearchParams();
@@ -82,71 +75,144 @@ async function  updateAuction(obj) {
     }
 
     const response = await fetch(formElement.action, {
-        method: 'put',
+        method: "put",
         body: data,
         headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'X-CSRF-TOKEN': formElement.querySelector("[name=_token]").value
-    }
-    })
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRF-TOKEN": formElement.querySelector("[name=_token]").value,
+        },
+    });
 
-    if(response.status == 400){
+    if (response.status == 400) {
         const errors = (await response.json()).error;
         const popuperror = document.querySelector("#popupError");
-        if(errors.length > 0){
+        if (errors.length > 0) {
             popuperror.innerHTML = errors[0];
             popuperror.style.display = "block";
-            document.querySelector(".modal-body").scrollTop=0
+            document.querySelector(".modal-body").scrollTop = 0;
         }
-    }
-    else if(response.status == 200){
+    } else if (response.status == 200) {
         location.reload();
-    }else{
+    } else {
         location.reload();
     }
-
 }
 
-
-async function  updatePhoto(event) {
+async function updatePhoto(event) {
     event.preventDefault();
     const formElement = document.querySelector("#store");
     const input = formElement.querySelector("input[type=file]");
-    
-    let data = new FormData()
-    data.append('photo', input.files[0])
+
+    let data = new FormData();
+    data.append("photo", input.files[0]);
 
     const response = await fetch(formElement.action, {
-        method: 'POST',
+        method: "POST",
         body: data,
         headers: {
-        'X-CSRF-TOKEN': formElement.querySelector("[name=_token]").value
-        }
-    })
+            "X-CSRF-TOKEN": formElement.querySelector("[name=_token]").value,
+        },
+    });
 
     console.log(response);
 
-    if(response.status == 400){
-        const errors = (await response.json());
+    if (response.status == 400) {
+        const errors = await response.json();
         const popuperror = document.querySelector("#popupError");
         popuperror.innerHTML = errors.error;
         popuperror.style.display = "block";
-        document.querySelector(".modal-body").scrollTop=0
-        
-    }
-    else if(response.status == 200){
+        document.querySelector(".modal-body").scrollTop = 0;
+    } else if (response.status == 200) {
         location.reload();
     }
-
 }
 
+const msgInput = document.getElementById("messageInput");
+const sendMsgButton = document.getElementById("send-msg-button");
 
-function addEventListeners(){
+function addEventListeners() {
     const updateImageForm = document.querySelector("#store");
 
-    if(updateImageForm){
+    if (updateImageForm) {
         updateImageForm.addEventListener("submit", updatePhoto);
     }
+
+    if (sendMsgButton) {
+        sendMsgButton.addEventListener("click", sendMessage);
+
+        msgInput.addEventListener("keyup", function (event) {
+            event.preventDefault();
+            if (event.key === "Enter") sendMsgButton.click();
+        });
+    }
+}
+
+async function postData(data, url, token) {
+    return fetch(url, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRF-TOKEN": token,
+        },
+        body: encodeForAjax(data),
+    });
+}
+
+function timeSince(date) {
+    const localTime = new Date().getTime();
+    const localOffset = new Date().getTimezoneOffset() * 60000;
+
+    const now = localTime + localOffset;
+
+    const seconds = (now - date) / 1000;
+
+    let interval = seconds / 31536000;
+
+    if (interval > 1) {
+        return `${Math.floor(interval)} year${interval >= 2 ? "s" : ""} ago`;
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+        return `${Math.floor(interval)} month${interval >= 2 ? "s" : ""} ago`;
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+        return `${Math.floor(interval)} day${interval >= 2 ? "s" : ""} ago`;
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+        return `${Math.floor(interval)} hour${interval >= 2 ? "s" : ""} ago`;
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+        return `${Math.floor(interval)} minute${interval >= 2 ? "s" : ""} ago`;
+    }
+    if (seconds > 10) return `${Math.floor(interval)} seconds ago`;
+    else return "just now";
+}
+
+function sendMessage() {
+    token = document
+        .querySelector('meta[name="csrf-token"]')
+        .getAttribute("content");
+
+    const data = {
+        text: msgInput.value,
+    };
+
+    msgInput.value = "";
+
+    const url =
+        window.location.protocol +
+        "//" +
+        window.location.host +
+        `/api/auction/${window.Auction.id}/message`;
+
+    postData(data, url, token)
+        .catch(() => console.error("Network Error"))
+        .then((response) => response.json())
+        .catch(() => console.error("Error parsing JSON"))
+        .then((json) => console.log(json));
 }
 
 addEventListeners();

@@ -65,6 +65,9 @@ class Auction extends Model
             return null;
         return $bid->bidder;
     }
-
     
+
+    public function messages(){
+        return $this->hasMany(Message::class)->orderBy('date', 'asc');
+    }
 }

@@ -33,7 +33,7 @@ CREATE TABLE authenticated_users (
 	username varchar(25) NULL,
 	"password" varchar(100) NULL,
 	email varchar(30) NULL,
-	photo varchar(100) NULL,
+	photo varchar(100) DEFAULT '',
 	description varchar(200) NULL,
 	contact varchar(15) NULL,
 	balance int NULL,
@@ -211,7 +211,7 @@ CREATE TABLE messages (
 	id serial4 NOT NULL,
 	authenticated_user_id int4 NOT NULL,
 	auction_id int4 NOT NULL,
-	"text" text NULL,
+	"text" text NOT NULL,
 	"date" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT messages_pkey PRIMARY KEY (id),
 	CONSTRAINT messages_auction_id_fkey FOREIGN KEY (auction_id) REFERENCES auctions(id),
@@ -606,15 +606,23 @@ insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdat
 
 --messages :)
 insert into messages (id, authenticated_user_id, auction_id, text, date) values (1, 3, 4, 'Olá tudo bem?', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (2, 3, 5, 'Que informções deseja?','2022-11-18 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (3, 1, 3, 'Em que estado o artigo se encontra?', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (4, 2, 3, 'Qual a cor do interior do violino?', '2022-11-4 12:00:00.00');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (5, 1, 1, 'Quantos anos tem de uso?', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (6, 1, 1, 'Será necessário algum tipo de arranjo?', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (7, 2, 2, 'O saxofone é tenor ou baixo?', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (8, 3, 4, 'espero que essa guitarra seja da yamaha', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (9, 2, 5, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (10, 1, 3, 'É mesmo giro o clarinete', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (2, 1, 3, 'Em que estado o artigo se encontra?', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (3, 2, 3, 'Qual a cor do interior do violino?', '2022-11-4 12:00:00.00');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (4, 1, 1, 'Quantos anos tem de uso?', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (5, 1, 1, 'Será necessário algum tipo de arranjo?', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (6, 2, 2, 'O saxofone é tenor ou baixo?', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (7, 3, 4, 'espero que essa guitarra seja da yamaha', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (8, 5, 5, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (9, 3, 5, 'Que informções deseja?','2022-11-18 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (10, 5, 5, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (11, 3, 5, 'Que informções deseja?','2022-11-18 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (12, 5, 5, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (13, 3, 5, 'Que informções deseja?','2022-11-18 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (14, 5, 5, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (15, 3, 5, 'Que informções deseja?','2022-11-18 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (16, 5, 5, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (17, 3, 5, 'Que informções deseja?','2022-11-18 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (18, 1, 3, 'É mesmo giro o clarinete', '2022-11-17 12:00:00.321');
 
 --bids :(
 insert into bids (id, auction_id, authenticated_user_id, value, bidsdate) values (1, 6, 3, 20, '2022-11-17 12:00:00.321');

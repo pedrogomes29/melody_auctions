@@ -11,4 +11,6 @@ const mix = require("laravel-mix");
  |
  */
 
-mix.js("resources/assets/js/app.js", "public/js").sourceMaps();
+mix.js("resources/assets/js/app.js", "public/js")
+    .js("resources/assets/js/auction_compilled.js", "public/js")
+    .sourceMaps();
