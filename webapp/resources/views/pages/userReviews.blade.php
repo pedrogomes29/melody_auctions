@@ -2,20 +2,26 @@
 @section('scripts')
     <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
 @endsection
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('css/review.css') }}">
+@endsection
 @section('content')
 <section class="user-reviews" id="user-reviews">
-    <ul class="user-reviews__list">
         @foreach ($reviews as $review)
-            <li class="user-reviews__item">
-                <div class="user-reviews__item__container">
-                    <div class="user-reviews__item__container__info">
-                        <h3 class="reviewer">Reviewer: {{ $review->owner->username }}</h3>
-                        <h3 class="review-date" style="margin-bottom: 0;">Date: {{ $review->reviewsdate }}</h3>
-                        <p class="user-reviews__item__container__info__rating">Rating: {{ $review->rating }}</p>
-                        <article class="user-reviews__item__container__info__review">
-                            <p>{{ $review->comment }}</p>
-                    </div>
-                </div>
-            </li>
+        <article class="review">
+            <header>
+            <h2 class="user"><a href="{{URL('user/'.$review->owner->username)}}">
+                @if ($review->owner->photo)
+                <img src="{{ asset($review->owner->photo) }}" alt="Profile picture" class="rounded-circle" width="50" height="50">
+                @else
+                <img src="{{ asset('default_images/default.jpg') }}" alt="Profile picture" class="rounded-circle" width="50" height="50">
+                @endif
+                &#64{{ $review->owner->username }}
+            </a></h2>
+            <h2 class="score">Score: {{ $review->rating }}/5</h2>
+            <h2 class="date">Date: {{ $review->reviewsdate }}</h2>
+            </header>
+            <p>{{ $review->comment }}</p>
+        </article>
         @endforeach
 @endsection
