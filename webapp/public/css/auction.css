@@ -63,10 +63,10 @@
     cursor: pointer;
 }
 
-#chatboxContent .msg-pfp:hover {
+.msg-pfp:hover {
     cursor: pointer;
 }
-#chatboxContent .msg-pfp {
+.msg-pfp {
     width: 45px;
     height: 100%;
 }
