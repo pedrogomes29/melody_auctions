@@ -105,6 +105,7 @@ body header {
 
 #auction_information {
     display: grid;
+    align-items: center;
     grid-template-columns: 20% 50% 30%;
 }
 

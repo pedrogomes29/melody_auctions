@@ -12,7 +12,7 @@ use App\Models\Manufactor;
 @section('scripts')
     <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/auction.js') }}" defer> </script>
-    <script type="text/javascript" src="{{ asset('js/auction_compilled.js') }}" defer> </script>
+    
     <script>
       window.Auction = {
           id: {{$auction->id}}
@@ -68,90 +68,93 @@ use App\Models\Manufactor;
           {{ $auction->description }}
           </p>
 
-          <?php $last_bidder = $auction->getLastBidder();?>
-          
-          
-          @if (!$auction->cancelled)
-            @if ($auction->isOpen())
-              <p><strong>Auctions ends in </strong> <span date-date="{{ $auction->enddate }}" id="auction_countdown"></span></p>
-            @elseif ($auction->isClosed())
-              <p><strong>Auction ended </strong> {{ $auction->enddate }}</p>
-            @else
-              <p><strong>Auction starts in </strong> <span date-date="{{ $auction->startdate }}" id="auction_countdown"></span></p>
-            @endif
-          @endif
 
-
-          <p><strong>Current Price:</strong> {{ $auction->currentprice ?? $auction->startprice }}</p>
-          <p><strong>Last Bidder:</strong> 
-            @if ($last_bidder)
-             <a href="{{url('/user/'.$last_bidder->username)}}">{{$last_bidder->firstname . ' '. $last_bidder->lastname }}</a>
-            @else
-              No one has bid yet.
-            @endif
-            </p>
-          <form action="{{ url('api/auction/'.$auction->id.'/bid') }}" class="mb-1" method="post" >
-            <div class="input-group mb-3">
-              <span class="input-group-text">€</span>
-              <input type="number" step="0.01" value ="{{ empty($auction->currentprice) ? $auction->startprice : $auction->currentprice + $auction->minbidsdif}}" class="form-control" name="value" placeholder="{{ empty($auction->currentprice) ? $auction->startprice : $auction->currentprice + $auction->minbidsdif}} or up" aria-label="Euro amount (with dot and two decimal places)">
-              {{ csrf_field() }}
-
-            </div>
-            @if ($errors->has('bid_error'))
-              <div class="alert alert-danger" role="alert">
-                {{ $errors->first('bid_error') }}
-              </div>
-            @elseif ($errors->has('bid_success'))
-              <div class="alert alert-success" role="alert">
-                {{ $errors->first('bid_success') }}
-              </div>
-
-            @endif
-            <?php
-              error_log(Auth::User());
-              error_log( $auction);
-            ?>
+          <section id="bid_auction">
+            <?php $last_bidder = $auction->getLastBidder();?>
             
-            <input @if (!$auction->isOpen() || !Auth::check()) disabled  @endif type="submit" value="Bid">
             
-          </form>
-          @if (!$followed)
-          <form method="post" action ="{{ route('follow.store', ['id' => $auction->id]) }}">
-               {{ csrf_field() }}
-               <input type="hidden" name="auction_id" value="{{ $auction->id }}">
-               <input @if (!Auth::check()) disabled  @endif type="submit" value="Follow">
-          </form>
-          @else
-          <form method="post" action ="{{ route('follow.destroy', ['id' => $auction->id]) }}">
-               {{ csrf_field() }}
-               {{ method_field('DELETE') }}
-               <input type="hidden" name="auction_id" value="{{ $auction->id }}">
-               <input @if (!Auth::check()) disabled  @endif type="submit" value="Unfollow">
-          </form>
-          @endif
-          <section id="bidding_section">
-
-            <a class="btn "  data-bs-toggle="collapse" href="#bid_list" role="button" aria-expanded="false" aria-controls="bid_list">
-              Show Bidding List
-            </a>
+            @if (!$auction->cancelled)
+              @if ($auction->isOpen())
+                <p><strong>Auctions ends in </strong> <span date-date="{{ $auction->enddate }}" id="auction_countdown"></span></p>
+              @elseif ($auction->isClosed())
+                <p><strong>Auction ended </strong> {{ $auction->enddate }}</p>
+              @else
+                <p><strong>Auction starts in </strong> <span date-date="{{ $auction->startdate }}" id="auction_countdown"></span></p>
+              @endif
+            @endif
 
 
+            <p><strong>Current Price:</strong> {{ $auction->currentprice ?? $auction->startprice }}</p>
+            <p><strong>Last Bidder:</strong> 
+              @if ($last_bidder)
+              <a href="{{url('/user/'.$last_bidder->username)}}">{{$last_bidder->firstname . ' '. $last_bidder->lastname }}</a>
+              @else
+                No one has bid yet.
+              @endif
+              </p>
+            <form action="{{ url('api/auction/'.$auction->id.'/bid') }}" class="mb-1" method="post" >
+              <div class="input-group mb-3">
+                <span class="input-group-text">€</span>
+                <input type="number" step="0.01" value ="{{ empty($auction->currentprice) ? $auction->startprice : $auction->currentprice + $auction->minbidsdif}}" class="form-control" name="value" placeholder="{{ empty($auction->currentprice) ? $auction->startprice : $auction->currentprice + $auction->minbidsdif}} or up" aria-label="Euro amount (with dot and two decimal places)">
+                {{ csrf_field() }}
 
-            <div class="collapse" id ="bid_list">
-    
-              <div id="bidding_history" class="list-group mt-1">
-                <h3>Bidding History</h3>
-                @include('partials.bids', ['bids' => $auction->bids_offset(0)])
-                
-                
               </div>
-              <div id="loading" class="spinner-border " style="display:none" role="status">
-                <span class="visually-hidden">Loading...</span> 
-              </div>
-              <button id="load_bids" data-auction-id="{{$auction->id}}" data-offset="1" type="button" class="btn btn-outline-dark btn-sm p-1 mt-3 h-auto">Load More</button>
+              @if ($errors->has('bid_error'))
+                <div class="alert alert-danger" role="alert">
+                  {{ $errors->first('bid_error') }}
+                </div>
+              @elseif ($errors->has('bid_success'))
+                <div class="alert alert-success" role="alert">
+                  {{ $errors->first('bid_success') }}
+                </div>
 
-            </div>
-          </section>
+              @endif
+              <?php
+                error_log(Auth::User());
+                error_log( $auction);
+              ?>
+              
+              <input @if (!$auction->isOpen() || !Auth::check()) disabled  @endif type="submit" value="Bid">
+              
+            </form>
+            @if (!$followed)
+            <form method="post" action ="{{ route('follow.store', ['id' => $auction->id]) }}">
+                {{ csrf_field() }}
+                <input type="hidden" name="auction_id" value="{{ $auction->id }}">
+                <input @if (!Auth::check()) disabled  @endif type="submit" value="Follow">
+            </form>
+            @else
+            <form method="post" action ="{{ route('follow.destroy', ['id' => $auction->id]) }}">
+                {{ csrf_field() }}
+                {{ method_field('DELETE') }}
+                <input type="hidden" name="auction_id" value="{{ $auction->id }}">
+                <input @if (!Auth::check()) disabled  @endif type="submit" value="Unfollow">
+            </form>
+            @endif
+            <section id="bidding_section">
+
+              <a class="btn "  data-bs-toggle="collapse" href="#bid_list" role="button" aria-expanded="false" aria-controls="bid_list">
+                Show Bidding List
+              </a>
+
+
+
+              <div class="collapse" id ="bid_list">
+      
+                <div id="bidding_history" class="list-group mt-1">
+                  <h3>Bidding History</h3>
+                  @include('partials.bids', ['bids' => $auction->bids_offset(0)])
+                  
+                  
+                </div>
+                <div id="loading" class="spinner-border " style="display:none" role="status">
+                  <span class="visually-hidden">Loading...</span> 
+                </div>
+                <button id="load_bids" data-auction-id="{{$auction->id}}" data-offset="1" type="button" class="btn btn-outline-dark btn-sm p-1 mt-3 h-auto">Load More</button>
+
+              </div>
+            </section>
+        </section>
 
         </section>
 

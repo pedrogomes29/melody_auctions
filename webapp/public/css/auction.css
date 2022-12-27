@@ -1,3 +1,12 @@
+#details {
+    margin-left: 12em;
+}
+
+#bid_auction {
+    padding: 3em;
+    background: white;
+}
+
 #chatbox {
     background-color: #eee;
 }
