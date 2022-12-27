@@ -62,6 +62,12 @@
     font-weight: 600;
     margin-bottom: 7px;
 }
+.average-rating {
+    color: #5a7391;
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-bottom: 7px;
+}
 #current_balance {
     color: #5a7391;
     font-size: 19px;

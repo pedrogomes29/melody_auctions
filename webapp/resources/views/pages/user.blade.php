@@ -56,6 +56,15 @@
                 <div class="profile-usertitle-name">
                     {{ $user->firstname }} {{ $user->lastname }}
                 </div>
+                @if (isset($average))
+                <div class="average-rating">
+                    Average Rating: {{ $average }} &#11088
+                </div>
+                @else
+                <div class="average-rating">
+                    Average Rating: 0 &#11088
+                </div>
+                @endif
                 <div class="profile-usertitle-description">
                     Description: {{ $user->description }}
                 </div>
