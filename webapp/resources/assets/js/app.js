@@ -35,7 +35,7 @@ function timeSince(date) {
     if (interval > 1) {
         return `${Math.floor(interval)} minute${interval >= 2 ? "s" : ""} ago`;
     }
-    if (seconds > 10) return `${Math.floor(interval)} seconds ago`;
+    if (seconds > 10) return `${Math.floor(seconds)} seconds ago`;
     else return "just now";
 }
 

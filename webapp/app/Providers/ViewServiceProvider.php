@@ -70,6 +70,7 @@ class ViewServiceProvider extends ServiceProvider
                     ->with('identificator',$identificator);
                 }
             }
+            
         });
     }
 }

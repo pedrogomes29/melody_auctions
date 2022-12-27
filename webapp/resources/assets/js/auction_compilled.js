@@ -1,3 +1,5 @@
+require("./bootstrap");
+
 function timeSince(date) {
     const localTime = new Date().getTime();
     const localOffset = new Date().getTimezoneOffset() * 60000;
@@ -97,6 +99,7 @@ function addMessageToDOM(
     else userPhoto.src += "default_images/default.jpg";
 
     userPhoto.addEventListener("click", function (e) {
+        console.log("hey");
         window.location.href = "/user/" + e.currentTarget.classList[0];
     });
 
@@ -137,8 +140,9 @@ function updateMessagesTimeSince() {
     );
     [].forEach.call(everyMessageDate, function (messageDateHTML) {
         const messageDate = new Date(messageDateHTML.textContent).getTime();
-        messageDateHTML.previousElementSibling.innerText =
-            timeSince(messageDate);
+        messageDateHTML.previousElementSibling.innerText = `${
+            messageDateHTML.previousElementSibling.innerText.split(",")[0]
+        }, ${timeSince(messageDate)}`;
     });
 }
 

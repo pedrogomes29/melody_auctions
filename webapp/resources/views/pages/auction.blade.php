@@ -13,12 +13,15 @@ use App\Models\Manufactor;
     <script type="text/javascript" src="{{ asset('js/follow.js') }}" defer> </script>
     <script src="https://js.pusher.com/7.2/pusher.min.js" defer></script>
     <script type="text/javascript" src="{{ asset('js/ws_bid.js') }}" defer> </script>
+    <script type="text/javascript" src="{{ asset('js/auction_compilled.js') }}" defer> </script>
 
+    
     <script>
       window.Auction = {
           id: {{$auction->id}}
       }
     </script>
+
 
 @endsection
 
