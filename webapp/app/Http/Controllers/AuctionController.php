@@ -483,8 +483,9 @@ class AuctionController extends Controller
     {
         $auction = Auction::find($id);
         $followed = Follow::where('auction_id', $id)->get()->contains('authenticated_user_id', Auth::id());
+        $messages = $auction->messages;
         if($auction){
-            return view('pages.auction', ['auction' => $auction, 'followed' => $followed]);
+            return view('pages.auction', ['auction' => $auction, 'followed' => $followed, 'messages'=>$messages]);
         }else{
             abort(404);
         }

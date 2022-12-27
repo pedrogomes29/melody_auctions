@@ -38,7 +38,8 @@ class EventServiceProvider extends ServiceProvider
         ],
         NewBid::class=>[
             StoreBidNotification::class
-        ]
+        ],
+        NewMessage::class=>[]
 
     ];
 

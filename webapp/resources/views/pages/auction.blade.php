@@ -3,9 +3,21 @@
 use App\Models\Manufactor;
 ?>
 @extends('layouts.app')
+
+@section('styles')
+    <link href="{{ asset('css/auction.css') }}" rel="stylesheet">
+@endsection
+
+
 @section('scripts')
     <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/auction.js') }}" defer> </script>
+    <script type="text/javascript" src="{{ asset('js/auction_compilled.js') }}" defer> </script>
+    <script>
+      window.Auction = {
+          id: {{$auction->id}}
+      }
+    </script>
 @endsection
 
 @section('content')
@@ -45,9 +57,8 @@ use App\Models\Manufactor;
     <main >
 
 
-      <section id="auction_information" class="container">
+      <section id="auction_information" class="w-100">
         <section id="details">
-          <img id="auction_img" class=".img-fluid mx-auto d-block" src="{{ empty(trim($auction->photo)) ? URL('/images/default_auction.jpg') : asset($auction->photo) }}">
           <h2>Manufactor</h2>
           <p>
           {{ Manufactor::find($auction->manufactor_id)->name }}
@@ -57,9 +68,6 @@ use App\Models\Manufactor;
           {{ $auction->description }}
           </p>
 
-        </section>
-
-        <section id = "bid_auction">
           <?php $last_bidder = $auction->getLastBidder();?>
           
           
@@ -144,7 +152,14 @@ use App\Models\Manufactor;
 
             </div>
           </section>
+
         </section>
+
+        <img id="auction_img" class=".img-fluid mx-auto d-block" src="{{ empty(trim($auction->photo)) ? URL('/images/default_auction.jpg') : asset($auction->photo) }}">
+
+        @include('partials.messages', ['messages' => $messages])
+
+
       </section>
 
       @extends('partials.popup', ['POPUP_ID' => "edit_popup", 'POPUP_TITLE_ID' => "edit_popup_title", 'POPUP_TITLE' => "Edit Auction"])

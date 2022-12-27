@@ -97,14 +97,6 @@ body header {
     margin-top: 1em;
 }
 
-#bid_auction {
-    position: sticky;
-    top: 0;
-    height: fit-content;
-    background: #ffffff;
-    padding: 1em;
-}
-
 .auction .owner_info img {
     width: 3em;
     margin-right: 1em;
@@ -113,7 +105,7 @@ body header {
 
 #auction_information {
     display: grid;
-    grid-template-columns: 80% 20%;
+    grid-template-columns: 20% 50% 30%;
 }
 
 #auction_img {
@@ -133,15 +125,6 @@ body {
 
 body > main {
     flex-grow: 1;
-}
-
-a {
-    text-decoration: none;
-    color: black;
-}
-
-a:visited {
-    color: black;
 }
 
 #notifications:hover::-webkit-scrollbar-track {

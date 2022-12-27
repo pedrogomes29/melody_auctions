@@ -70,7 +70,8 @@ function addEventListeners() {
     if (load_bids != null) load_bids.addEventListener("click", load_more_bids);
 
     const notificationBell = document.getElementById("notificationBell");
-    notificationBell.addEventListener("click", clickNotificationBell);
+    if (notificationBell)
+        notificationBell.addEventListener("click", clickNotificationBell);
 
     const auctionNotifications = document.querySelectorAll(".sec");
     [].forEach.call(auctionNotifications, function (auctionNotification) {

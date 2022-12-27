@@ -89,3 +89,5 @@ Route::get('api/auction/{auction_id}/bid', 'AuctionController@bids')->where('auc
 Route::put('api/notifications/{userId}','NotificationController@markAsRead')->name('notifications.markAsRead');
 
 
+//messages
+Route::post('/api/auction/{auctionId}/message', 'MessageController@store')->name('message.store');
