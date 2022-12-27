@@ -4,13 +4,9 @@
     <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/user_profile.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/auctions.js') }}" defer> </script>
-<<<<<<< HEAD
     <script type="text/javascript" src="{{ asset('js/bids.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/edit.js') }}" defer></script>
-=======
     <script type="text/javascript" src="{{ asset('js/review.js') }}" defer> </script>
-    <script src="{{ asset('js/edit.js') }}" defer></script>
->>>>>>> reviews
 @endsection
 @section('styles')
     <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
@@ -69,73 +65,7 @@
                 </div>
             </div>
             <!-- END SIDEBAR USER TITLE -->
-<<<<<<< HEAD
-            
-=======
-            <div id="alter-info">
-                @if(Auth::id() == $user->id || Auth::guard('admin')->user())
-                    <button id="editprofile" class="btn btn-primary">
-                        Edit Info
-                    </button>
-                @endif
-                    <a href="{{route('user.follows', $user->username)}}"> <button id="showFollowedAuctions" class="btn btn-primary">Show Followed Auctions</button> </a>
-                    <a href="{{route('user.reviews', $user->username)}}"> <button id="showReviews" class="btn btn-primary">Show User Reviews</button> </a>
-                <form style="display:none" id="edituser" method="POST" action="{{ route('user.update', $user->username) }}">
-                    {{ csrf_field() }}
-                    @method('PUT')
-                    <label for="email">E-Mail Address</label>
-                    <input id="email" type="email" name="email" value="{{ $user->email }}" required>
-                    @if ($errors->has('email'))
-                    <span class="error">
-                        {{ $errors->first('email') }}
-                    </span>
-                    @endif
-
-                    <label for="firstname">First Name</label>
-                    <input id="firstname" type="text" name="firstname" value="{{ $user->firstname }}" required autofocus>
-                    @if ($errors->has('firstname'))
-                    <span class="error">
-                        {{ $errors->first('firstname') }}
-                    </span>
-                    @endif
-
-                    <label for="lastname">Last Name</label>
-                    <input id="lastname" type="text" name="lastname" value="{{ $user->lastname }}" required autofocus>
-                    @if ($errors->has('lastname'))
-                    <span class="error">
-                        {{ $errors->first('lastname') }}
-                    </span>
-                    @endif
-
-                    <label for="username">Username</label>
-                    <input id="username" type="text" name="username" value="{{ $user->username }}" required autofocus>
-                    @if ($errors->has('username'))
-                    <span class="error">
-                        {{ $errors->first('username') }}
-                    </span>
-                    @endif
-                    
-                    <label for="description">Description</label>
-                    <textarea id="description" name="description" autofocus> {{ $user->description }} </textarea>
-                    @if ($errors->has('description'))
-                    <span class="error">
-                        {{ $errors->first('description') }}
-                    </span>
-                    @endif
-
-                    <label for="contact">Contact</label>
-                    <input id="contact" type="text" name="contact" value="{{ $user->contact  }}"  autofocus>
-                    @if ($errors->has('contact'))
-                    <span class="error">
-                        {{ $errors->first('contact') }}
-                    </span>
-                    @endif
-                    <button type="submit" class="btn btn-primary">
-                        Edit
-                    </button>
-                </form>
-            </div>
->>>>>>> reviews
+                    <a href="{{route('user.reviews', $user->username)}}"> <button id="showReviews" class="btn btn-primary">Show User Reviews</button></a>
             @if(Auth::id() == $user->id)
             <div id="balance">
                 <h2 id="current_balance">
