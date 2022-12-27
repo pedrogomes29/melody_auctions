@@ -66,7 +66,7 @@ function insertNotification(type, auction, notificationDateResponse, bidder) {
 
         case "AuctionEnded":
             if (bidder)
-                notificationMessage.innerText = `${binner} has won ${auction.name}`;
+                notificationMessage.innerText = `${bidder} has won ${auction.name}`;
             else
                 notificationMessage.innerText = `Auction ${auction.name} has ended with no bids`;
             break;
