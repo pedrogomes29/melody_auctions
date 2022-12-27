@@ -33,3 +33,51 @@
 #default_image_form {
     margin-bottom: 0em;
 }
+
+.adminInfo header{
+    background-color: white;
+    display: flex;
+}
+
+header form button {
+    margin-left: 2em;
+}
+
+.report{
+    margin: 1em;
+}
+
+.reportOpen {
+    color: green;
+}
+
+.reportClosed {
+    color: red;
+}
+
+.closeReport{
+    border-radius: 1em;
+    padding: 0 1em;
+}
+
+a{
+    color: #000000;
+    font-weight: 400;
+}
+
+.closeReportForm{
+    margin: 0em;
+}
+
+.chosen {
+    background-color: #d3d4d5;
+}
+
+.btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.hidden{
+    display: none;
+}

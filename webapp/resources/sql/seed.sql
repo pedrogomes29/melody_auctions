@@ -542,7 +542,7 @@ insert or update on
     bids for each row execute procedure same_bidder();
 
 create trigger one_reports before
-insert or update on
+insert on
     reports for each row execute procedure one_reports();
     
    

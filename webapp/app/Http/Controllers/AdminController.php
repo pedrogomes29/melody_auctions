@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Report;
+use App\Models\AuthenticatedUser;
+use App\Models\ReportState;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -17,11 +20,19 @@ class AdminController extends Controller
      * @param  \App\Models\Admin  $admin
      * @return \Illuminate\Http\Response
      */
-    public function show($adminId)
+    public function show($adminUserName)
     {
         if (Auth::guard('admin')->user()) {
-            $admin = Admin::find($adminId);
-            return view('pages.admin')->with('admin', $admin);
+            $admin = Admin::where('username', $adminUserName)->firstOrFail();
+            $reports = Report::select('id','reportstext','reportsdate','reports_state_id','reported_id','reporter_id','reports_state_id')
+                                ->orderBy('reportsdate', 'desc')
+                                ->get();
+            foreach ($reports as $report) {
+                $report->reporter = AuthenticatedUser::select('username')->where('id', $report->reporter_id)->first()->username;
+                $report->reported = AuthenticatedUser::select('username')->where('id', $report->reported_id)->first()->username;
+                $report->state = ReportState::select('state')->where('id', $report->reports_state_id)->first()->state;
+            }
+            return view('pages.admin')->with('admin', $admin)->with('reports', $reports);
         } else {
             return redirect(route('adminLogin'));
         }
@@ -76,6 +87,18 @@ class AdminController extends Controller
             $auction->save();
             $auctions = AuctionController::findAll();
             return view('pages.admin_auctions')->with('adminId', $adminId)->with('auctions', $auctions);
+        }
+        else {
+            return redirect(route('adminLogin'));
+        }
+    }
+
+    public function closeReport(Request $request){
+        if (Auth::guard('admin')->user()) {
+            $report = Report::find($request->reportId);
+            $report->reports_state_id = 2;
+            $report->save();
+            return redirect()->back();
         }
         else {
             return redirect(route('adminLogin'));

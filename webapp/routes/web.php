@@ -71,13 +71,8 @@ Route::delete('api/follow', 'FollowController@destroy')->name('follow.destroy');
 
 
 // Admin
-Route::get('admin/{admin_id}', 'AdminController@show')->name('adminDashboard');
-Route::get('admin/{admin_id}/auctions', 'AdminController@auctions')->name('admin.auctions');
-Route::get('admin/{admin_id}/auctions/{auctions_id}', 'AdminController@edit_auctions');
-Route::put('admin/{admin_id}/auctions/{auctions_id}', 'AdminController@edit_auction');
-Route::delete('admin/{admin_id}/auctions/{auctions_id}', 'AdminController@delete_auction');
-Route::post('admin/{admin_id}/auctions/{auctions_id}/default_image', 'AdminController@default_image');
-
+Route::get('admin/{admin_username}', 'AdminController@show')->name('adminDashboard');
+Route::post('admin/{admin_username}', 'AdminController@closeReport')->name('closeReport');
 
 // Follows
 Route::get('user/{username}/follow', 'FollowController@showFollows')->name('user.follows');

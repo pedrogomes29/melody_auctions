@@ -80,7 +80,7 @@
               @endif
           </div>
         @elseif(Auth::guard('admin')->user())
-          <div id= "admin-profile" class="{{Auth::guard('admin')->user()->id  }} profile-userpic me-3">
+          <div id= "admin-profile" class="{{Auth::guard('admin')->user()->username}} profile-userpic me-3">
             @if ( Auth::guard('admin')->user()->photo!="")
               <img class="rounded-circle" src="{{ asset(Auth::guard('admin')->user()->photo) }}" class="profilepic" alt="User Image">
             @else
