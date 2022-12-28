@@ -109,3 +109,7 @@ button {
     margin-left: 4em;
     flex-grow: 1;
 }
+
+.error{
+    color:red;
+}

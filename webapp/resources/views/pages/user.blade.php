@@ -3,6 +3,7 @@
     <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/user_profile.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/auctions.js') }}" defer> </script>
+    <script type="text/javascript" src="{{ asset('js/report.js') }}" defer> </script>
     <script src="{{ asset('js/edit.js') }}" defer></script>
 @endsection
 @section('styles')
@@ -68,6 +69,25 @@
                     </button>
                 @endif
                     <a href="{{route('user.follows', $user->username)}}"> <button id="showFollowedAuctions" class="btn btn-primary">Show Followed Auctions</button> </a>
+                    @if (Auth::id() && Auth::id() != $user->id)
+                        <button id="report-button" class="btn btn-primary">Report</button>
+                    @endif
+                    <form style="display:none" id="report-form" action="{{route('report.create',$user->username)}}" method="POST">
+                        @csrf
+                        @if ($errors->has('report'))
+                        <p class="alert alert-danger">
+                            {{ $errors->first('report') }}
+                        </p>
+                        @endif
+                        @if ($errors->has('reportstext'))
+                        <p class="alert alert-danger">
+                            {{ $errors->first('reportstext') }}
+                        </p>
+                        @endif
+                        <label for="complaint">Complaint</label>
+                        <textarea id="complaint" name="reportstext" rows="4" cols="50"></textarea>
+                        <button type="submit" class="btn btn-primary">Report</button>
+                    </form>
                 <form style="display:none" id="edituser" method="POST" action="{{ route('user.update', $user->username) }}">
                     {{ csrf_field() }}
                     @method('PUT')
