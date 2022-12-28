@@ -33,7 +33,7 @@ CREATE TABLE authenticated_users (
 	username varchar(25) NULL,
 	"password" varchar(100) NULL,
 	email varchar(30) NULL,
-	photo varchar(100) NULL,
+	photo varchar(100) DEFAULT '',
 	description varchar(200) NULL,
 	contact varchar(15) NULL,
 	balance int NULL,
@@ -68,9 +68,19 @@ Drop TABLE if exists notifications cascade;
 
 CREATE TABLE notifications (
 	id serial4 NOT NULL,
-	"date" date NOT NULL,
+	"date" timestamp NOT NULL,
 	beenread bool NULL DEFAULT false,
 	CONSTRAINT notifications_pkey PRIMARY KEY (id)
+);
+
+Drop TABLE if exists authenticated_user_notification cascade;
+
+CREATE TABLE authenticated_user_notification(
+	authenticated_user_id int4 NOT NULL,
+	notification_id int4 NOT NULL,
+	CONSTRAINT authenticated_user_notification_authenticated_user_id_fkey FOREIGN KEY (authenticated_user_id) REFERENCES authenticated_users,
+	CONSTRAINT authenticated_user_notification_notification_id_fkey FOREIGN KEY (notification_id) REFERENCES notifications,
+	CONSTRAINT authenticated_user_notification_pkey PRIMARY KEY (authenticated_user_id, notification_id)
 );
 
 
@@ -103,6 +113,8 @@ CREATE TABLE auctions (
 	winner_id int4 NULL,
 	tsvectors tsvector NULL,
 	cancelled bool NOT NULL default false,
+	already_notified_ending bool NOT NULL default false,
+	already_notified_ended bool NOT NULL default false,
 	CONSTRAINT auctions_check CHECK ((currentprice >= startprice)),
 	CONSTRAINT auctions_check1 CHECK ((lastbidsdate >= startdate)),
 	CONSTRAINT auctions_check2 CHECK ((enddate >= startdate)),
@@ -127,7 +139,7 @@ CREATE TABLE auctions_cancelled_notifications (
 	auction_id int4 NOT NULL,
 	CONSTRAINT auctionscancellednotifications_pkey PRIMARY KEY (notification_id),
 	CONSTRAINT auctionscancellednotifications_auction_id_fkey FOREIGN KEY (auction_id) REFERENCES auctions(id),
-	CONSTRAINT auctionscancellednotifications_notification_id_fkey FOREIGN KEY (notification_id) REFERENCES authenticated_users
+	CONSTRAINT auctionscancellednotifications_notification_id_fkey FOREIGN KEY (notification_id) REFERENCES notifications
 (id)
 );
 
@@ -138,7 +150,7 @@ CREATE TABLE auctions_ended_notifications (
 	auction_id int4 NOT NULL,
 	CONSTRAINT auctionsendednotifications_pkey PRIMARY KEY (notification_id),
 	CONSTRAINT auctionsendednotifications_auction_id_fkey FOREIGN KEY (auction_id) REFERENCES auctions(id),
-	CONSTRAINT auctionsendednotifications_notification_id_fkey FOREIGN KEY (notification_id) REFERENCES authenticated_users
+	CONSTRAINT auctionsendednotifications_notification_id_fkey FOREIGN KEY (notification_id) REFERENCES notifications
 (id)
 );
 
@@ -150,7 +162,7 @@ CREATE TABLE auctions_ending_notifications (
 	auction_id int4 NOT NULL,
 	CONSTRAINT auctionsendingnotifications_pkey PRIMARY KEY (notification_id),
 	CONSTRAINT auctionsendingnotifications_auction_id_fkey FOREIGN KEY (auction_id) REFERENCES auctions(id),
-	CONSTRAINT auctionsendingnotifications_notification_id_fkey FOREIGN KEY (notification_id) REFERENCES authenticated_users
+	CONSTRAINT auctionsendingnotifications_notification_id_fkey FOREIGN KEY (notification_id) REFERENCES notifications
 (id)
 );
 
@@ -199,7 +211,7 @@ CREATE TABLE messages (
 	id serial4 NOT NULL,
 	authenticated_user_id int4 NOT NULL,
 	auction_id int4 NOT NULL,
-	"text" text NULL,
+	"text" text NOT NULL,
 	"date" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	CONSTRAINT messages_pkey PRIMARY KEY (id),
 	CONSTRAINT messages_auction_id_fkey FOREIGN KEY (auction_id) REFERENCES auctions(id),
@@ -230,16 +242,16 @@ Drop TABLE if exists reviews cascade;
 
 CREATE TABLE reviews (
 	id serial4 NOT NULL,
-	reviewserid int4 NOT NULL,
-	reviewsedid int4 NOT NULL,
+	reviewer_id int4 NOT NULL,
+	reviewed_id int4 NOT NULL,
 	reviewsdate date NOT NULL DEFAULT CURRENT_DATE,
 	"comment" varchar(250) NULL,
 	rating int4 NOT NULL,
 	CONSTRAINT reviews_pkey PRIMARY KEY (id),
 	CONSTRAINT reviews_rating_check CHECK (((0 < rating) AND (rating <= 5))),
-	CONSTRAINT reviews_reviewsedid_fkey FOREIGN KEY (reviewsedid) REFERENCES authenticated_users
+	CONSTRAINT reviews_reviewed_id_fkey FOREIGN KEY (reviewed_id) REFERENCES authenticated_users
 (id),
-	CONSTRAINT reviews_reviewserid_fkey FOREIGN KEY (reviewserid) REFERENCES authenticated_users
+	CONSTRAINT reviews_reviewer_id_fkey FOREIGN KEY (reviewer_id) REFERENCES authenticated_users
 (id)
 );
 
@@ -416,7 +428,7 @@ CREATE OR REPLACE FUNCTION update_end_date()
 AS $function$
 BEGIN
 	UPDATE auctions
-	SET enddate = CURRENT_TIMESTAMP + (30 * interval '1 minute')
+	SET enddate = date_trunc('minute',CURRENT_TIMESTAMP + (30 * interval '1 minute'))
 	WHERE auctions.id=NEW.auction_id AND enddate-current_timestamp < (15 * interval '1 minute') ;
 	RETURN NEW;
 END $function$
@@ -547,7 +559,8 @@ insert on
     
    
 end;
---user
+
+
 insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance ) values (1, 'Crissy', 'Petley', 'cpetley0','qwerty' ,'cpetley0@wordpress.org','' ,'Música é vida', '929507690',234.0);
 insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance) values (2, 'Reece', 'Bainton', 'rbainton1','1234321' ,'rbainton1@unc.edu', '','melhor clarinetista português', '919119298',23423.0);
 insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance) values (3, 'Benedetta', 'Driutti', 'bdriutti2','lmaook1234' ,'bdriutti2@last.fm', '','vive a vida', '916135290', 1312.0);
@@ -593,31 +606,50 @@ insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdat
 
 --messages :)
 insert into messages (id, authenticated_user_id, auction_id, text, date) values (1, 3, 4, 'Olá tudo bem?', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (2, 3, 5, 'Que informções deseja?','2022-11-18 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (3, 1, 3, 'Em que estado o artigo se encontra?', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (4, 2, 3, 'Qual a cor do interior do violino?', '2022-11-4 12:00:00.00');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (5, 1, 1, 'Quantos anos tem de uso?', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (6, 1, 1, 'Será necessário algum tipo de arranjo?', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (7, 2, 2, 'O saxofone é tenor ou baixo?', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (8, 3, 4, 'espero que essa guitarra seja da yamaha', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (9, 2, 5, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (10, 1, 3, 'É mesmo giro o clarinete', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (2, 1, 3, 'Em que estado o artigo se encontra?', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (3, 2, 3, 'Qual a cor do interior do violino?', '2022-11-4 12:00:00.00');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (4, 1, 1, 'Quantos anos tem de uso?', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (5, 1, 1, 'Será necessário algum tipo de arranjo?', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (6, 2, 2, 'O saxofone é tenor ou baixo?', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (7, 3, 4, 'espero que essa guitarra seja da yamaha', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (8, 5, 5, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (9, 3, 5, 'Que informções deseja?','2022-11-18 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (10, 5, 5, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (11, 3, 5, 'Que informções deseja?','2022-11-18 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (12, 5, 5, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (13, 3, 5, 'Que informções deseja?','2022-11-18 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (14, 5, 5, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (15, 3, 5, 'Que informções deseja?','2022-11-18 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (16, 5, 5, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (17, 3, 5, 'Que informções deseja?','2022-11-18 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (18, 1, 3, 'É mesmo giro o clarinete', '2022-11-17 12:00:00.321');
 
 --bids :(
-insert into bids (id, auction_id, authenticated_user_id, value, bidsdate) values (1, 6, 5, 20, '2022-11-17 12:00:00.321');
-insert into bids (id, auction_id, authenticated_user_id, value, bidsdate) values (2, 7, 5, 20, '2022-7-16 12:23:00.425');
+insert into bids (id, auction_id, authenticated_user_id, value, bidsdate) values (1, 6, 3, 20, '2022-11-17 12:00:00.321');
+insert into bids (id, auction_id, authenticated_user_id, value, bidsdate) values (2, 7, 3, 20, '2022-7-16 12:23:00.425');
 
 --follows
 insert into follows (authenticated_user_id, auction_id) values (1, 1);
 insert into follows (authenticated_user_id, auction_id) values (2, 2);
 insert into follows (authenticated_user_id, auction_id) values (3, 3);
 insert into follows (authenticated_user_id, auction_id) values (4, 4);
+insert into follows (authenticated_user_id, auction_id) values (5, 1);
+insert into follows (authenticated_user_id, auction_id) values (5, 2);
+insert into follows (authenticated_user_id, auction_id) values (5, 3);
+insert into follows (authenticated_user_id, auction_id) values (5, 4);
 insert into follows (authenticated_user_id, auction_id) values (5, 5);
+insert into follows (authenticated_user_id, auction_id) values (5, 6);
+insert into follows (authenticated_user_id, auction_id) values (5, 7);
+insert into follows (authenticated_user_id, auction_id) values (5, 8);
+insert into follows (authenticated_user_id, auction_id) values (5, 9);
+insert into follows (authenticated_user_id, auction_id) values (5, 10);
+insert into follows (authenticated_user_id, auction_id) values (5, 11);
+
 
 --reviews
-insert into reviews (id, reviewserid, reviewsedid, reviewsdate, comment, rating) values (1, 1, 2, '2022-11-7 14:12:15.544', 'Muito bom', 5);
-insert into reviews (id, reviewserid, reviewsedid, reviewsdate, comment, rating) values (2, 2, 3, '2022-12-5 15:13:43.432', 'Muito bom', 5);
-insert into reviews (id, reviewserid, reviewsedid, reviewsdate, comment, rating) values (3, 3, 4, '2022-10-4 16:43:23.561', 'Muito bom', 5);
+insert into reviews (id, reviewer_id, reviewed_id, reviewsdate, comment, rating) values (1, 1, 2, '2022-11-7 14:12:15.544', 'Muito bom', 5);
+insert into reviews (id, reviewer_id, reviewed_id, reviewsdate, comment, rating) values (2, 2, 3, '2022-12-5 15:13:43.432', 'Muito bom', 5);
+insert into reviews (id, reviewer_id, reviewed_id, reviewsdate, comment, rating) values (3, 3, 4, '2022-10-4 16:43:23.561', 'Muito bom', 5);
 
 
 --notifications
@@ -640,3 +672,10 @@ insert into auctions_ending_notifications (notification_id, auction_id) values (
 
 --bids_notifications
 insert into bids_notifications (notification_id, bid_id) values (4, 1);
+
+
+insert into authenticated_user_notification(authenticated_user_id,notification_id) values (5,1);
+insert into authenticated_user_notification(authenticated_user_id,notification_id) values (5,2);
+insert into authenticated_user_notification(authenticated_user_id,notification_id) values (5,3);
+insert into authenticated_user_notification(authenticated_user_id,notification_id) values (5,4);
+

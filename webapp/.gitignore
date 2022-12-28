@@ -13,3 +13,6 @@ npm-debug.log
 yarn-error.log
 productionenv
 *Zone.Identifier
+package-lock.json
+composer.lock
+

@@ -1,0 +1,35 @@
+.review h2{
+    color:  #F47174;
+    font-weight: bold;
+}
+.review header{
+ background-color: white;
+}
+.review{
+    color:  black;
+
+}
+.review h1{
+    padding:0.3em;
+    font-size: 1.2em;
+    color:black;
+}
+.review{
+    margin-right:1em;
+    margin-left: 1em;
+    padding: 1em;
+    border:0.2em solid #1d1c1a;
+    border-radius:1em;
+    box-shadow: 0 0 0.5em #1d1c1a;
+    margin-bottom: 1em;
+    font-family: 'Roboto', sans-serif;
+}
+.review p{
+    font-size: 2em;
+    color: black;
+}
+.review a{
+    color: #F47174;
+    font-weight: bold;
+    text-decoration: none;
+}

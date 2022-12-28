@@ -25,6 +25,7 @@ Route::get('api/auction_json','AuctionController@search_results_json');
 Route::get('api/user','AuthenticatedUserController@search_results');
 Route::get('/', 'HomePageController@index')->name('home');
 Route::get('/home', 'HomePageController@index');
+
 // Authentication
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
@@ -54,6 +55,7 @@ Route::post('user/{username}','UserProfileController@store')->name('user.photo')
 Route::get('/user/{username}/auction','UserProfileController@showUserAuctions')->name('user.auction');
 //User Profile API
 Route::put('api/user/{username}/balance','UserProfileController@updateUserBalance')->name('user.balance');
+Route::get('/api/user/{username}/bids', 'UserProfileController@getBids');
 
 
 // Auction
@@ -83,5 +85,18 @@ Route::post('api/auction/{auction_id}/bid', 'BidController@create')->where('auct
 Route::get('api/auction/{auction_id}/bid', 'AuctionController@bids')->where('auction_id', '[0-9]+')->name('bid.list');
 
 
+
 // Reports
 Route::post('user/{username}/report', 'ReportController@store')->name('report.create');
+
+// Reviews
+Route::get('user/{username}/reviews', 'ReviewController@showReviews')->name('user.reviews');
+Route::post('/user/{username}/review', 'ReviewController@create')->name('review.create');
+
+
+//notifications
+Route::put('api/notifications/{userId}','NotificationController@markAsRead')->name('notifications.markAsRead');
+//messages
+Route::post('/api/auction/{auctionId}/message', 'MessageController@store')->name('message.store');
+
+

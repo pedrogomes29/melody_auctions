@@ -1,17 +1,21 @@
 @extends('layouts.app')
 @section('scripts')
+    <script type="text/javascript" src="{{ asset('js/tabs.js') }}" defer></script>
     <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/user_profile.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/auctions.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/report.js') }}" defer> </script>
-    <script src="{{ asset('js/edit.js') }}" defer></script>
+    <script type="text/javascript" src="{{ asset('js/bids.js') }}" defer> </script>
+    <script type="text/javascript" src="{{ asset('js/edit.js') }}" defer></script>
+    <script type="text/javascript" src="{{ asset('js/review.js') }}" defer> </script>
 @endsection
 @section('styles')
     <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
 @endsection
 @section('content')
-<section class="user-profile container-fluid">
-    <section class="profile">
+<section class="user-profile d-flex ">
+
+    <section class="profile" > 
         <header id="profile-name" >
                 <h1 id="user-name">
                 <a id="username-at" href=""> &#64{{ $user->username }}</a>
@@ -53,6 +57,15 @@
                 <div class="profile-usertitle-name">
                     {{ $user->firstname }} {{ $user->lastname }}
                 </div>
+                @if (isset($average))
+                <div class="average-rating">
+                    Average Rating: {{ $average }} &#11088
+                </div>
+                @else
+                <div class="average-rating">
+                    Average Rating: 0 &#11088
+                </div>
+                @endif
                 <div class="profile-usertitle-description">
                     Description: {{ $user->description }}
                 </div>
@@ -62,87 +75,28 @@
                 </div>
             </div>
             <!-- END SIDEBAR USER TITLE -->
-            <div id="alter-info">
-                @if(Auth::id() == $user->id || Auth::guard('admin')->user())
-                    <button id="editprofile" class="btn btn-primary">
-                        Edit Info
-                    </button>
+            @if (Auth::id() && Auth::id() != $user->id)
+                <button id="report-button" class="btn btn-primary">Report</button>
+            @endif
+            <form style="display:none" id="report-form" action="{{route('report.create',$user->username)}}" method="POST">
+                @csrf
+                @if ($errors->has('report'))
+                <p class="alert alert-danger">
+                    {{ $errors->first('report') }}
+                </p>
                 @endif
-                    <a href="{{route('user.follows', $user->username)}}"> <button id="showFollowedAuctions" class="btn btn-primary">Show Followed Auctions</button> </a>
-                    @if (Auth::id() && Auth::id() != $user->id)
-                        <button id="report-button" class="btn btn-primary">Report</button>
-                    @endif
-                    <form style="display:none" id="report-form" action="{{route('report.create',$user->username)}}" method="POST">
-                        @csrf
-                        @if ($errors->has('report'))
-                        <p class="alert alert-danger">
-                            {{ $errors->first('report') }}
-                        </p>
-                        @endif
-                        @if ($errors->has('reportstext'))
-                        <p class="alert alert-danger">
-                            {{ $errors->first('reportstext') }}
-                        </p>
-                        @endif
-                        <label for="complaint">Complaint</label>
-                        <textarea id="complaint" name="reportstext" rows="4" cols="50"></textarea>
-                        <button type="submit" class="btn btn-primary">Report</button>
-                    </form>
-                <form style="display:none" id="edituser" method="POST" action="{{ route('user.update', $user->username) }}">
-                    {{ csrf_field() }}
-                    @method('PUT')
-                    <label for="email">E-Mail Address</label>
-                    <input id="email" type="email" name="email" value="{{ $user->email }}" required>
-                    @if ($errors->has('email'))
-                    <span class="error">
-                        {{ $errors->first('email') }}
-                    </span>
-                    @endif
+                @if ($errors->has('reportstext'))
+                <p class="alert alert-danger">
+                    {{ $errors->first('reportstext') }}
+                </p>
+                @endif
+                <label for="complaint">Complaint</label>
+                <textarea id="complaint" name="reportstext" rows="4" cols="50"></textarea>
+                <button type="submit" class="btn btn-primary">Report</button>
+            </form>
+                
+            <a href="{{route('user.reviews', $user->username)}}"> <button id="showReviews" class="btn btn-primary">Show User Reviews</button></a>
 
-                    <label for="firstname">First Name</label>
-                    <input id="firstname" type="text" name="firstname" value="{{ $user->firstname }}" required autofocus>
-                    @if ($errors->has('firstname'))
-                    <span class="error">
-                        {{ $errors->first('firstname') }}
-                    </span>
-                    @endif
-
-                    <label for="lastname">Last Name</label>
-                    <input id="lastname" type="text" name="lastname" value="{{ $user->lastname }}" required autofocus>
-                    @if ($errors->has('lastname'))
-                    <span class="error">
-                        {{ $errors->first('lastname') }}
-                    </span>
-                    @endif
-
-                    <label for="username">Username</label>
-                    <input id="username" type="text" name="username" value="{{ $user->username }}" required autofocus>
-                    @if ($errors->has('username'))
-                    <span class="error">
-                        {{ $errors->first('username') }}
-                    </span>
-                    @endif
-                    
-                    <label for="description">Description</label>
-                    <textarea id="description" name="description" autofocus> {{ $user->description }} </textarea>
-                    @if ($errors->has('description'))
-                    <span class="error">
-                        {{ $errors->first('description') }}
-                    </span>
-                    @endif
-
-                    <label for="contact">Contact</label>
-                    <input id="contact" type="text" name="contact" value="{{ $user->contact  }}"  autofocus>
-                    @if ($errors->has('contact'))
-                    <span class="error">
-                        {{ $errors->first('contact') }}
-                    </span>
-                    @endif
-                    <button type="submit" class="btn btn-primary">
-                        Edit
-                    </button>
-                </form>
-            </div>
             @if(Auth::id() == $user->id)
             <div id="balance">
                 <h2 id="current_balance">
@@ -157,7 +111,32 @@
                     <button id="add" type="submit" class="btn btn-primary">Add</button>
                 </form>
             </div>
-        @endif
+            @endif
+            @if (Auth::id() && Auth::id() != $user->id)
+            <button id="review-button" class="btn btn-primary">Review</button>
+            <div id="review">
+                <form style="display:none" id="review-form" method="POST" action="{{ route('review.create', $user->username) }}">
+                    {{ csrf_field() }}
+                    <label for="rating">Rating</label>
+                    <input id="rating" type="number" name="rating" value="5" min="1" max="5" required autofocus>
+                    @if ($errors->has('rating'))
+                    <span class="error">
+                        {{ $errors->first('rating') }}
+                    </span>
+                    @endif
+
+                    <label for="comment">Review</label>
+                    <textarea id="comment" name="comment" autofocus></textarea>
+                    @if ($errors->has('review'))
+                    <span class="error">
+                        {{ $errors->first('review') }}
+                    </span>
+                    @endif
+                    <button type="submit" class="btn btn-primary">
+                        Review
+                    </button>
+                </form>
+            @endif
         </section>
 
         <!--
@@ -170,15 +149,50 @@
         @endif
 
         -->
+
+        
     </section>
-    @if(count($auctions)>0)
-        <section id='owned-auctions' class="container-fluid">
-            <h1>Auctions owned</h1>
-            <div class="ms-1">  
-                    @include('partials.auctions', ['auctions' => $auctions])
+
+    <section id="profile_options" class="w-100">
+        <nav>
+        <div class="nav nav-tabs mb-2" id="nav-tab" role="tablist">
+            <button class="nav-link active text-dark" id="nav-auctions-tab" hash="auctions" data-bs-toggle="tab" data-bs-target="#nav-auctions" type="button" role="tab" aria-controls="nav-auctions" aria-selected="true">Auctions owned</button>
+            <button class="nav-link text-dark" id="nav-followed-tab" hash="follows" data-bs-toggle="tab" data-bs-target="#nav-followed" type="button" role="tab" aria-controls="nav-followed" aria-selected="false">Followed Auctions</button>
+            
+            @if(Auth::id() == $user->id || Auth::guard('admin')->user())
+                <button class="nav-link text-dark" id="nav-edit-tab" hash="edit" data-bs-toggle="tab" data-bs-target="#nav-edit" type="button" role="tab" aria-controls="nav-edit" aria-selected="false">Edit Profile</button>
+            @endif
+            <button class="nav-link text-dark" id="nav-bids-tab" hash="bids" data-bs-toggle="tab" data-bs-target="#nav-bids" type="button" role="tab" aria-controls="nav-bids" aria-selected="false" >My Bids</button>
+        </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-auctions" hash="auctions" role="tabpanel" aria-labelledby="nav-auctions-tab" tabindex="0">
+                @include('partials.profile.auctions_owned', ['auctions' => $auctions])
             </div>
-            <button id="owned-button" type="button" class="ms-5 mt-5 btn btn-dark btn-rounded">See all auctions owned</button>
-        </section>
-    @endif
+            <div class="tab-pane fade" id="nav-followed" role="tabpanel" hash="follows" aria-labelledby="nav-followed-tab" tabindex="0">
+                @include('partials.profile.follows', ['auctions' => $user->followed_auctions])
+            </div>
+            
+            @if(Auth::id() == $user->id || Auth::guard('admin')->user())
+                <div class="tab-pane fade" id="nav-edit" role="tabpanel" hash="edit" aria-labelledby="nav-edit-tab" tabindex="0">  
+                    @include('partials.profile.edit', ['user' => $user, 'errors' => $errors])
+                </div>
+            @endif
+            <div class="tab-pane fade" id="nav-bids" role="tabpanel" hash="bids" aria-labelledby="nav-bids-tab" tabindex="0">
+                    
+                    <?php
+                        $order = app('request')->input('order') ?? '';
+                        $sort = app('request')->input('sort') ?? '';
+                        $bids = $user->bids($order, $sort);
+                    ?>
+                    @include('partials.profile.bids', ['user' => $user, 'bids' => $bids, 'order' => $order, 'sort' => $sort])
+
+            </div>
+        </div>
+        
+    </section>
+
+
 </section>
+
 @endsection

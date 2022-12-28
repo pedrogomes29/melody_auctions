@@ -1,4 +1,4 @@
-<div class="row row-cols-1 row-cols-md-3 g-4 flex-grow-1">
+<div class="d-flex w-100 flex-wrap">
     @each('partials.auction',$auctions,'auction')
 </div>
 

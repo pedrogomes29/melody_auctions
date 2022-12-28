@@ -22,7 +22,6 @@
 }
 
 .profile-sidebar {
-    display: inline-block;
     margin: 0 auto;
     margin-bottom: 10px;
     padding: 10px;
@@ -31,6 +30,7 @@
     border: 1px solid #000000;
     border-radius: 1em;
     text-align: center;
+    width: 35em;
 }
 .profile-sidebar:hover {
     box-shadow: 0 0 10px #000000;
@@ -59,6 +59,12 @@
 .profile-usertitle-name {
     color: #5a7391;
     font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+.average-rating {
+    color: #5a7391;
+    font-size: 1.5em;
     font-weight: 600;
     margin-bottom: 7px;
 }
@@ -102,14 +108,39 @@ button {
     flex-direction: row;
 }
 #alter-info {
-    width: 40em;
+    margin: auto;
+    max-width: 60em;
 }
 
 #owned-auctions {
-    margin-left: 4em;
     flex-grow: 1;
 }
 
-.error{
-    color:red;
+
+
+
+/* User Profile tabs*/
+
+.user-profile .nav-link{
+    height: 4em;
+    align-items:center;
+    font-size: small;
+    justify-content:center;
+}
+
+
+@media (max-width: 768px) {
+    .user-profile {
+        display: block!important;
+
+    }
+}
+
+.page-item .page-link{
+    color: black;
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
 }

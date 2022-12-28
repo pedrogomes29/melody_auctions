@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AuthenticatedUser;
+use App\Models\Review;
 use Illuminate\Support\Facades\Auth;
 use App\Policies\AuthenticatedUserPolicy;
 class UserProfileController extends Controller
@@ -36,10 +37,11 @@ class UserProfileController extends Controller
                                                         cancelled')
                                             ->take(10)
                                             ->get();
-        
+        $average = Review::where('reviewed_id', AuthenticatedUser::where('username', $username)->firstOrFail()->id)->avg('rating');
+        $average = round($average, 2);
         $user = AuthenticatedUser::where('username',$username)->firstOrFail();
 
-        return view('pages.user', ['user' => $user, 'auctions' => $auctions_owned]);
+        return view('pages.user', ['user' => $user, 'auctions' => $auctions_owned, 'average' => $average]);
     }
 
     public function showUserAuctions($username){
@@ -108,6 +110,20 @@ class UserProfileController extends Controller
         $user->save();
         return view('pages.user', ['user' => $user]);
     }
+
+    public function getBids(Request $request,  $username){
+        error_log("getBids1 " . $username);
+        $user = AuthenticatedUser::where('username',$username)->firstOrFail();
+        error_log("getBids2");
+        $order = $request->input('order') ?? 'date';
+        error_log("getBids3");
+        $sort = $request->input('sort') ?? 'desc';
+        error_log("getBids4");
+        // return parcial page bids
+
+        return view('partials.profile.bids', ['user'=>$user,'bids' => $user->bids($order, $sort, 10), 'order' => $order, 'sort' => $sort]);
+    }
+
     public function deleteUserProfile($username)
     {
         $id = AuthenticatedUser::where('username',$username)->firstOrFail()->id;
@@ -124,7 +140,7 @@ class UserProfileController extends Controller
             'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
         // TROCAMOS PQ NO SERVIDOR DE LBAW APAGA AS FOTOS DE 30 EM 30 MIN
-        $image_path = $request->file('image')->store('image', 'public');
+        $image_path = 'storage/'.$request->file('image')->store('image', 'public');
         
         /*$file = $request->file('image');
         $image_path= date('YmdHi').$file->getClientOriginalName();
