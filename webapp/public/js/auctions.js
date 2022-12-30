@@ -96,29 +96,46 @@ function addEventListeners() {
 
 
     const minPrice = document.getElementById("minPrice");
-    const minPriceValue = document.getElementById("minPriceValue");
 
     const maxPrice = document.getElementById("maxPrice");
-    const maxPriceValue = document.getElementById("maxPriceValue");
     
+    async function filter_price() {
+        // update url
+        
+        const inputValue = document.querySelectorAll('.numberVal span');
+    
+        let minrange = parseFloat( inputValue[0].innerHTML);
+        let maxrange = parseFloat( inputValue[1].innerHTML);
+        const url = new URL(window.location);
+        
+        url.searchParams.set("minPrice", minrange);
+        url.searchParams.set("maxPrice", maxrange);
+        window.history.replaceState({}, "", url);
+        offset = 0;
+    
+        // update auctions
+        getAuctions();
+    }
+
+
     if (minPrice) {
-        minPrice.addEventListener("input", async function () {
-            const url = new URL(window.location);
-            
-            url.searchParams.set("minPrice", minPriceValue.innerHTML);
-            window.history.replaceState({}, "", url);
-            offset = 0;
-            getAuctions();
-        });
+        minPrice.addEventListener("change", filter_price);
     }
 
     if (maxPrice) {
-        maxPrice.addEventListener("input", async function () {
+        maxPrice.addEventListener("change", filter_price);
+    }
+
+    
+    const auctionsOrder = document.getElementById("auctionsOrder");
+    if(auctionsOrder) {
+        auctionsOrder.addEventListener("change", async function () {
+            // add parameter to url
             const url = new URL(window.location);
-            url.searchParams.set("maxPrice", maxPriceValue.innerHTML);
-            window.history.replaceState({}, "", url);
-            offset = 0;
-            getAuctions();
+            url.searchParams.set("order", auctionsOrder.value);
+            // reload page
+            window.location.href = url;
+
         });
     }
 }
@@ -196,34 +213,30 @@ async function getAuctions(offset = 0) {
     const newAuctions = await response.text();
     console.log(newAuctions);
     if (offset > 0) {
-        const current_auctions_footer =
-            document.getElementById("auctions-footer");
-        current_auctions_footer.parentElement.removeChild(
-            current_auctions_footer
-        );
+        // delete auction footer
+        const current_auctions_footer = document.getElementById("auctions-footer");
+        current_auctions_footer.parentElement.removeChild(current_auctions_footer);
 
-        const current_auctions = document.querySelector(
-            "#auctions :nth-child(2)"
-        );
-
+        // select current auctions
+        const current_auctions = document.querySelector("#auctions_lists :nth-child(1)");
+        
+        // append new auctions
         let aux = document.createElement("div");
         aux.innerHTML = newAuctions;
         const appended_auctions = aux.children[0];
         const new_footer = aux.children[1];
         current_auctions.innerHTML += appended_auctions.innerHTML;
-        document.getElementById("auctions").appendChild(new_footer);
+        document.getElementById("auctions_lists").appendChild(new_footer);
     } else {
         let nrAuctionsHTML = document.getElementById("nrAuctions");
 
         let aux = document.createElement("div");
         aux.innerHTML = newAuctions; //element representing the fetched html
-        const nrAuctions =
-            aux.children[1].lastElementChild.textContent.split(" ")[3]; //gets number of auctions from the footer of the fetched HTML(Showing x of y results)
+        const nrAuctions = aux.children[1].lastElementChild.textContent.split(" ")[3]; //gets number of auctions from the footer of the fetched HTML(Showing x of y results)
         nrAuctionsHTML.textContent = nrAuctions + " results";
-        let auctions = document.getElementById("auctions");
+        let auctions = document.getElementById("auctions_lists");
         auctions.innerHTML = newAuctions;
 
-        auctions.prepend(nrAuctionsHTML);
     }
 
     addAuctionListeners();

@@ -48,8 +48,8 @@
                         ?>
                         <div class="range-slider">
                             <div class="progress"></div>
-                            <input type="range" id="minPrice" class="range-min" min="0" max="{{$maxPrice }}" value="0" step="0.1">
-                            <input type="range" id="maxPrice" class="range-max" min="0" max="{{$maxPrice }}" value="{{$maxPrice}}" step="0.1">
+                            <input type="range" id="minPrice" class="range-min" min="0" max="{{$maxPrice }}" value="{{$lower_price}}" step="0.1">
+                            <input type="range" id="maxPrice" class="range-max" min="0" max="{{$maxPrice }}" value="{{$highest_price}}" step="0.1">
                         </div>
                         <div class="max-value numberVal">
                             <span class="number" id="maxPriceValue" disabled >5</span>
@@ -62,9 +62,20 @@
         <div id='auctions' class='container-fluid flex-grow-1'>
             <h1 id="nrAuctions" class="d-inline">{{$nrAuctions}} results </h1>
 
+            <div id="sortAuctions" class="d-inline float-right ">
+                <label>Order by: </label> 
+                <select class="custom-select d-inline w-auto h-auto" id="auctionsOrder">
+                    <option value="0" {{$order ==='0' ? 'selected':''}} >Relevance</option>
+                    <option value="1" {{$order ==='1' ? 'selected':''}}>Price: Low to High</option>
+                    <option value="2" {{$order ==='2' ? 'selected':''}}>Price: High to Low</option>
+                    <option value="3" {{$order ==='3' ? 'selected':''}}>Date</option>
+                    <option value="4" {{$order ==='4' ? 'selected':''}}>Owner Ratting</option>
+                </select>
+            </div>
             
-            
+            <div id = "auctions_lists">
             @include('partials.auctions', ['auctions' => $auctions,'nrAuctions'=>$nrAuctions,'offset'=>$offset])
+            </div>
         </div>
     </div>
 @endsection

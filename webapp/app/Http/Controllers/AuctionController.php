@@ -27,7 +27,8 @@ class AuctionController extends Controller
             $lower_price = isset($request->minPrice) ? floatval($request->minPrice) : 0;
             $highest_price = isset($request->maxPrice) ? floatval($request->maxPrice) : Auction::maxPrice();
             
-    
+            $order = $request->order ?? 0;
+            
             $useSearch = !is_null($search);
             $useCategory = !is_null($categoryId);
             $useType = !is_null($request->type);
@@ -52,9 +53,6 @@ class AuctionController extends Controller
                 elseif($request->type==="closed")
                     $auctionsAfterFilter->where('enddate','<',now());
             }
-            
-            error_log($lower_price);
-            error_log($highest_price);
             
             $auctionsAfterFilter->where(function($query) use($lower_price, $highest_price){
                 $query->whereBetween('currentprice', [$lower_price, $highest_price])
@@ -87,11 +85,31 @@ class AuctionController extends Controller
                                                             THEN 1
                                                             ELSE 0
                                                         END AS uninitiated');
-            if($useSearch){
-                $auctions->orderByRaw('ts_rank(tsvectors, to_tsquery(\'english\', ?)) DESC,name', [$search.':*']);                         
-            }else{
+            if($order === '1')
+                // order by price low to high
+                $auctions->orderByRaw('CASE WHEN currentPrice IS NULL
+                                            THEN startPrice
+                                            ELSE currentprice+minbidsdif
+                                        END');
+            elseif($order === '2')
+                // order by price high to low
+                $auctions->orderByRaw('CASE WHEN currentPrice IS NULL
+                                            THEN startPrice
+                                            ELSE currentprice+minbidsdif
+                                        END DESC');
+            elseif($order === '3')
+                // order by date
+                $auctions->orderBy('enddate', 'DESC');
+            elseif($order === '4')
+                // order by owner rating
+                $auctions->orderBy('enddate'); // TODO
+            else if( $order === '0' && $useSearch )
+                $auctions->orderByRaw('ts_rank(tsvectors, to_tsquery(\'english\', ?)) DESC,name', [$search.':*']);
+            else if( $order === '0')
                 $auctions->orderBy('name');
-            }
+            else
+                $auctions->orderBy('enddate', 'DESC');
+            
 
             $auctions = $auctions->offset($offset*10)->limit(10)->get();
 
@@ -149,10 +167,20 @@ class AuctionController extends Controller
 
         $typeText = ucfirst($request->type??"Any type");
 
+        $lower_price = isset($request->minPrice) ? floatval($request->minPrice) : 0;
+        $highest_price = isset($request->maxPrice) ? floatval($request->maxPrice) : Auction::maxPrice();
+
+        $order = $request->order ?? 0;
+        if($order !== '0' && $order !== '1' && $order !== '2' && $order !== '3' && $order !== '4')
+            $order = '0';
+
         return view('pages.auctions')
             ->with('nrAuctions',$nrAuctions)
             ->with('auctions',$auctions)
             ->with('search',$search)
+            ->with('lower_price',$lower_price)
+            ->with('highest_price',$highest_price)
+            ->with('order',$order)
             ->with('type',$request->type)
             ->with('typeText',$typeText)
             ->with('categoryId',$request->categoryId)
