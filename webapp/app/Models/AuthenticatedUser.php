@@ -12,6 +12,8 @@ class AuthenticatedUser extends Authenticatable
     protected $fillable = ['id','email', 'firstname', 'lastname', 'username','password', 'contact','balance','photo'];
     public $timestamps = false;
     use HasFactory;
+    use Notifiable;
+
 
     public function auctions(){
         return $this->hasMany(Auction::class,'owner_id');

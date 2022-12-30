@@ -12,13 +12,8 @@
 @endsection
 
 @section('content')
-    <div id='categories' class="m-4">
-        <h2 class="ms-1">Categories</h2>
-        <div class="d-flex flex-row justify-content-around align-items-center">
-        @foreach($categories as $category)
-            <button id="category-{{$category->id}}"  type="button" class="category btn-lg m-5 btn btn-primary btn-light">{{$category->name}}</button>
-        @endforeach
-        </div>
+    <div id="categories" class="m-4">
+        @include('partials.categories', ['categories' => $categories])
     </div>
     <div id='active-auctions' class="m-4">
         @if(count($active_auctions)>0)

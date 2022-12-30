@@ -62,10 +62,19 @@
     <label for="password-confirm">Confirm Password</label>
     <input id="password-confirm" type="password" name="password_confirmation" required>
 
-    <button type="submit">
-      Register
-    </button>
-    <a class="button button-outline" href="{{ route('login') }}">Login</a>
+    <div class="col text-center mt-5">
+      <button type="submit">
+          Register
+      </button>
+  </div>
 </form>
 </section>
+
+<div class="col text-center mt-5">
+  <h4>
+      Already have an account?
+  <a class="link text-center text-decoration-none" href="{{ route('login') }}">Log in</a>
+  </h4>
+</div>
+
 @endsection

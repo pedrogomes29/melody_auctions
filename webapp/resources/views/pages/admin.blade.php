@@ -23,6 +23,7 @@
         @endif
     </header>
 </section>
+
 <section class="reports">
     <nav class="m-4">
         <h1 class="ms-1">Reports</h1>
@@ -53,6 +54,23 @@
             </div>
         </div>
     @endforeach
+</section>
+
+<section id="categories" class="d-flex flex-column">
+    <h1 class="ms-1">Categories</h1>
+    @foreach($categories as $category)
+        <div class="container my-3">
+            <div class="text-center">
+                <a class="category btn btn-light" href="{{ route('category.edit',['id'=>$category->id]) }}" role="button">{{$category->name}}</a>
+            </div>
+        </div>
+    @endforeach
+
+    <div class="container my-3">
+        <div class="text-center">
+            <a class="btn btn-primary" href="{{ route('category.create')}}" role="button">Add a new category</a>
+        </div>
+    </div>
 </section>
 
 @endsection

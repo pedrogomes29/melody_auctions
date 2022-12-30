@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Category;
 use App\Models\Report;
 use App\Models\AuthenticatedUser;
 use App\Models\ReportState;
@@ -32,7 +33,15 @@ class AdminController extends Controller
                 $report->reported = AuthenticatedUser::select('username')->where('id', $report->reported_id)->first()->username;
                 $report->state = ReportState::select('state')->where('id', $report->reports_state_id)->first()->state;
             }
-            return view('pages.admin')->with('admin', $admin)->with('reports', $reports);
+
+            $categories = Category::select('name','id')
+                          ->orderBy('name')
+                          ->get();
+
+            return view('pages.admin')
+                ->with('admin', $admin)
+                ->with('reports', $reports)
+                ->with('categories', $categories);
         } else {
             return redirect(route('adminLogin'));
         }

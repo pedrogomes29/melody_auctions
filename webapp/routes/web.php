@@ -11,6 +11,14 @@
 |
 */
 // Home
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
+
 Route::get('/','AuctionController@index')->name('index');
 
 
@@ -85,6 +93,12 @@ Route::get('user/{username}/follow', 'FollowController@showFollows')->name('user
 Route::post('api/auction/{auction_id}/bid', 'BidController@create')->where('auction_id', '[0-9]+')->name('bid.create');
 Route::get('api/auction/{auction_id}/bid', 'AuctionController@bids')->where('auction_id', '[0-9]+')->name('bid.list');
 
+// Categories
+Route::get('category/create', 'CategoryController@create')->middleware('adminauth')->name('category.create');
+Route::get('category/{id}/edit', 'CategoryController@edit')->middleware('adminauth')->name('category.edit');
+Route::post('category', 'CategoryController@store')->middleware('adminauth')->name('category.store');
+Route::put('category/{id}', 'CategoryController@update')->middleware('adminauth')->name('category.update');
+Route::delete('category/{id}', 'CategoryController@destroy')->middleware('adminauth')->name('category.destroy');
 
 
 // Reports
@@ -99,6 +113,18 @@ Route::post('/user/{username}/review', 'ReviewController@create')->name('review.
 Route::put('api/notifications/{userId}','NotificationController@markAsRead')->name('notifications.markAsRead');
 //messages
 Route::post('/api/auction/{auctionId}/message', 'MessageController@store')->name('message.store');
+
+
+
+//recover password
+Route::get('/forgot-password', 'Auth\ForgotPasswordController@showEmailForm')->middleware('guest')->name('password.request');
+
+Route::post('/forgot-password', 'Auth\ForgotPasswordController@storePasswordTokenAndSendEmail')->middleware('guest')->name('password.email');
+
+Route::get('/reset-password/{token}', 'Auth\ForgotPasswordController@showRecoverPasswordForm' )->middleware('guest')->name('password.reset');
+
+Route::post('/reset-password','Auth\ForgotPasswordController@resetPassword' )->middleware('guest')->name('password.update');
+
 
 //about-us
 Route::get('/about-us', function () {

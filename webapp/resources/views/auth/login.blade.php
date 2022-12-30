@@ -6,9 +6,15 @@
 
 
 @section('content')
+
 <section class="formSection">
-    <form method="POST" action="{{ route('login') }}">
-        {{ csrf_field() }}
+<form method="POST" action="{{ route('login') }}">
+    {{ csrf_field() }}
+    @if (session('status'))
+        <div class="alert alert-success" role="alert">
+        {{ session('status') }}
+        </div>
+    @endif
 
         <label for="email">E-Mail</label>
         <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus>
@@ -25,11 +31,13 @@
                 {{ $errors->first('password') }}
             </span>
         @endif
-        <div class="buttons">
+        <div class="col text-center">
             <button type="submit">
                 Login
             </button>
-            <a class="button button-outline" href="{{ route('register') }}">Register</a>
+        </div>
+        <div class="col text-center">
+            <a class="link fw-bold text-center text-decoration-none" href="{{ route('password.request') }}">Forgot your password?</a>
         </div>
         <div style="display: flex; justify-content: center; margin: 0 auto; padding: 20px;">
             <a href="{{route('google.login')}}" class="btn btn-lg btn-primary btn-block">
@@ -40,5 +48,12 @@
     <!-- Login with google login -->
 </section>   
    
+
+
+<div class="col text-center mt-5">
+    <h4>
+        Don't have an account account?
+        <a class="link text-decoration-none" href="{{ route('register') }}">Sign up</a>
+    </h4>
 
 @endsection
