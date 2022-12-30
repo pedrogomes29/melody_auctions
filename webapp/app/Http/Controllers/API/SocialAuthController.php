@@ -28,7 +28,7 @@ class SocialAuthController extends Controller
     public function handleCallback()
     {
         try {
-        $user = Socialite::driver('google')->user();
+        $user = Socialite::driver('google')->stateless()->user();
         } catch (Exception $e) {
             return redirect('/login');
         }
