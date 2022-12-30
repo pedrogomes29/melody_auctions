@@ -298,4 +298,14 @@ function sendMessage() {
         .then((json) => console.log(json));
 }
 
+function openChat() {
+    let chat = document.getElementById("chatbox");
+    if (chat.classList.contains("hidden")) {
+        chat.classList.remove("hidden");
+    } else {
+        chat.classList.add("hidden");
+    }
+}
+
+
 addEventListeners();

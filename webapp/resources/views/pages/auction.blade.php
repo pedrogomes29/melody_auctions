@@ -60,20 +60,15 @@ use App\Models\Manufactor;
         </div>
       </div>
     </header>
-
-    <main >
+    <img onclick="openChat()" class="messageIcon"src="{{ asset('default_images/message-icon.svg') }}" alt="message" class="message-icon">
+    <main class="auctionExposition">
 
 
       <section id="auction_information" class="w-100">
+        <div class="container">
+          <img id="auction_img" class=".img-fluid mx-auto d-block border border-dark" src="{{ empty(trim($auction->photo)) ? URL('/images/default_auction.jpg') : asset($auction->photo) }}">
+        </div>
         <section id="details">
-          <h2>Manufactor</h2>
-          <p>
-          {{ Manufactor::find($auction->manufactor_id)->name }}
-          </p>
-          <h2>Description</h2>
-          <p>
-          {{ $auction->description }}
-          </p>
 
           <section id="bid_auction">
             <?php $last_bidder = $auction->getLastBidder();?>
@@ -155,8 +150,8 @@ use App\Models\Manufactor;
               <div class="collapse" id ="bid_list">
       
                 <div  class="list-group mt-1">
-                  <h3>Bidding History</h3>
-                  <div id="bidding_history">
+                  <h3 class="text-center">Bidding History</h3>
+                  <div id="bidding_history" >
                     @include('partials.bids', ['bids' => $auction->bids_offset(0)])
                   </div>
                   
@@ -170,14 +165,8 @@ use App\Models\Manufactor;
             </section>
           </section>
         </section>
-        <img id="auction_img" class=".img-fluid mx-auto d-block" src="{{ empty(trim($auction->photo)) ? URL('/images/default_auction.jpg') : asset($auction->photo) }}">
-
-        @include('partials.messages', ['messages' => $messages])
-
-
-
-
       </section>
+      @include('partials.messages', ['messages' => $messages])
       @extends('partials.popup', ['POPUP_ID' => "edit_popup", 'POPUP_TITLE_ID' => "edit_popup_title", 'POPUP_TITLE' => "Edit Auction"])
       
       @section('popup-body')
@@ -201,6 +190,14 @@ use App\Models\Manufactor;
       
 
     </main>
+
+    <section class="auctionInfo container">
+      <h2>Manufactor</h2>
+        <p>{{ Manufactor::find($auction->manufactor_id)->name }} </p>
+      <h2>Description</h2>
+        <p>{{ $auction->description }} </p>
+    </section>
+
 
   </article>
 @endsection

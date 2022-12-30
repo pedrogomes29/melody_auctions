@@ -89,7 +89,8 @@ body header {
 }
 
 .auction main {
-    background-color: rgb(244, 239, 239);
+    /*background-color: rgb(244, 239, 239);*/
+    background-color: #d2d9e1;
 }
 
 .auction .owner_info {
@@ -106,7 +107,7 @@ body header {
 #auction_information {
     display: grid;
     align-items: center;
-    grid-template-columns: 20% 50% 30%;
+    grid-template-columns: 65% 35%;
 }
 
 #auction_img {

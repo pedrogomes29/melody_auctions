@@ -1,7 +1,3 @@
-#details {
-    margin-left: 12em;
-}
-
 #bid_auction {
     padding: 3em;
     background: white;
@@ -73,4 +69,54 @@
 
 .another-person-text {
     background-color: #f5f6f7;
+}
+
+.auctionInfo { 
+    margin-top: 1em;
+}
+
+
+.auctionInfo h2 {
+    font-size: 1.5em;
+    color: #757575;
+    font-weight: 400;
+}
+
+.auctionInfo p {
+    font-size: 3em;
+    color: black;
+    font-weight: 500;
+}
+
+.auctionExposition {
+    background-color: #9b4dca;
+}
+
+#bid_auction form input[type="submit"] {
+    padding: 0 2rem;
+}
+
+.messageIcon {
+    width: 5em;
+    height: 5em;
+    position:fixed;
+    bottom: 1em;
+    right: 1em;
+    margin-right: 2em;
+    cursor: pointer;
+}
+
+#chatbox {
+    position: fixed;
+    bottom: 1em;
+    right: 7em;
+    background-color: #eee;
+    border-radius: 10px;
+    padding: 1em;
+    margin-right: 2em;
+    z-index: 1;
+}
+
+.hidden {
+    display: none;
 }
