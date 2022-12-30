@@ -19,7 +19,7 @@
         <div class="container">
           <h2>Afonso Baldo</h2>
           <p class="title">Founder/Developer</p>
-          <p>up202004598@up.pt</p>
+          <p><a href="mailto:up202004598@up.pt" style="color: black">up202004598@up.pt</a></p>
         </div>
       </div>
   
@@ -28,7 +28,7 @@
         <div class="container">
           <h2>João Reis</h2>
           <p class="title">Founder/Developer</p>
-          <p>up202007227@up.pt</p>
+          <p><a href="mailto:up202007227@up.pt"style="color: black">up202007227@up.pt</a></p>
         </div>
       </div>
   
@@ -37,7 +37,7 @@
         <div class="container">
           <h2>Pedro Gomes</h2>
           <p class="title">Founder/Developer</p>
-          <p>up202006322@up.pt</p>
+          <p><a href="mailto:up202006322@up.pt"style="color: black">up202006322@up.pt</a></p>
         </div>
       </div>
       <div class="profile">
@@ -45,7 +45,7 @@
         <div class="container">
           <h2>Rui Pires</h2>
           <p class="title">Founder/Developer</p>
-          <p>up202008252@up.pt</p>
+          <p><a href="mailto:up202008252@up.pt"style="color: black">up202008252@up.pt</a></p>
         </div>
       </div>
   </div>
