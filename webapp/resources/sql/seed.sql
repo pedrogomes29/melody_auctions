@@ -38,6 +38,7 @@ CREATE TABLE authenticated_users (
 	contact varchar(15) NULL,
 	balance int NULL,
 	tsvectors tsvector NULL,
+	remember_token varchar(100) NULL,
 	CONSTRAINT authenticateduser_balance_check CHECK ((balance >= 0)),
 	CONSTRAINT authenticateduser_pkey PRIMARY KEY (id)
 );

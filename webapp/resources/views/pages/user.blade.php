@@ -75,7 +75,7 @@
                 </div>
             </div>
             <!-- END SIDEBAR USER TITLE -->
-            @if (Auth::id() && Auth::id() != $user->id)
+            @if (Auth::check() && Auth::id() != $user->id)
                 <button id="report-button" class="btn btn-primary">Report</button>
             @endif
             <form style="display:none" id="report-form" action="{{route('report.create',$user->username)}}" method="POST">
@@ -112,7 +112,7 @@
                 </form>
             </div>
             @endif
-            @if (Auth::id() && Auth::id() != $user->id)
+            @if (Auth::check() && Auth::id() != $user->id)
             <button id="review-button" class="btn btn-primary">Review</button>
             <div id="review">
                 <form style="display:none" id="review-form" method="POST" action="{{ route('review.create', $user->username) }}">
