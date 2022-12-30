@@ -362,3 +362,7 @@ body > main {
 #notificationsBellContainer.notify {
     animation: ring 4s ease-in-out;
 }
+
+.link {
+    color: rgb(0, 149, 246);
+}

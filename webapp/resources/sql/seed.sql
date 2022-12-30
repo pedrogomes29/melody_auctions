@@ -48,6 +48,7 @@ Drop TABLE if exists categories cascade;
 CREATE TABLE categories (
 	id serial4 NOT NULL,
 	"name" varchar(50) NOT NULL,
+	photo varchar(100) NULL,
 	CONSTRAINT categories_name_key UNIQUE (name),
 	CONSTRAINT categories_pkey PRIMARY KEY (id)
 );
@@ -254,6 +255,17 @@ CREATE TABLE reviews (
 	CONSTRAINT reviews_reviewer_id_fkey FOREIGN KEY (reviewer_id) REFERENCES authenticated_users
 (id)
 );
+
+DROP TABLE IF EXISTS password_resets;
+
+CREATE TABLE password_resets(
+	email varchar(30),
+	token text,
+	created_at timestamp NULL
+);
+
+CREATE INDEX password_reset_email ON password_resets USING hash (email);
+CREATE INDEX password_reset_token ON password_resets USING hash (token);
 
 
 -- ----------------------------------------------------------
@@ -566,6 +578,9 @@ insert into authenticated_users  (id, firstname, lastname, username,password, em
 insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance) values (3, 'Benedetta', 'Driutti', 'bdriutti2','lmaook1234' ,'bdriutti2@last.fm', '','vive a vida', '916135290', 1312.0);
 insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance) values (4, 'Leontine', 'Matteoli', 'lmatteoli3', 'xdlollmaokekw','lmatteoli3@wordpress.org','' ,'Tenho 100 instrumentos na minha garagem', '963413227', 21342.0);
 insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance) values (5, 'Eugenie', 'Saint', 'esaint4', '$2a$12$LFXiwEpPbt3t8F9aq4x/veWrfvdEFWzx.Qx/ZT7qN9rZBwXvk5YOK','esaint4@sphinn.com','' ,'Life is a wild ride', '921412112', 423423.0);
+insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance) values (6, 'Pedro', 'Gomes', 'pedro-exe', '$2a$12$LFXiwEpPbt3t8F9aq4x/veWrfvdEFWzx.Qx/ZT7qN9rZBwXvk5YOK','pedromgomes12@gmail.com','' ,'Life is a wild ride', '921412112', 423423.0);
+
+
 
 --reports_states 
 insert into reports_states (id, state) values (1, 'open');

@@ -382,7 +382,7 @@ class AuctionController extends Controller
         return $auctions;
     }
     
-    private function uploadImage($request ){
+    public static function uploadImage($request ){
         //TODO resize img
        
         /*$file = $request->file('photo');
