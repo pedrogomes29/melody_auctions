@@ -24,6 +24,9 @@ class AuctionController extends Controller
         try{
             $search = $request->search;
             $categoryId = $request->categoryId;
+            $lower_price = isset($request->minPrice) ? floatval($request->minPrice) : 0;
+            $highest_price = isset($request->maxPrice) ? floatval($request->maxPrice) : Auction::maxPrice();
+            
     
             $useSearch = !is_null($search);
             $useCategory = !is_null($categoryId);
@@ -49,8 +52,19 @@ class AuctionController extends Controller
                 elseif($request->type==="closed")
                     $auctionsAfterFilter->where('enddate','<',now());
             }
-
-           
+            
+            error_log($lower_price);
+            error_log($highest_price);
+            
+            $auctionsAfterFilter->where(function($query) use($lower_price, $highest_price){
+                $query->whereBetween('currentprice', [$lower_price, $highest_price])
+                        ->orWhere(function($query) use($lower_price, $highest_price) {
+                            $query->whereBetween('startprice', [$lower_price, $highest_price])
+                                    ->whereNull('currentprice');
+                        });
+            });
+            
+            
             $nrAuctions = $auctionsAfterFilter->count();
             
             $auctions = $auctionsAfterFilter->selectRaw('id,
@@ -244,11 +258,6 @@ class AuctionController extends Controller
             return response('Updated', 200);
         }
 
-        
-        error_log("JSON");
-
-        
-        error_log("End JSON");
 
         return response()->json(['error' => $errors], 400);
     }

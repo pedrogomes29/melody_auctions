@@ -32,6 +32,30 @@
                     <li><p class="dropdown-item {{$type==='closed'?'chosen':''}}">Closed</p></li>
                 </ul>
             </div>
+
+            <div id="price_range"class="dropdown my-3">
+                <h1>Price Range</h1>
+                <section class = "classification">
+                    <section class = "slider">
+                        <div class="min-value numberVal">
+                            <span class="number" id="minPriceValue"  disabled>0</span>
+                        </div>   
+                        <?php
+                            use App\Models\Auction;
+                            $maxPrice = Auction::maxPrice();
+                        ?>
+                        <div class="range-slider">
+                            <div class="progress"></div>
+                            <input type="range" id="minPrice" class="range-min" min="0" max="{{$maxPrice }}" value="0" step="0.1">
+                            <input type="range" id="maxPrice" class="range-max" min="0" max="{{$maxPrice }}" value="{{$maxPrice}}" step="0.1">
+                        </div>
+                        <div class="max-value numberVal">
+                            <span class="number" id="maxPriceValue" disabled >5</span>
+                        </div>
+                    </section>
+                </section>
+            </div>
+
         </div>
         <div id='auctions' class='container-fluid flex-grow-1'>
             <h1 id="nrAuctions">{{$nrAuctions}} results </h1>

@@ -70,4 +70,11 @@ class Auction extends Model
     public function messages(){
         return $this->hasMany(Message::class)->orderBy('date', 'asc');
     }
+
+    public static function maxPrice(){
+        $max_currentprice = Auction::max('currentprice');
+        $max_startprice = Auction::max('startprice');
+
+        return max($max_currentprice, $max_startprice);
+    }
 }

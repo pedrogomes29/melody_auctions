@@ -10,3 +10,80 @@
 #load-more:hover {
     background-color: #181818;
 }
+
+
+
+/* CLASSIFICATION SLIDE BAR */
+
+.slider{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    width: 170px;
+    height: 80px;
+    background: white;
+    border-radius: 20px;
+}
+
+.slider .range-slider{
+    position: relative;
+    width: 800px;
+    height: 5px;
+    background: #ddd;
+    top: 1px;
+    margin: 10px;  
+}
+
+
+.slider .range-slider input[type="range"]{
+    position: absolute;
+    top: -8px;
+    width: 101%;
+    -webkit-appearance: none;
+    pointer-events: none;
+    background: none;
+}
+
+
+.slider .range-slider .progress{
+    height: 100%;
+    background: rgb(15,20,24);
+    border-radius: 50px;
+    position: absolute;
+}
+
+.slider .number{
+    display: inline-block;
+    width: 30px;
+    height: 20px;
+    background: white;
+    border: 1px solid #ddd;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.slider .range-slider input::-webkit-slider-thumb{
+    pointer-events: auto;
+    -webkit-appearance: none;
+    width: 17px;
+    height: 17px;
+    background: rgb(15,20,24);
+    border-radius: 50px;
+}
+
+/** PRICE RANGE **/
+.price-range [name=classification]{
+    display: none;  
+}
+
+.price-range [name=classification]{
+    display: none;  
+}
+
+.price-range {
+    float: left;
+    display:block;
+}
