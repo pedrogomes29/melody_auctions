@@ -30,4 +30,10 @@
     </button>
     <a class="button button-outline" href="{{ route('register') }}">Register</a>
 </form>
+<!-- Login with google login -->
+<div style="display: flex; justify-content: center; width:50%; margin: 0 auto; padding: 20px;">
+<a href="{{route('google.login')}}" class="btn btn-lg btn-primary btn-block">
+    <i class="fa fa-google-plus pull-left"></i> Login with Google
+</a>
+</div>
 @endsection

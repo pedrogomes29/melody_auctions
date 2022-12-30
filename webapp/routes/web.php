@@ -32,7 +32,8 @@ Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 Route::post('register', 'Auth\RegisterController@register');
-
+Route::get('/login-google', 'API\SocialAuthController@redirectToProvider')->name('google.login');
+Route::get('/auth/google/callback', 'API\SocialAuthController@handleCallback')->name('google.login.callback');
 
 //Admin 
 Route::group(['prefix' => 'admin', 'namespace' => 'Auth'], function () {
