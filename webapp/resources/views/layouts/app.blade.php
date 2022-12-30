@@ -101,7 +101,7 @@
       </main>
         <footer class="py-3 my-4">
           <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-            <li class="nav-item"><a class="nav-link px-2 text-muted" href="{{ url('/about') }}">About Us</a></li>
+            <li class="nav-item"><a class="nav-link px-2 text-muted" href="{{ route('about-us') }}">About Us</a></li>
             <li class="nav-item"><a class="nav-link px-2 text-muted" href="{{ url('/contact-us') }}">Contact Us</a></li>
             <li class="nav-item"><a class="nav-link px-2 text-muted" href="{{ url('/FAQ') }}">FAQ</a></li>
           </ul>

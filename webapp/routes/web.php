@@ -99,4 +99,7 @@ Route::put('api/notifications/{userId}','NotificationController@markAsRead')->na
 //messages
 Route::post('/api/auction/{auctionId}/message', 'MessageController@store')->name('message.store');
 
-
+//about-us
+Route::get('/about-us', function () {
+    return view('pages.about-us');
+})->name('about-us');

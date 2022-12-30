@@ -1,0 +1,77 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+  }
+  
+  html {
+    box-sizing: border-box;
+  }
+  
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+  .row{
+    justify-content: center;
+  }
+  
+  .profile {
+    display: flex;
+    box-shadow: 0 6px 8px 0 rgba(0, 0, 0, 0.2);
+    margin: 8px;
+    padding: 8px;
+    width: 50%;
+    border-radius: 1em;
+    border: #6c757d solid 1px;
+  }
+  .profile img {
+    width: 150px;
+    height: 150px;
+    -webkit-border-radius: 50% !important;
+    -moz-border-radius: 50% !important;
+    border-radius: 50% !important;
+  }
+  .profile img:hover {
+    cursor: pointer;
+    scale: 1.02;
+  }
+  
+  .about-section {
+    padding: 50px;
+    margin-bottom: 50px;
+    text-align: center;
+    background-color: #6c757d;
+    color: white;
+  }
+
+  .about-section p {
+    font-size: 1.5em;
+  }
+  
+  .container {
+    margin: auto;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1.5em;
+  }
+  
+  .container::after, .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  
+  .title {
+    color: grey;
+  }
+  .about-section a{
+    text-decoration: none;
+    color: #8c2d19;
+  }
+  @media (max-width: 768px) {
+    .user-profile {
+        display: block!important;
+
+    }
+}
