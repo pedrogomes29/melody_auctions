@@ -103,3 +103,7 @@ Route::post('/api/auction/{auctionId}/message', 'MessageController@store')->name
 Route::get('/about-us', function () {
     return view('pages.about-us');
 })->name('about-us');
+//contact-us
+Route::get('/contact-us', function () {
+    return view('pages.contact-us');
+})->name('contact-us');
