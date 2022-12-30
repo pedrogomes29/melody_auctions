@@ -147,7 +147,7 @@ class AuctionController extends Controller
             $categoryName = $categoryName[0]->name;
         }
 
-        $typeText = ucfirst($request->type??"none selected");
+        $typeText = ucfirst($request->type??"Any type");
 
         return view('pages.auctions')
             ->with('nrAuctions',$nrAuctions)

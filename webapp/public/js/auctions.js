@@ -132,9 +132,11 @@ async function chooseCategory(event) {
     offset = 0;
 
     const categoryElement = document.querySelector("#category .chosen");
+    console.log(categoryElement);
     const url = new URL(window.location);
-    if (categoryElement)
+    if (categoryElement.id !== "")
         url.searchParams.set("categoryId", categoryElement.id.split("-")[1]);
+    else url.searchParams.delete("categoryId");
     window.history.replaceState({}, "", url);
 
     getAuctions();
@@ -150,9 +152,13 @@ async function chooseTypeOption(event) {
 
     const type = document.querySelector("#type #typeButton").textContent;
 
-    if (type !== "None selected") {
+    if (type !== "Any type") {
         const url = new URL(window.location);
         url.searchParams.set("type", type.toLowerCase());
+        window.history.replaceState({}, "", url);
+    }else{
+        const url = new URL(window.location);
+        url.searchParams.delete("type");
         window.history.replaceState({}, "", url);
     }
 
@@ -169,7 +175,7 @@ async function getAuctions(offset = 0) {
         params.search = searchInput.value ?? "";
 
     const categoryElement = document.querySelector("#category .chosen");
-    if (categoryElement) params.categoryId = categoryElement.id.split("-")[1];
+    if (categoryElement.id !== '') params.categoryId = categoryElement.id.split("-")[1];
 
     const type = document.querySelector("#type #typeButton").textContent;
     if (type !== "None selected") params.type = type.toLowerCase();

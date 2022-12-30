@@ -18,6 +18,7 @@
                 <h1>Category</h1>
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="categoryButton" data-bs-toggle="dropdown" aria-expanded="false">{{$categoryName}}</button>
                 <ul class="dropdown-menu" aria-labelledby="categoryButton">
+                    <li><p class="dropdown-item {{$categoryName=='Any category'?'chosen':''}}">Any category</p></li>
                     @foreach($categories as $category)
                         <li><p class="dropdown-item {{$categoryId==$category->id?'chosen':''}}" id="category-{{$category->id}}">{{$category->name}}</p></li>
                     @endforeach
@@ -27,6 +28,7 @@
                 <h1 >Type</h1>
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="typeButton" data-bs-toggle="dropdown" aria-expanded="false">{{$typeText}}</button>
                 <ul class="dropdown-menu" aria-labelledby="typeButton">
+                    <li><p class="dropdown-item {{$type===''?'chosen':''}}">Any type</p></li>
                     <li><p class="dropdown-item {{$type==='active'?'chosen':''}}">Active</p></li>
                     <li><p class="dropdown-item {{$type==='uninitiated'?'chosen':''}}">Uninitiated</p></li>
                     <li><p class="dropdown-item {{$type==='closed'?'chosen':''}}">Closed</p></li>
@@ -58,7 +60,10 @@
 
         </div>
         <div id='auctions' class='container-fluid flex-grow-1'>
-            <h1 id="nrAuctions">{{$nrAuctions}} results </h1>
+            <h1 id="nrAuctions" class="d-inline">{{$nrAuctions}} results </h1>
+
+            
+            
             @include('partials.auctions', ['auctions' => $auctions,'nrAuctions'=>$nrAuctions,'offset'=>$offset])
         </div>
     </div>

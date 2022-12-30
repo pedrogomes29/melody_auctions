@@ -87,3 +87,11 @@
     float: left;
     display:block;
 }
+
+
+/* Order by*/
+#sortAuctions {
+    float: right;
+    margin-right: 1em;
+    
+}
