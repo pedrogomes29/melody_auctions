@@ -8,7 +8,7 @@
 @section('content')
 <div class="about-section">
     <h1>About Us</h1>
-    <p>We're 4 guys who study at <a target="_blank" href="https://sigarra.up.pt/feup/pt/web_page.inicial">Faculdade de engenharia da universidade do Porto.</a></p>
+    <p>We're 4 guys who study at <a target="_blank" href="https://sigarra.up.pt/feup/pt/web_page.inicial">Faculdade de Engenharia da Universidade do Porto (FEUP).</a></p>
     <p>This is a project developed in the context of our Database and Web Applications Laboratory class.</p>
     <p>Below you have some information about each member and how to reach us.</p>
   </div>
