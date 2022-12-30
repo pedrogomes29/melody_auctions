@@ -23,7 +23,7 @@
             {{ $errors->first('email') }}
             </span>
         @endif
-
+        <label></label>
         <label for="password" >Password</label>
         <input id="password" type="password" name="password" required>
         @if ($errors->has('password'))

@@ -139,16 +139,13 @@
             @endif
         </section>
 
-        <!--
-        @if (Auth::id() == $user->id)
+        @if (Auth::check() && Auth::id() == $user->id)
             <form id="delete-user"action="{{ route('user.delete', $user->username) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger">Delete Account</button>
             </form>
         @endif
-
-        -->
 
         
     </section>

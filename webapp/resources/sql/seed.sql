@@ -39,6 +39,7 @@ CREATE TABLE authenticated_users (
 	balance int NULL,
 	tsvectors tsvector NULL,
 	remember_token varchar(100) NULL,
+	deleted_at timestamp NULL,
 	CONSTRAINT authenticateduser_balance_check CHECK ((balance >= 0)),
 	CONSTRAINT authenticateduser_pkey PRIMARY KEY (id)
 );

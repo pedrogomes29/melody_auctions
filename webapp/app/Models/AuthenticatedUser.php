@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AuthenticatedUser extends Authenticatable
 {
@@ -13,6 +14,7 @@ class AuthenticatedUser extends Authenticatable
     public $timestamps = false;
     use HasFactory;
     use Notifiable;
+    use SoftDeletes;
 
 
     public function auctions(){
