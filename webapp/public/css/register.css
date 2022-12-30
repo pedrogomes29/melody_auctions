@@ -108,3 +108,19 @@ body {
   input{
     font-size: 1.2em;
   }
+
+
+.formSection{
+  display: flex;
+  justify-content: center;
+}
+
+.formSection form {
+  border: 1px solid #abd7eb;
+  padding: 2em;
+  max-width: 30em;
+  font-size: 1.2em;
+  margin: 0 auto;
+  width: 30em;
+}
+

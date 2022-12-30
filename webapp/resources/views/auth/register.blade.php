@@ -8,6 +8,7 @@
 @endsection
 
 @section('content')
+<section class="formSection">
 <form method="POST" action="{{ route('register') }}">
     {{ csrf_field() }}
     <label for="email">E-Mail Address</label>
@@ -66,4 +67,5 @@
     </button>
     <a class="button button-outline" href="{{ route('login') }}">Login</a>
 </form>
+</section>
 @endsection
