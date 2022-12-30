@@ -9,6 +9,6 @@
 <div class="contact-section">
     <h1>Contact Us</h1>
     <p>For logistic questions or if something is not working, please send us an email on <a href="mailto:melodyauctions@gmail.com" style="color:black">melodyauctions@gmail.com</a></p>
-    <p>For any other personal matters, please take a look at the contacts of the our founders in the <a href="{{ route('about-us') }}" style="color:black">About Us</a> page.</p>
+    <p>For any other personal matters, please take a look at the contacts of our founders in the <a href="{{ route('about-us') }}" style="color:black">About Us</a> page.</p>
   </div>
 @endsection
