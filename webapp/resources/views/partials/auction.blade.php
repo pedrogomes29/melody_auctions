@@ -1,5 +1,5 @@
 
-<div class="card m-5"  id="auction-{{$auction->id}}" >
+<div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg"  id="auction-{{$auction->id}}" >
     @if(($auction->uninitiated===1||$auction->active===1) && !$auction->cancelled)
         @if($auction->uninitiated===1)
             <h4 class="ms-4 mt-3">Starting in</h4>

@@ -74,6 +74,8 @@
             </div>
             
             <div id = "auctions_lists">
+            
+
             @include('partials.auctions', ['auctions' => $auctions,'nrAuctions'=>$nrAuctions,'offset'=>$offset])
             </div>
         </div>
