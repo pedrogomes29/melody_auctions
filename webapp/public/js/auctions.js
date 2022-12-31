@@ -242,6 +242,7 @@ async function getAuctions(offset = 0) {
     addAuctionListeners();
 
     start_countdowns();
+    convert_localtime();
 }
 
 function chooseAuction(event) {
@@ -297,3 +298,21 @@ function ajustProgress(e){
         inputValue[1].innerHTML = maxrange;
     }
 }
+
+
+
+function convert_localtime(){
+
+    let dates = document.querySelectorAll('.local-date');
+
+    for (var i = 0; i < dates.length; i++) {
+        let date_element = dates[i];        
+        if(date_element.getAttribute('data-converted') == 'true') continue;
+        // convert bid time to local time
+        const date = new Date(new Date(date_element.innerHTML).getTime() - new Date().getTimezoneOffset()*60*1000);
+        dates[i].innerHTML = date.toLocaleString();
+        dates[i].setAttribute('data-converted', 'true');
+    }
+}
+
+convert_localtime();

@@ -74,7 +74,7 @@ class AuctionController extends Controller
                                                         name AS productName,
                                                         CASE WHEN currentPrice IS NULL
                                                             THEN startPrice
-                                                            ELSE currentprice+minbidsdif
+                                                            ELSE currentprice
                                                         END AS minBid,
                                                         photo,
                                                         CASE WHEN CURRENT_TIMESTAMP < enddate

@@ -296,3 +296,6 @@ function updateNotificationTimeSince() {
 function chooseNotification(event) {
     window.location.href = "/auction/" + event.currentTarget.id;
 }
+
+
+
