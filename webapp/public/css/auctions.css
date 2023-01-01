@@ -110,7 +110,14 @@
     
 }
 
+.auction-card .local-date{
+    font-family: basisGrotesqueMono,monospace;
+    font-size: small;
+    margin: 0;
+}
+
 .auction-card img{
+    object-fit: contain;
     width: 25em;
     height: 25em;
 }

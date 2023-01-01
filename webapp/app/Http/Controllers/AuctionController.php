@@ -76,6 +76,8 @@ class AuctionController extends Controller
                                                             THEN startPrice
                                                             ELSE currentprice
                                                         END AS minBid,
+                                                        currentprice,
+                                                        startPrice,
                                                         photo,
                                                         CASE WHEN CURRENT_TIMESTAMP < enddate
                                                             THEN 1

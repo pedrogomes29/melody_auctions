@@ -25,8 +25,10 @@ class HomePageController extends Controller
                                                     name AS productName,
                                                     CASE WHEN currentPrice IS NULL
                                                         THEN startPrice
-                                                        ELSE currentprice+minbidsdif
+                                                        ELSE currentprice
                                                     END AS minBid,
+                                                    currentprice,
+                                                    startPrice,
                                                     photo,
                                                     CASE WHEN CURRENT_TIMESTAMP < enddate
                                                         THEN 1
@@ -52,8 +54,11 @@ class HomePageController extends Controller
                                                 name AS productName,
                                                 CASE WHEN currentPrice IS NULL
                                                     THEN startPrice
-                                                    ELSE currentprice+minbidsdif
+                                                    ELSE currentprice
                                                 END AS minBid,
+                                                
+                                                currentprice,
+                                                startPrice,
                                                 photo,
                                                 CASE WHEN CURRENT_TIMESTAMP < enddate
                                                     THEN 1
@@ -77,9 +82,11 @@ class HomePageController extends Controller
                                                 as date,
                                                 name AS productName,
                                                 CASE WHEN currentPrice IS NULL
-                                                    THEN currentprice
-                                                    ELSE currentprice+minbidsdif
+                                                    THEN startPrice
+                                                    ELSE currentprice
                                                 END AS minBid,
+                                                currentprice,
+                                                startPrice,
                                                 photo,
                                                 CASE WHEN CURRENT_TIMESTAMP < enddate
                                                     THEN 1
