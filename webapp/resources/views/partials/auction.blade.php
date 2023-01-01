@@ -1,6 +1,6 @@
 
 
-<article class="auction-card card " id="auction-{{$auction->id}}" >
+<article class="auction-card " id="auction-{{$auction->id}}" >
     @if(trim($auction->photo)!=="")
         <img class="image" src="{{ asset($auction->photo)}}"/>
     @else

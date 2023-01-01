@@ -12,8 +12,25 @@
 }
 
 
+/** filters **/
+@media (max-width: 768px) {
+    .auctions-content{
+        flex-direction: column!important;
+    }
+    .auctions-filters{
+        flex-direction: row!important;
+        flex-wrap: wrap;
+        gap: 1em;
+        justify-content: space-between;
+    }
 
-/* CLASSIFICATION SLIDE BAR */
+    .auctions-filters .filter{
+        width: fit-content;
+    }
+}
+
+
+/* price SLIDE BAR */
 
 .slider{
     position: relative;
@@ -21,7 +38,7 @@
     justify-content: center;
     align-items:center;
     width: 170px;
-    height: 80px;
+    margin-top: 1em;
     background: white;
     border-radius: 20px;
 }
@@ -97,6 +114,14 @@
 }
 
 /** Auctions Card **/
+
+@media (max-width: 768px) {
+    .auction-card{
+        margin: auto;
+        
+    }
+}
+
 .auctions-list{
     gap: 1em;
     margin: 1em;

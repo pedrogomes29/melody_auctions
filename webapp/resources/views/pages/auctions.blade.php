@@ -12,9 +12,9 @@
 @section('searchContent',$search)
 
 @section('content')
-    <div class="d-flex flex-row container-fluid">
-        <div class="d-flex flex-column flex-shrink-0 p-3 px-5 me-5 border-right border-dark position-sticky">
-            <div id="category"class="dropdown my-3">
+    <div class="auctions-content d-flex flex-row container-fluid">
+        <div class="auctions-filters d-flex flex-column flex-shrink-0 p-3 px-5 me-5 border-right border-dark position-sticky">
+            <div id="category"class="filter dropdown my-3">
                 <h1>Category</h1>
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="categoryButton" data-bs-toggle="dropdown" aria-expanded="false">{{$categoryName}}</button>
                 <ul class="dropdown-menu" aria-labelledby="categoryButton">
@@ -24,7 +24,7 @@
                     @endforeach
                 </ul>
             </div>
-            <div id="type" class="dropdown my-3">
+            <div id="type" class="filter dropdown my-3">
                 <h1 >Type</h1>
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="typeButton" data-bs-toggle="dropdown" aria-expanded="false">{{$typeText}}</button>
                 <ul class="dropdown-menu" aria-labelledby="typeButton">
@@ -35,7 +35,7 @@
                 </ul>
             </div>
 
-            <div id="price_range"class="dropdown my-3">
+            <div id="price_range"class="filter dropdown my-3">
                 <h1>Price Range</h1>
                 <section class = "classification">
                     <section class = "slider">
