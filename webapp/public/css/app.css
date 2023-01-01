@@ -70,8 +70,8 @@ body header {
 }
 #user-profile > img,
 #admin-profile > img {
-    height: 60px;
-    width: 60px;
+    height: 50px;
+    width: 50px;
 }
 
 #logo:hover {
@@ -148,6 +148,8 @@ body > main {
 
 #notificationsContainer {
     position: relative;
+    font-size: smaller;
+    margin: auto;
     margin-right: 2.5em;
     z-index: 1;
     display: inline-block;
@@ -361,4 +363,53 @@ body > main {
 
 #notificationsBellContainer.notify {
     animation: ring 4s ease-in-out;
+}
+
+
+/* nav bar  */
+
+.fixed-options{
+    display: flex;
+}
+
+.navbar-container{
+    display: grid!important;
+    grid-template-columns: auto 1fr auto;
+}
+
+.navbar-container .navbar-brand{
+    grid-column: 1;
+    grid-row: 1;
+}
+
+
+.navbar-container .navbar-collapse{
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.navbar-container .fixed-options{
+    grid-column: 3;
+    grid-row: 1;    
+    margin-left: auto;
+}
+
+@media (max-width: 992px){
+    .navbar-container .fixed-options{
+        grid-column: 2;
+    }
+
+
+    .navbar-container .navbar-collapse{
+        grid-column: 1 / span 2;
+        grid-row: 2;
+    }
+}
+
+.navbar-container .nav-link {
+    margin: 0;
+}
+
+.navbar-container .navbar-toggler{
+    margin: auto;
 }

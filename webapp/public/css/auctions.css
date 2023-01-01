@@ -118,7 +118,6 @@
 @media (max-width: 768px) {
     .auction-card{
         margin: auto;
-        
     }
 }
 
@@ -129,6 +128,7 @@
 
 .auction-card{
     margin-top: 1em;
+    margin: inherit;
     width: 25em;
     height: auto;
     border: 0 !important;
