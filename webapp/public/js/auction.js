@@ -103,8 +103,10 @@ async function updatePhoto(event) {
     const formElement = document.querySelector("#store");
     const input = formElement.querySelector("input[type=file]");
 
+
     let data = new FormData();
     data.append("photo", input.files[0]);
+
 
     const response = await fetch(formElement.action, {
         method: "POST",
@@ -127,8 +129,89 @@ async function updatePhoto(event) {
     }
 }
 
+
+async function setDefaultImage(obj) {
+
+    const response = await fetch(obj.getAttribute("data-auction"), {
+        method: 'post',
+        headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-CSRF-TOKEN': obj.getAttribute("data-csrf")
+        }
+    })
+    console.log(response);
+    if(response.status == 400){
+        const errors = (await response.json());
+        const popuperror = document.querySelector("#popupError");
+        popuperror.innerHTML = errors.error;
+        popuperror.style.display = "block";
+        document.querySelector(".modal-body").scrollTop=0
+        
+    }
+    else if(response.status == 200){
+        location.reload();
+    } 
+}
+
+async function adminUpdateAuction(obj) {
+    const formElement = document.querySelector("#adminUpdate");
+
+    const data = new URLSearchParams();
+    for (const pair of new FormData(formElement)) {
+        data.append(pair[0], pair[1]);
+    }
+
+    const response = await fetch(formElement.action, {
+        method: 'put',
+        body: data,
+        headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-CSRF-TOKEN': formElement.querySelector("[name=_token]").value
+        }
+    })
+    if(response.status == 400){
+        const errors = (await response.json()).error;
+        const popuperror = document.querySelector("#popupError");
+        if(errors.length > 0){
+            popuperror.innerHTML = errors[0];
+            popuperror.style.display = "block";
+            document.querySelector(".modal-body").scrollTop=0
+        }
+    }
+    else if(response.status == 200){
+        location.reload();
+    }
+}
+
+async function adminDeleteAuction(obj) {
+    
+        const response = await fetch(obj.getAttribute("data-auction"), {
+            method: 'delete',
+            headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRF-TOKEN': obj.getAttribute("data-csrf")
+            }
+        })
+    
+        if(response.status == 400){
+            const errors = await response.json();
+            const popuperror = document.querySelector("#popupError");
+            popuperror.innerHTML = errors.error;
+            popuperror.style.display = "block";
+            document.querySelector(".modal-body").scrollTop=0
+    
+        }
+        else if(response.status == 200){
+            location.reload();
+        }else{
+            location.reload();
+        }
+    
+}
+
 const msgInput = document.getElementById("messageInput");
 const sendMsgButton = document.getElementById("send-msg-button");
+
 
 function addEventListeners() {
     const updateImageForm = document.querySelector("#store");
@@ -214,5 +297,15 @@ function sendMessage() {
         .catch(() => console.error("Error parsing JSON"))
         .then((json) => console.log(json));
 }
+
+function openChat() {
+    let chat = document.getElementById("chatbox");
+    if (chat.classList.contains("hidden")) {
+        chat.classList.remove("hidden");
+    } else {
+        chat.classList.add("hidden");
+    }
+}
+
 
 addEventListeners();

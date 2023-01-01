@@ -40,11 +40,13 @@ use App\Models\Manufactor;
         @else
           <h3 style="color: #da9465;">Not started yet</h3>
           @if (!$auction->cancelled && Auth::check() && Auth::User()->id === $auction->owner_id)
-            <a href="{{ url('auction/'.$auction->id.'/edit') }}" class="btn btn-warning" role="button" data-bs-toggle="modal" data-bs-target="#edit_popup">Edit Auction</a>
-            
+            <a  class="btn btn-warning" role="button" data-bs-toggle="modal" data-bs-target="#edit_popup">Edit Auction</a>
           @endif
         @endif
-          
+        @if (Auth::guard('admin')->user())  
+          <a  class="btn btn-warning" role="button" data-bs-toggle="modal" data-bs-target="#edit_popup">Edit Auction</a>
+        @endif
+        
 
         <div class="owner_info">
           <a href="{{URL('user/'.$auction->owner->username)}}" class="link-dark text-decoration-none">
@@ -58,20 +60,15 @@ use App\Models\Manufactor;
         </div>
       </div>
     </header>
-
-    <main >
+    <img onclick="openChat()" class="messageIcon"src="{{ asset('default_images/message-icon.svg') }}" alt="message" class="message-icon">
+    <main class="auctionExposition">
 
 
       <section id="auction_information" class="w-100">
+        <div class="container">
+          <img id="auction_img" class=".img-fluid mx-auto d-block border border-dark" src="{{ empty(trim($auction->photo)) ? URL('/images/default_auction.jpg') : asset($auction->photo) }}">
+        </div>
         <section id="details">
-          <h2>Manufactor</h2>
-          <p>
-          {{ Manufactor::find($auction->manufactor_id)->name }}
-          </p>
-          <h2>Description</h2>
-          <p>
-          {{ $auction->description }}
-          </p>
 
           <section id="bid_auction">
             <?php $last_bidder = $auction->getLastBidder();?>
@@ -153,8 +150,8 @@ use App\Models\Manufactor;
               <div class="collapse" id ="bid_list">
       
                 <div  class="list-group mt-1">
-                  <h3>Bidding History</h3>
-                  <div id="bidding_history">
+                  <h3 class="text-center">Bidding History</h3>
+                  <div id="bidding_history" >
                     @include('partials.bids', ['bids' => $auction->bids_offset(0)])
                   </div>
                   
@@ -168,31 +165,39 @@ use App\Models\Manufactor;
             </section>
           </section>
         </section>
-        <img id="auction_img" class=".img-fluid mx-auto d-block" src="{{ empty(trim($auction->photo)) ? URL('/images/default_auction.jpg') : asset($auction->photo) }}">
-
-        @include('partials.messages', ['messages' => $messages])
-
-
-
-
       </section>
-
+      @include('partials.messages', ['messages' => $messages])
       @extends('partials.popup', ['POPUP_ID' => "edit_popup", 'POPUP_TITLE_ID' => "edit_popup_title", 'POPUP_TITLE' => "Edit Auction"])
+      
       @section('popup-body')
-        @include('partials.auction_edit', ['auction' => $auction])
+        @include('partials.auction_edit', ['auction' => $auction, 'admin' => Auth::guard('admin')->user()])
       @endsection
 
       @section('popup-footer')
-        
+        @if (Auth::guard('admin')->user())
+        <button data-csrf="{{csrf_token()}}" data-auction="/auction/{{$auction->id}}/admin" onclick="adminDeleteAuction(this)" class="btn btn-danger">Delete</button>   @else 
         <button data-csrf="{{csrf_token()}}" data-auction="/auction/{{$auction->id}}" onclick="deleteAuction(this)" class="btn btn-danger">Delete</button>
-        
+        @endif 
 
         <div class="text-center">
+          @if (Auth::guard('admin')->user())
+            <button type="submit" onclick="adminUpdateAuction(this)" class="btn btn-warning">Update</button>
+          @else
             <button type="submit" onclick="updateAuction(this)" class="btn btn-warning">Update</button>
+          @endif
         </div>
       @endsection
+      
 
     </main>
+
+    <section class="auctionInfo container">
+      <h2>Manufactor</h2>
+        <p>{{ Manufactor::find($auction->manufactor_id)->name }} </p>
+      <h2>Description</h2>
+        <p>{{ $auction->description }} </p>
+    </section>
+
 
   </article>
 @endsection

@@ -11,6 +11,14 @@
 |
 */
 // Home
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
+
 Route::get('/','AuctionController@index')->name('index');
 
 
@@ -32,7 +40,8 @@ Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
 Route::post('register', 'Auth\RegisterController@register');
-
+Route::get('/login-google', 'API\SocialAuthController@redirectToProvider')->name('google.login');
+Route::get('/auth/google/callback', 'API\SocialAuthController@handleCallback')->name('google.login.callback');
 
 //Admin 
 Route::group(['prefix' => 'admin', 'namespace' => 'Auth'], function () {
@@ -60,8 +69,11 @@ Route::get('/api/user/{username}/bids', 'UserProfileController@getBids');
 
 // Auction
 Route::post('/auction/{auction_id}/updatePhoto', 'AuctionController@updatePhoto')->name('auction.updatePhoto');
+Route::post('/auction/{auction_id}/defaultImage', 'AuctionController@defaultImage')->name('auction.defaultImage');
 Route::put('auction/{auction_id}', 'AuctionController@ownerUpdate')->name('auction.update');
 Route::delete('auction/{auction_id}', 'AuctionController@ownerDelete')->name('auction.delete');
+Route::put('auction/{auction_id}/admin', 'AuctionController@adminUpdate')->name('auction.adminUpdate');
+Route::delete('auction/{auction_id}/admin', 'AuctionController@adminDelete')->name('auction.adminDelete');
 Route::get('auction/{auction_id}', 'AuctionController@show')->where('auction_id', '[0-9]+')->name('auction.show');
 Route::get('auction/create', 'AuctionController@create')->name('auction.showCreate');
 Route::post('auction', 'AuctionController@store')->name('auction.store');
@@ -70,13 +82,8 @@ Route::delete('api/follow', 'FollowController@destroy')->name('follow.destroy');
 
 
 // Admin
-Route::get('admin/{admin_id}', 'AdminController@show')->name('adminDashboard');
-Route::get('admin/{admin_id}/auctions', 'AdminController@auctions')->name('admin.auctions');
-Route::get('admin/{admin_id}/auctions/{auctions_id}', 'AdminController@edit_auctions');
-Route::put('admin/{admin_id}/auctions/{auctions_id}', 'AdminController@edit_auction');
-Route::delete('admin/{admin_id}/auctions/{auctions_id}', 'AdminController@delete_auction');
-Route::post('admin/{admin_id}/auctions/{auctions_id}/default_image', 'AdminController@default_image');
-
+Route::get('admin/{admin_username}', 'AdminController@show')->name('adminDashboard');
+Route::post('admin/{admin_username}', 'AdminController@closeReport')->name('closeReport');
 
 // Follows
 Route::get('user/{username}/follow', 'FollowController@showFollows')->name('user.follows');
@@ -86,6 +93,16 @@ Route::get('user/{username}/follow', 'FollowController@showFollows')->name('user
 Route::post('api/auction/{auction_id}/bid', 'BidController@create')->where('auction_id', '[0-9]+')->name('bid.create');
 Route::get('api/auction/{auction_id}/bid', 'AuctionController@bids')->where('auction_id', '[0-9]+')->name('bid.list');
 
+// Categories
+Route::get('category/create', 'CategoryController@create')->middleware('adminauth')->name('category.create');
+Route::get('category/{id}/edit', 'CategoryController@edit')->middleware('adminauth')->name('category.edit');
+Route::post('category', 'CategoryController@store')->middleware('adminauth')->name('category.store');
+Route::put('category/{id}', 'CategoryController@update')->middleware('adminauth')->name('category.update');
+Route::delete('category/{id}', 'CategoryController@destroy')->middleware('adminauth')->name('category.destroy');
+
+
+// Reports
+Route::post('user/{username}/report', 'ReportController@store')->name('report.create');
 
 // Reviews
 Route::get('user/{username}/reviews', 'ReviewController@showReviews')->name('user.reviews');
@@ -98,3 +115,22 @@ Route::put('api/notifications/{userId}','NotificationController@markAsRead')->na
 Route::post('/api/auction/{auctionId}/message', 'MessageController@store')->name('message.store');
 
 
+
+//recover password
+Route::get('/forgot-password', 'Auth\ForgotPasswordController@showEmailForm')->middleware('guest')->name('password.request');
+
+Route::post('/forgot-password', 'Auth\ForgotPasswordController@storePasswordTokenAndSendEmail')->middleware('guest')->name('password.email');
+
+Route::get('/reset-password/{token}', 'Auth\ForgotPasswordController@showRecoverPasswordForm' )->middleware('guest')->name('password.reset');
+
+Route::post('/reset-password','Auth\ForgotPasswordController@resetPassword' )->middleware('guest')->name('password.update');
+
+
+//about-us
+Route::get('/about-us', function () {
+    return view('pages.about-us');
+})->name('about-us');
+//contact-us
+Route::get('/contact-us', function () {
+    return view('pages.contact-us');
+})->name('contact-us');

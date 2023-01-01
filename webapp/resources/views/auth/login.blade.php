@@ -6,28 +6,54 @@
 
 
 @section('content')
+
+<section class="formSection">
 <form method="POST" action="{{ route('login') }}">
     {{ csrf_field() }}
-
-    <label for="email">E-Mail</label>
-    <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus>
-    @if ($errors->has('email'))
-        <span class="error">
-          {{ $errors->first('email') }}
-        </span>
+    @if (session('status'))
+        <div class="alert alert-success" role="alert">
+        {{ session('status') }}
+        </div>
     @endif
 
-    <label for="password" >Password</label>
-    <input id="password" type="password" name="password" required>
-    @if ($errors->has('password'))
-        <span class="error">
-            {{ $errors->first('password') }}
-        </span>
-    @endif
+        <label for="email">E-Mail</label>
+        <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus>
+        @if ($errors->has('email'))
+            <span class="error">
+            {{ $errors->first('email') }}
+            </span>
+        @endif
+        <label></label>
+        <label for="password" >Password</label>
+        <input id="password" type="password" name="password" required>
+        @if ($errors->has('password'))
+            <span class="error">
+                {{ $errors->first('password') }}
+            </span>
+        @endif
+        <div class="col text-center">
+            <button type="submit">
+                Login
+            </button>
+        </div>
+        <div class="col text-center">
+            <a class="link fw-bold text-center text-decoration-none" href="{{ route('password.request') }}">Forgot your password?</a>
+        </div>
+        <div style="display: flex; justify-content: center; margin: 0 auto; padding: 20px;">
+            <a href="{{route('google.login')}}" class="btn btn-lg btn-primary btn-block">
+                <i class="fa fa-google-plus pull-left"></i> Login with Google
+            </a>
+        </div>
+    </form>
+    <!-- Login with google login -->
+</section>   
+   
 
-    <button type="submit">
-        Login
-    </button>
-    <a class="button button-outline" href="{{ route('register') }}">Register</a>
-</form>
+
+<div class="col text-center mt-5">
+    <h4>
+        Don't have an account account?
+        <a class="link text-decoration-none" href="{{ route('register') }}">Sign up</a>
+    </h4>
+
 @endsection

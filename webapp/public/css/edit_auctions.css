@@ -17,4 +17,10 @@
 
 #edit_auctions #store {
     margin-bottom: 0em;
+    align-items: center;
+}
+
+
+#set_default_image {
+    margin-bottom: 1em;
 }

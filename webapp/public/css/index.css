@@ -4,6 +4,47 @@
     border-radius: 1.5rem;
 }
 
-#categories .category {
-    border-radius: 1rem;
+#categories-carousel button.carousel-control-prev,
+#categories-carousel button.carousel-control-next {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    background-color: transparent;
+}
+
+#categories-carousel {
+    width: 60vw;
+    height: 40vh;
+}
+.carousel-item > img {
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-item > h1 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    max-width: 3em;
+    max-height: 1em;
+    z-index: 20;
+    color: white;
+    font-weight: bold;
+}
+
+.carousel-item > h1:hover {
+    cursor: pointer;
+    -webkit-transform: scale(1.2);
+}
+
+@media (max-width: 600px) {
+    #categories-carousel {
+        width: 80vw;
+        height: 30vh;
+    }
 }

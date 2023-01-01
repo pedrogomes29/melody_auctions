@@ -6,12 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AuthenticatedUser extends Authenticatable
 {
     protected $fillable = ['id','email', 'firstname', 'lastname', 'username','password', 'contact','balance','photo'];
     public $timestamps = false;
     use HasFactory;
+    use Notifiable;
+    use SoftDeletes;
+
 
     public function auctions(){
         return $this->hasMany(Auction::class,'owner_id');

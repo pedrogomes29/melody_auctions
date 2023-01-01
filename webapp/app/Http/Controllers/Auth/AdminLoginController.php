@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
+use App\Models\Admin;
+
 class AdminLoginController extends Controller
 {
-
-
 
     public function getLogin(){
       if(auth()->user()){
@@ -21,7 +21,8 @@ class AdminLoginController extends Controller
   public function redirectTo()
   {
       $id = Auth::id();
-      return '/admin/'.$id;
+      $username = Admin::where('id',$id)->firstOrFail()->username;
+      return '/admin/'.$username;
   }
 
   public function postLogin(Request $request)
@@ -35,7 +36,8 @@ class AdminLoginController extends Controller
       ]);
      if(auth()->guard('admin')->attempt(['email' => $request->input('email'),  'password' => $request->input('password')])){
             $user = auth()->guard('admin')->user();
-            return redirect()->route('adminDashboard', $user->id);
+            $username = Admin::where('id',$user->id)->firstOrFail()->username;
+            return redirect()->route('adminDashboard', $username);
       }else {
           return back()->with('error','Whoops! invalid email and password.');
       }

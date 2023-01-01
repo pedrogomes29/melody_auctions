@@ -1,7 +1,7 @@
 let offset = 0;
 
 function start_countdowns() {
-    let countdowns = document.querySelectorAll(".card .countdown");
+    let countdowns = document.querySelectorAll(".auction-card .countdown");
 
     [].forEach.call(countdowns, function (countdown) {
         const endDate = new Date(

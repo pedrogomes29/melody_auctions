@@ -134,9 +134,10 @@ window.onscroll = function () {
 };
 
 async function markNotificationsAsReadDOM() {
-    const nofications = document.getElementById("notifications");
-    if (nofications.classList.contains("showNotifications"))
-        nofications.classList.remove("showNotifications");
+    const notifications = document.getElementById("notifications");
+    if (!notifications) return;
+    if (notifications.classList.contains("showNotifications"))
+        notifications.classList.remove("showNotifications");
     window.setTimeout(function () {
         const auctionNotifications = document.querySelectorAll(".sec");
         [].forEach.call(auctionNotifications, function (auctionNotification) {

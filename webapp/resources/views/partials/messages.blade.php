@@ -1,9 +1,4 @@
-<section id="chatbox">
-    <div class="container py-5">
-  
-      <div class="row d-flex justify-content-center">
-        <div class="col-md-10 col-lg-8 col-xl-6">
-  
+<section id="chatbox" class="hidden">
           <div class="card shadow-none" id="chat2">
             <div class="card-header d-flex justify-content-between align-items-center p-3">
               <h5 class="mb-0">Chat</h5>
@@ -24,9 +19,4 @@
                 </div>
             @endif
           </div>
-  
-        </div>
-      </div>
-  
-    </div>
   </section>

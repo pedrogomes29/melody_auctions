@@ -37,7 +37,7 @@ class ViewServiceProvider extends ServiceProvider
                 if($isAdmin){
                     $profilePic = Auth::guard('admin')->user()->photo?:
                         'default_images/default.jpg';
-                    $identificator = Auth::guard('admin')->user()->id;
+                    $identificator = Auth::guard('admin')->user()->username;
                     $view->with('loggedIn',true)
                     ->with('isAdmin',true)
                     ->with('profilePic',$profilePic)

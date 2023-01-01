@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AuthenticatedUser;
+use App\Models\Review;
 use Illuminate\Support\Facades\Auth;
 use App\Policies\AuthenticatedUserPolicy;
 class UserProfileController extends Controller
@@ -36,10 +37,11 @@ class UserProfileController extends Controller
                                                         cancelled')
                                             ->take(10)
                                             ->get();
-        
+        $average = Review::where('reviewed_id', AuthenticatedUser::where('username', $username)->firstOrFail()->id)->avg('rating');
+        $average = round($average, 2);
         $user = AuthenticatedUser::where('username',$username)->firstOrFail();
 
-        return view('pages.user', ['user' => $user, 'auctions' => $auctions_owned]);
+        return view('pages.user', ['user' => $user, 'auctions' => $auctions_owned, 'average' => $average]);
     }
 
     public function showUserAuctions($username){

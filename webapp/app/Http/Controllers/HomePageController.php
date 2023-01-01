@@ -102,8 +102,7 @@ class HomePageController extends Controller
                                                 ->get();
 
 
-        $categories = Category::select('name','id')
-                                ->orderBy('name')
+        $categories = Category::orderBy('name')
                                 ->get();
 
         return view('pages.index')

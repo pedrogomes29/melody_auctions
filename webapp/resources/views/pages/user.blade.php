@@ -4,6 +4,7 @@
     <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/user_profile.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/auctions.js') }}" defer> </script>
+    <script type="text/javascript" src="{{ asset('js/report.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/bids.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/edit.js') }}" defer></script>
     <script type="text/javascript" src="{{ asset('js/review.js') }}" defer> </script>
@@ -56,6 +57,15 @@
                 <div class="profile-usertitle-name">
                     {{ $user->firstname }} {{ $user->lastname }}
                 </div>
+                @if (isset($average))
+                <div class="average-rating">
+                    Average Rating: {{ $average }} &#11088
+                </div>
+                @else
+                <div class="average-rating">
+                    Average Rating: 0 &#11088
+                </div>
+                @endif
                 <div class="profile-usertitle-description">
                     Description: {{ $user->description }}
                 </div>
@@ -65,7 +75,28 @@
                 </div>
             </div>
             <!-- END SIDEBAR USER TITLE -->
-                    <a href="{{route('user.reviews', $user->username)}}"> <button id="showReviews" class="btn btn-primary">Show User Reviews</button></a>
+            @if (Auth::check() && Auth::id() != $user->id)
+                <button id="report-button" class="btn btn-primary">Report</button>
+            @endif
+            <form style="display:none" id="report-form" action="{{route('report.create',$user->username)}}" method="POST">
+                @csrf
+                @if ($errors->has('report'))
+                <p class="alert alert-danger">
+                    {{ $errors->first('report') }}
+                </p>
+                @endif
+                @if ($errors->has('reportstext'))
+                <p class="alert alert-danger">
+                    {{ $errors->first('reportstext') }}
+                </p>
+                @endif
+                <label for="complaint">Complaint</label>
+                <textarea id="complaint" name="reportstext" rows="4" cols="50"></textarea>
+                <button type="submit" class="btn btn-primary">Report</button>
+            </form>
+                
+            <a href="{{route('user.reviews', $user->username)}}"> <button id="showReviews" class="btn btn-primary">Show User Reviews</button></a>
+
             @if(Auth::id() == $user->id)
             <div id="balance">
                 <h2 id="current_balance">
@@ -81,7 +112,7 @@
                 </form>
             </div>
             @endif
-            @if (Auth::id() && Auth::id() != $user->id)
+            @if (Auth::check() && Auth::id() != $user->id)
             <button id="review-button" class="btn btn-primary">Review</button>
             <div id="review">
                 <form style="display:none" id="review-form" method="POST" action="{{ route('review.create', $user->username) }}">
@@ -108,16 +139,13 @@
             @endif
         </section>
 
-        <!--
-        @if (Auth::id() == $user->id)
+        @if (Auth::check() && Auth::id() == $user->id)
             <form id="delete-user"action="{{ route('user.delete', $user->username) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger">Delete Account</button>
             </form>
         @endif
-
-        -->
 
         
     </section>
