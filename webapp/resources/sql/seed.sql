@@ -575,12 +575,9 @@ insert on
 end;
 
 
-insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance ) values (1, 'Crissy', 'Petley', 'cpetley0','qwerty' ,'cpetley0@wordpress.org','' ,'Música é vida', '929507690',234.0);
-insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance) values (2, 'Reece', 'Bainton', 'rbainton1','1234321' ,'rbainton1@unc.edu', '','melhor clarinetista português', '919119298',23423.0);
-insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance) values (3, 'Benedetta', 'Driutti', 'bdriutti2','lmaook1234' ,'bdriutti2@last.fm', '','vive a vida', '916135290', 1312.0);
-insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance) values (4, 'Leontine', 'Matteoli', 'lmatteoli3', 'xdlollmaokekw','lmatteoli3@wordpress.org','' ,'Tenho 100 instrumentos na minha garagem', '963413227', 21342.0);
-insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance) values (5, 'Eugenie', 'Saint', 'esaint4', '$2a$12$LFXiwEpPbt3t8F9aq4x/veWrfvdEFWzx.Qx/ZT7qN9rZBwXvk5YOK','esaint4@gmail.com','' ,'Life is a wild ride', '921412112', 423423.0);
-insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance) values (6, 'Pedro', 'Gomes', 'pedro-exe', '$2a$12$LFXiwEpPbt3t8F9aq4x/veWrfvdEFWzx.Qx/ZT7qN9rZBwXvk5YOK','pedromgomes12@gmail.com','' ,'Life is a wild ride', '921412112', 423423.0);
+insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance) values (1, 'Rui', 'Pires', 'rui-exe', '$2a$12$LFXiwEpPbt3t8F9aq4x/veWrfvdEFWzx.Qx/ZT7qN9rZBwXvk5YOK','rui@gmail.com','' ,'Tenho 100 instrumentos na minha garagem', '963413227', 21342.0);
+insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance) values (2, 'Eugenie', 'Saint', 'esaint4', '$2a$12$LFXiwEpPbt3t8F9aq4x/veWrfvdEFWzx.Qx/ZT7qN9rZBwXvk5YOK','esaint4@gmail.com','' ,'Life is a wild ride', '921412112', 423423.0);
+insert into authenticated_users  (id, firstname, lastname, username,password, email,photo, description, contact,balance) values (3, 'Pedro', 'Gomes', 'pedro-exe', '$2a$12$LFXiwEpPbt3t8F9aq4x/veWrfvdEFWzx.Qx/ZT7qN9rZBwXvk5YOK','pedro@gmail.com','' ,'Life is a wild ride', '921412112', 423423.0);
 
 
 
@@ -589,9 +586,9 @@ insert into reports_states (id, state) values (1, 'open');
 insert into reports_states (id, state) values (2, 'closed');
 
 --reports
-insert into reports (id, reportstext, reportsdate, reported_id, reporter_id, reports_state_id) values (1, 'O instrumento veio com defeitos', '2022-10-26 12:00:00.083', 2, 3, 1);
-insert into reports (id, reportstext, reportsdate, reported_id, reporter_id, reports_state_id) values (2, 'As caravelhas do violino vieram partidas', '2022-3-16 19:14:12.086', 4, 1, 1);
-insert into reports (id, reportstext, reportsdate, reported_id, reporter_id, reports_state_id) values (3, 'Unspecified injury of prostate', '2022-2-25 14:12:45.982', 4, 3, 1);
+insert into reports (id, reportstext, reportsdate, reported_id, reporter_id, reports_state_id) values (1, 'O instrumento veio com defeitos', '2022-10-26 12:00:00.083', 2, 1, 1);
+insert into reports (id, reportstext, reportsdate, reported_id, reporter_id, reports_state_id) values (2, 'As caravelhas do violino vieram partidas', '2022-3-16 19:14:12.086', 3, 1, 1);
+insert into reports (id, reportstext, reportsdate, reported_id, reporter_id, reports_state_id) values (3, 'Está em mau estado mano', '2022-2-25 14:12:45.982', 3, 2, 1);
 
 --categories
 insert into categories (id, name) values (1, 'Percussão');
@@ -609,64 +606,34 @@ insert into manufactors (id, name) values (6, 'Casio');
 insert into manufactors (id, name) values (7, 'Korg');
 
 --auctions
-insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate, minbidsdif, description, photo, owner_id, category_id, manufactor_id,winner_id) values (1, 'piano', 9.83, 10.97, '2022-11-17 12:00:00.321', '2022-11-18 11:31:59.512', '2022-11-18 11:31:59.512',1.18, 'Saxafone Yamaha','',2,2,1,3);
-insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id,winner_id) values (2, 'clarinete', 5.19, 6.64, '2022-7-16 12:23:00.425', '2022-7-16 15:40:16.245', '2022-7-16 15:40:16.245',3.09, 'Fender Violin','',4,3,2,1);
-insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id,winner_id) values (3, 'guitarra', 7.75, 9.20, '2022-10-4 12:42:00.543', '2022-11-3 11:04:15.654','2022-12-3 11:04:15.654' ,5.34, 'Yamaha Piano','',5,4,1,2);
-insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id,winner_id) values (4, 'saxofone', 0.26, 1.14, '2022-11-17 12:50:00.512', '2022-11-17 15:05:42.764','2022-11-17 15:05:42.764' ,0.06, 'Ibanez Double Bass', '',2,3,4,3);
-insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id,winner_id) values (5, 'trompete', 4.53, 5.54, '2022-4-15 12:40:00.567', '2022-4-22 10:59:20.753', '2022-4-22 10:59:20.753',8.23, 'Korg Piano','',1,4,7,5);
-insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id, winner_id) values (6, 'trombone', 3.12, 4.23, '2022-3-16 12:00:00.321', '2022-3-16 15:31:59.512', '2022-3-16 15:31:59.512',1.18, 'Casio Piano','',2,1,6,NULL);
-insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id, winner_id) values (7, 'flauta', 5.19, 6.64, '2022-7-16 12:23:00.425', '2022-7-16 15:40:16.245', '2022-7-16 15:40:16.245',3.09, 'Roland Piano','',4,2,5,NULL);
-insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id,winner_id) values (8, 'harpa', 0.26, 1.14, '2022-11-17 12:50:00.512', '2022-11-17 15:05:42.764','2022-11-17 15:05:42.764' ,0.06, 'Ibanez Double Bass', '',2,3,4,NULL);
-insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id,winner_id) values (9, 'contrabaixo', 4.53, 5.54, '2022-4-15 12:40:00.567', '2022-4-22 10:59:20.753', '2022-4-22 10:59:20.753',8.23, 'Korg Piano','',1,4,7,NULL);
-insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id, winner_id) values (10, 'tuba', 3.12, 4.23, '2022-3-16 12:00:00.321', '2022-3-16 15:31:59.512', '2022-3-16 15:31:59.512',1.18, 'Casio Piano','',2,1,6,NULL);
-insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id, winner_id) values (11, 'trompa', 5.19, 6.64, '2022-7-16 12:23:00.425', '2022-7-16 15:40:16.245', '2022-7-16 15:40:16.245',3.09, 'Roland Piano','',4,2,5,NULL);
+insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate, minbidsdif, description, photo, owner_id, category_id, manufactor_id,winner_id) values (1 , 'violino' , 9.83, 10.97 , '2022-11-17 12:00:00.321' , NULL , '2022-11-18 11:51:59.512' , 1.18, 'Saxafone Yamaha' , '',1,2,1,NULL);
+insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id,winner_id) values (2 , 'saxofone' , 4.53, 5.54 , '2023-1-5 12:40:00.567' , NULL, '2023-1-22 10:59:20.753', 8.23, 'Korg Piano' , '', 1, 4, 7, NULL);
+insert into auctions (id, name, startprice, currentprice, startdate, lastbidsdate, enddate,minbidsdif, description, photo, owner_id, category_id, manufactor_id, winner_id) values (3 , 'trompa' , 5.19, 6.64 , '2023-1-1 12:23:00.000', NULL, '2023-1-20 12:40:16.245', 3.09, 'Roland Piano' , '', 2, 2, 5, NULL);
 
 --messages :)
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (1, 3, 4, 'Olá tudo bem?', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (2, 1, 3, 'Em que estado o artigo se encontra?', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (3, 2, 3, 'Qual a cor do interior do violino?', '2022-11-4 12:00:00.00');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (1, 1, 1, 'Olá tudo bem?', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (2, 1, 1, 'Em que estado o artigo se encontra?', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (3, 2, 1, 'Qual a cor do interior do violino?', '2022-11-4 12:00:00.00');
 insert into messages (id, authenticated_user_id, auction_id, text, date) values (4, 1, 1, 'Quantos anos tem de uso?', '2022-11-17 12:00:00.321');
 insert into messages (id, authenticated_user_id, auction_id, text, date) values (5, 1, 1, 'Será necessário algum tipo de arranjo?', '2022-11-17 12:00:00.321');
 insert into messages (id, authenticated_user_id, auction_id, text, date) values (6, 2, 2, 'O saxofone é tenor ou baixo?', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (7, 3, 4, 'espero que essa guitarra seja da yamaha', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (8, 5, 5, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (9, 3, 5, 'Que informções deseja?','2022-11-18 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (10, 5, 5, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (11, 3, 5, 'Que informções deseja?','2022-11-18 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (12, 5, 5, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (13, 3, 5, 'Que informções deseja?','2022-11-18 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (14, 5, 5, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (15, 3, 5, 'Que informções deseja?','2022-11-18 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (16, 5, 5, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (17, 3, 5, 'Que informções deseja?','2022-11-18 12:00:00.321');
-insert into messages (id, authenticated_user_id, auction_id, text, date) values (18, 1, 3, 'É mesmo giro o clarinete', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (8, 1, 1, 'Adorei esse violino lol', '2022-11-17 12:00:00.321');
+insert into messages (id, authenticated_user_id, auction_id, text, date) values (9, 1, 1, 'Que informções deseja?','2022-11-18 12:00:00.321');
 
 --bids :(
-insert into bids (id, auction_id, authenticated_user_id, value, bidsdate) values (1, 6, 3, 20, '2022-11-17 12:00:00.321');
-insert into bids (id, auction_id, authenticated_user_id, value, bidsdate) values (2, 7, 3, 20, '2022-7-16 12:23:00.425');
+insert into bids (id, auction_id, authenticated_user_id, value, bidsdate) values (1, 1, 3, 20, '2022-11-17 12:00:00.321');
+insert into bids (id, auction_id, authenticated_user_id, value, bidsdate) values (2, 1, 2, 25, '2022-11-18 11:31:59.512');
 
 --follows
-insert into follows (authenticated_user_id, auction_id) values (1, 1);
+insert into follows (authenticated_user_id, auction_id) values (2, 1);
 insert into follows (authenticated_user_id, auction_id) values (2, 2);
-insert into follows (authenticated_user_id, auction_id) values (3, 3);
-insert into follows (authenticated_user_id, auction_id) values (4, 4);
-insert into follows (authenticated_user_id, auction_id) values (5, 1);
-insert into follows (authenticated_user_id, auction_id) values (5, 2);
-insert into follows (authenticated_user_id, auction_id) values (5, 3);
-insert into follows (authenticated_user_id, auction_id) values (5, 4);
-insert into follows (authenticated_user_id, auction_id) values (5, 5);
-insert into follows (authenticated_user_id, auction_id) values (5, 6);
-insert into follows (authenticated_user_id, auction_id) values (5, 7);
-insert into follows (authenticated_user_id, auction_id) values (5, 8);
-insert into follows (authenticated_user_id, auction_id) values (5, 9);
-insert into follows (authenticated_user_id, auction_id) values (5, 10);
-insert into follows (authenticated_user_id, auction_id) values (5, 11);
+insert into follows (authenticated_user_id, auction_id) values (2, 3);
 
 
 --reviews
-insert into reviews (id, reviewer_id, reviewed_id, reviewsdate, comment, rating) values (1, 1, 2, '2022-11-7 14:12:15.544', 'Muito bom', 5);
-insert into reviews (id, reviewer_id, reviewed_id, reviewsdate, comment, rating) values (2, 2, 3, '2022-12-5 15:13:43.432', 'Muito bom', 5);
-insert into reviews (id, reviewer_id, reviewed_id, reviewsdate, comment, rating) values (3, 3, 4, '2022-10-4 16:43:23.561', 'Muito bom', 5);
+insert into reviews (id, reviewer_id, reviewed_id, reviewsdate, comment, rating) values (1, 1, 3, '2022-11-7 14:12:15.544', 'Muito bom', 5);
+insert into reviews (id, reviewer_id, reviewed_id, reviewsdate, comment, rating) values (2, 2, 2, '2022-12-5 15:13:43.432', 'Muito bom', 5);
+insert into reviews (id, reviewer_id, reviewed_id, reviewsdate, comment, rating) values (3, 3, 1, '2022-10-4 16:43:23.561', 'Muito bom', 5);
 
 
 --notifications
@@ -691,8 +658,8 @@ insert into auctions_ending_notifications (notification_id, auction_id) values (
 insert into bids_notifications (notification_id, bid_id) values (4, 1);
 
 
-insert into authenticated_user_notification(authenticated_user_id,notification_id) values (5,1);
-insert into authenticated_user_notification(authenticated_user_id,notification_id) values (5,2);
-insert into authenticated_user_notification(authenticated_user_id,notification_id) values (5,3);
-insert into authenticated_user_notification(authenticated_user_id,notification_id) values (5,4);
+insert into authenticated_user_notification(authenticated_user_id,notification_id) values (2,1);
+insert into authenticated_user_notification(authenticated_user_id,notification_id) values (2,2);
+insert into authenticated_user_notification(authenticated_user_id,notification_id) values (2,3);
+insert into authenticated_user_notification(authenticated_user_id,notification_id) values (2,4);
 

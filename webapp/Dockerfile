@@ -15,5 +15,10 @@ COPY docker_run.sh /docker_run.sh
 # Install cron
 RUN apt-get update && apt-get install -y cron
 
+RUN crontab -l | { cat; echo "* * * * * cd /var/www && php artisan schedule:run >> /dev/null"; } | crontab -
+
+# Run the command on container startup
+CMD cron
+
 # Start command
 CMD sh /docker_run.sh
