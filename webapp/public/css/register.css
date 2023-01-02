@@ -31,11 +31,12 @@ body {
     border: 1px solid #abd7eb;
     font-size: 1.2em;
   }
-  #content > form .error {
+  #content form .error {
     font-weight: bold;
     color: #ff3333;
+    display: block;
   }
-  #content > form input {
+  #content form input {
     background-color: white;
   }
   @media (max-width: 70em) {
