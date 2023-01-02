@@ -118,7 +118,8 @@ window.onclick = function (event) {
             dropdown_menu.classList.remove("show");
     }
 
-    if (!event.target.matches("#notificationsContainer *")) {
+    if (!event.target.matches("#notificationsBellContainer *, #notificationsContainer *")) {
+        console.log(event.target);
         markNotificationsAsReadDOM();
     }
 };
@@ -134,10 +135,7 @@ window.onscroll = function () {
 };
 
 async function markNotificationsAsReadDOM() {
-    const notifications = document.getElementById("notificationsContainer");
-    if (!notifications) return;
-    if (notifications.classList.contains("showNotifications"))
-        notifications.classList.remove("showNotifications");
+    
     window.setTimeout(function () {
         const auctionNotifications = document.querySelectorAll(".sec");
         [].forEach.call(auctionNotifications, function (auctionNotification) {
