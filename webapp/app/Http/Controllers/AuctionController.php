@@ -601,9 +601,11 @@ class AuctionController extends Controller
 
 
     public static function notifyEndingFunctions(){
-        $endingAuctions = Auction::where('enddate', '<', date("Y-m-d H:i:s", strtotime('-30 minutes')))
+
+        $endingAuctions = Auction::where('enddate', '<=', date("Y-m-d H:i:s", strtotime('+30 minutes')))
                                  ->where('already_notified_ending',false)
                                  ->get();
+
         foreach ($endingAuctions as $auction) {
             $auction->already_notified_ending = true;
             $auction->save();

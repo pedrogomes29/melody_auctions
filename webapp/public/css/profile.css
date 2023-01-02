@@ -144,3 +144,12 @@ button {
     z-index: 1;
     color: #fff;
 }
+
+
+.user-profile #bids thead th{
+    border-right: 2px #c9c9c9 solid;
+}
+
+.user-profile #bids {
+    margin: 1em;
+}
