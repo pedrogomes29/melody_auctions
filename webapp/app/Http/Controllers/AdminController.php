@@ -29,8 +29,17 @@ class AdminController extends Controller
                                 ->orderBy('reportsdate', 'desc')
                                 ->get();
             foreach ($reports as $report) {
-                $report->reporter = AuthenticatedUser::select('username')->where('id', $report->reporter_id)->first()->username;
-                $report->reported = AuthenticatedUser::select('username')->where('id', $report->reported_id)->first()->username;
+                $reporter  = AuthenticatedUser::select('username')->where('id', $report->reporter_id)->first();
+                if($reporter == null)
+                    $report->reporter = "Deleted User";
+                else    
+                    $report->reporter = $reporter->username;
+
+                $reported  = AuthenticatedUser::select('username')->where('id', $report->reported_id)->first();
+                if($reported == null)
+                    $report->reported = "Deleted User";
+                else    
+                    $report->reported = $reported->username;
                 $report->state = ReportState::select('state')->where('id', $report->reports_state_id)->first()->state;
             }
 

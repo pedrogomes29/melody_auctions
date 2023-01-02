@@ -24,7 +24,7 @@
             @break
 
         @case('Bid')
-            <div class = "notificationContent">{{$notification->bidder->username}} has bid on {{$notification->auction->name}}</div>
+            <div class = "notificationContent">{{is_null($notification->bidder)?'DELETED USER':$notification->bidder->username}} has bid on {{$notification->auction->name}}</div>
             @break
     @endswitch
     <div class = "notificationContent sub">{{$notification->timeSince}}</div>

@@ -63,7 +63,17 @@ class Auction extends Model
         
         if($bid === null)
             return null;
-        return $bid->bidder;
+        if($bid->bidder === null){
+            $user = new AuthenticatedUser();
+            $user->firstname = 'DELETED USER';
+            $user->lastname = '';
+        }
+        else{
+            $user = $bid->bidder;
+        }
+
+
+        return $user ;
     }
     
 

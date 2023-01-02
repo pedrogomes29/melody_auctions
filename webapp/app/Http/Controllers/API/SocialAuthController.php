@@ -40,7 +40,7 @@ class SocialAuthController extends Controller
         } else {
             //create a new user
             $newUser = new AuthenticatedUser;
-            $newUser->id = AuthenticatedUser::max('id') + 1;
+            $newUser->id = AuthenticatedUser::withTrashed()->max('id') + 1;
             //generate a random username
             $newUser->username = "user".$newUser->id * rand(1,1000);
             $newUser->firstname = $user->name;

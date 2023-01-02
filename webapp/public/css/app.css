@@ -256,6 +256,7 @@ body > main {
     width: 75px;
     height: 45px;
     float: left;
+    object-fit: contain;
 }
 
 .fa-bell:hover {

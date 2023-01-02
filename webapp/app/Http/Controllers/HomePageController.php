@@ -104,7 +104,7 @@ class HomePageController extends Controller
 
         $categories = Category::orderBy('name')
                                 ->get();
-
+                                
         return view('pages.index')
                 ->with('uninitiated_auctions',$uninitiated_auctions)
                 ->with('active_auctions',$active_auctions)

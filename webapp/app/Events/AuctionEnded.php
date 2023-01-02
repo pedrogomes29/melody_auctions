@@ -29,9 +29,13 @@ class AuctionEnded implements ShouldBroadcast
     public function __construct($date,$auction){
         $this->notification_date=$date;
         $this->auction = $auction;
-        $this->winner = AuthenticatedUser::find($auction->winner_id);
-        if($this->winner)
+        $this->winner = AuthenticatedUser::withTrashed()->find($auction->winner_id);
+        if($this->winner){
             $this->winner=$this->winner->username;
+
+            if(is_null(AuthenticatedUser::find($auction->winner_id)))
+                $this->winner = 'DELETED USER';
+        }
         $this->users = $auction->followers()->get();
         if(!$this->users->contains('id',$this->auction->owner_id))
             $this->users->push(AuthenticatedUser::find($this->auction->owner_id));

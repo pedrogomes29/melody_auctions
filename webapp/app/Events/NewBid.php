@@ -32,7 +32,8 @@ class NewBid implements ShouldBroadcast
     public function __construct($date,$auction,$bid){
         $this->notification_date=$date;
         $this->auction = $auction;
-        $this->bidder = AuthenticatedUser::find($bid->authenticated_user_id)->username;
+        $user = AuthenticatedUser::find($bid->authenticated_user_id);
+        $this->bidder = is_null($user)?'DELETED USER':$user->username;
         $this->bid_id = $bid->id;
         $this->users = $this->auction->followers()->where('id', '<>', Auth::id())->get();
         $this->users->push(AuthenticatedUser::find($this->auction->owner_id));

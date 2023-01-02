@@ -49,13 +49,13 @@ use App\Models\Manufactor;
         
 
         <div class="owner_info">
-          <a href="{{URL('user/'.$auction->owner->username)}}" class="link-dark text-decoration-none">
-            @if ($auction->owner->photo)
+          <a href="{{URL('user/'.(is_null($auction->owner)?'DELETE USER': $auction->owner->username))}}" class="link-dark text-decoration-none">
+            @if ($auction->owner && $auction->owner->photo)
               <img src="{{ asset($auction->owner->photo) }}" alt="Profile picture" class="rounded-circle" width="50" height="50">
             @else
               <img src="{{ asset('default_images/default.jpg') }}" alt="Profile picture" class="rounded-circle" width="50" height="50">
             @endif
-            &#64{{ $auction->owner->username }}
+            &#64{{ (is_null($auction->owner)?'DELETE USER': $auction->owner->username) }}
           </a>
         </div>
       </div>

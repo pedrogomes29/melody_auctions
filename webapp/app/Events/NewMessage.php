@@ -23,7 +23,15 @@ class NewMessage implements ShouldBroadcast
      * @return void
      */
     public function __construct($user,$message,$messageDate,$auctionId){
-        $this->user= $user;
+        if(is_null($user)){
+            $user_details['id'] = -1;
+            $user_details['username'] = 'DELETED USER';
+            $user_details['photo'] = '';
+            $this->user = $user_details;
+        }else{
+            $this->user = $user;
+
+        }
         $this->message = $message;
         $this->messageDate = $messageDate;
         $this->auctionId = $auctionId;

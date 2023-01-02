@@ -20,6 +20,7 @@
         @if(count($active_auctions)>0)
             <h2>Ongoing auctions</h2>
             <div class="ms-1">  
+
                     @include('partials.auctions', ['auctions' => $active_auctions])
             </div>
             <button id="ongoing-button" type="button" class="ms-5 mt-5 btn btn-dark btn-rounded">See All Ongoing Auctions</button>
@@ -43,4 +44,5 @@
             <button id="closed-button" type="button" class="ms-5 mt-5 btn btn-dark btn-rounded">See All Recent Auctions</button>
         @endif
     </div>
+    
 @endsection
