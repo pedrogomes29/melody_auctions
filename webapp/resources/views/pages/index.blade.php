@@ -5,6 +5,7 @@
 @section('scripts')
     <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/index.js') }}" defer> </script>
+    <script type="text/javascript" src="{{ asset('js/auctions.js') }}" defer> </script>
 @endsection
 
 @section('styles')

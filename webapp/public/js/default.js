@@ -82,7 +82,7 @@ function addEventListeners() {
 function clickNotificationBell() {
     if (
         document
-            .getElementById("notifications")
+            .getElementById("notificationsContainer")
             .classList.toggle("showNotifications")
     ) {
         markNotificationsAsRead();
@@ -134,7 +134,7 @@ window.onscroll = function () {
 };
 
 async function markNotificationsAsReadDOM() {
-    const notifications = document.getElementById("notifications");
+    const notifications = document.getElementById("notificationsContainer");
     if (!notifications) return;
     if (notifications.classList.contains("showNotifications"))
         notifications.classList.remove("showNotifications");
@@ -297,6 +297,5 @@ function updateNotificationTimeSince() {
 function chooseNotification(event) {
     window.location.href = "/auction/" + event.currentTarget.id;
 }
-
 
 

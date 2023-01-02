@@ -250,7 +250,7 @@ function chooseAuction(event) {
 }
 
 function addAuctionListeners() {
-    const auctions = document.getElementsByClassName("card");
+    const auctions = document.getElementsByClassName("auction-card");
     [].forEach.call(auctions, function (auction) {
         auction.addEventListener("click", chooseAuction);
     });

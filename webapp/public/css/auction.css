@@ -104,6 +104,7 @@
     right: 1em;
     margin-right: 2em;
     cursor: pointer;
+    z-index: 1;
 }
 
 #chatbox {

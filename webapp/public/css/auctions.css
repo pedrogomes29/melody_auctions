@@ -134,7 +134,7 @@
     width: 25em;
     height: auto;
     border: 0 !important;
-    
+    cursor: pointer;
 }
 
 .auction-card .local-date{

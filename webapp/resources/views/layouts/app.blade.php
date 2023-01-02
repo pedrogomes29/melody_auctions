@@ -41,7 +41,11 @@
   </head>
 
     <body>
-
+      @if ($loggedIn)
+              @if(!$isAdmin)
+              @include('partials.notifications', ['notifications' => $notifications])
+              @endif
+      @endif
       <header class="navbar navbar-expand-lg bg-light rounded" >
         <div class="container-fluid navbar-container">
         <img class="navbar-brand"
@@ -57,7 +61,11 @@
 
             @if ($loggedIn)
               @if(!$isAdmin)
-                  @include('partials.notifications', ['notifications' => $notifications])
+  
+                <div id="notificationsBellContainer">
+                    <div id = "numberOfNotifications">{{$numUnreadNotifications?:''}}</div>
+                    <i id="notificationBell" class="fa fa-bell fa-4x" aria-hidden="true"></i>
+                </div>
               @endif
                   <div id= "{{ $isAdmin?'admin':'user' }}-profile" class="{{$identificator}} profile-userpic me-3">
                     <img class="rounded-circle h6 " src="{{ asset($profilePic) }}" class="profilepic" alt="User Image">
