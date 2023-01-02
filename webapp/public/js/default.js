@@ -118,7 +118,7 @@ window.onclick = function (event) {
             dropdown_menu.classList.remove("show");
     }
 
-    if (!event.target.matches("#notificationsBellContainer *, #notificationsContainer *")) {
+    if (!event.target.matches("#notificationsBellContainer *, #notificationsContainer *,#notificationsBellContainer,#notificationsContainer")) {
         console.log(event.target);
         markNotificationsAsReadDOM();
     }
