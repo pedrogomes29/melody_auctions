@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('scripts')
-    <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
+    <script src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
 @endsection
 
 @section('content')
@@ -9,13 +9,13 @@
       <h1> Update Category</h1>
     </header>
 
-    <main>
+    <section>
 
-      <form class="form-create mb-5 p-5" method="post" action="{{ route('category.update', ['id' => $id])}}" enctype="multipart/form-data">
+      <form class="form-create mb-5 p-5" method="post" action="{{ route('category.update'   , ['id' => $id])}}" enctype="multipart/form-data">
         @method('PUT')
         <div class="mb-3">
           <label for="category_name" class="form-label">Category Name</label>
-          <input required name="name" type="text" class="form-control" value="{{$name}}"id="category_name">
+          <input required name="name" type="text" class="form-control" value="{{$name}}" id="category_name">
         </div>
 
         <div class="mb-3">
@@ -43,7 +43,7 @@
 
 
 
-    </main>
+    </section>
 
   </article>
 @endsection

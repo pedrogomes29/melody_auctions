@@ -55,5 +55,6 @@
         Don't have an account account?
         <a class="link text-decoration-none" href="{{ route('register') }}">Sign up</a>
     </h4>
+</div>
 
 @endsection

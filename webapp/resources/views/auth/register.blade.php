@@ -20,7 +20,7 @@
     @endif
 
     <label for="firstname">First Name</label>
-    <input id="firstname" type="text" name="firstname" value="{{ old('firstname') }}" required autofocus>
+    <input id="firstname" type="text" name="firstname" value="{{ old('firstname') }}" required>
     @if ($errors->has('firstname'))
       <span class="error">
           {{ $errors->first('firstname') }}
@@ -28,7 +28,7 @@
     @endif
 
     <label for="lastname">Last Name</label>
-    <input id="lastname" type="text" name="lastname" value="{{ old('lastname') }}" required autofocus>
+    <input id="lastname" type="text" name="lastname" value="{{ old('lastname') }}" required>
     @if ($errors->has('lastname'))
       <span class="error">
           {{ $errors->first('lastname') }}
@@ -36,7 +36,7 @@
     @endif
 
     <label for="username">Username</label>
-    <input id="username" type="text" name="username" value="{{ old('username') }}" required autofocus>
+    <input id="username" type="text" name="username" value="{{ old('username') }}" required>
     @if ($errors->has('username'))
       <span class="error">
           {{ $errors->first('username') }}
@@ -44,7 +44,7 @@
     @endif
     
     <label for="contact">Contact</label>
-    <input id="contact" type="text" name="contact" value="{{ old('contact') }}" required autofocus>
+    <input id="contact" type="text" name="contact" value="{{ old('contact') }}" required>
     @if ($errors->has('contact'))
       <span class="error">
           {{ $errors->first('contact') }}

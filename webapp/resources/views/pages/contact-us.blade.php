@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('scripts')
-    <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
+    <script src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
 @endsection
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/contact.css') }}">

@@ -10,7 +10,7 @@
         @foreach($categories as $category)
             <div class="carousel-item h-100 {{$loop->first?'active':''}}">
                 <img src="{{$category->photo?asset($category->photo):asset('images/default-category.png')}}" class="d-block img-fluid" alt="...">
-                <h1 id="category-{{$category->id}}" class="category" >{{$category->name}}</h3>
+                <h1 id="category-{{$category->id}}" class="category" >{{$category->name}}</h1>
             </div>
         @endforeach
     </div>

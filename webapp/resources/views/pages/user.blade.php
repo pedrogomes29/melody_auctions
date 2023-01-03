@@ -1,13 +1,13 @@
 @extends('layouts.app')
 @section('scripts')
-    <script type="text/javascript" src="{{ asset('js/tabs.js') }}" defer></script>
-    <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
-    <script type="text/javascript" src="{{ asset('js/user_profile.js') }}" defer> </script>
-    <script type="text/javascript" src="{{ asset('js/auctions.js') }}" defer> </script>
-    <script type="text/javascript" src="{{ asset('js/report.js') }}" defer> </script>
-    <script type="text/javascript" src="{{ asset('js/bids.js') }}" defer> </script>
-    <script type="text/javascript" src="{{ asset('js/edit.js') }}" defer></script>
-    <script type="text/javascript" src="{{ asset('js/review.js') }}" defer> </script>
+    <script src="{{ asset('js/tabs.js') }}" defer></script>
+    <script src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
+    <script src="{{ asset('js/user_profile.js') }}" defer> </script>
+    <script src="{{ asset('js/auctions.js') }}" defer> </script>
+    <script src="{{ asset('js/report.js') }}" defer> </script>
+    <script src="{{ asset('js/bids.js') }}" defer> </script>
+    <script src="{{ asset('js/edit.js') }}" defer></script>
+    <script src="{{ asset('js/review.js') }}" defer> </script>
 
 @endsection
 @section('styles')
@@ -21,11 +21,11 @@
     <section class="profile" > 
         <header id="profile-name" >
                 <h1 id="user-name">
-                <a id="username-at" href=""> &#64{{ $user->username }}</a>
+                <a id="username-at" href=""> &#64;{{ $user->username }}</a>
                 </h1>
         </header>
         @if (Auth::id() == $user->id)
-            <form id="logout"action="{{ route('logout') }}" method="POST">
+            <form id="logout" action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button type="submit" class="btn btn-danger">Logout</button>         
             </form>
@@ -34,13 +34,13 @@
             <!-- SIDEBAR USERPIC -->
             <div id= "prof_pic" class="profile-userpic">
                 @if ($user->photo)
-                <img id="real_pic" class="pic"src="{{ asset($user->photo) }}" class="profilepic" alt="User Image">
+                <img id="real_pic" class="pic" src="{{ asset($user->photo) }}" class="profilepic" alt="User Image">
                 @else
-                <img id="default_pic" class="pic"src="{{ asset('default_images/default.jpg') }}"class="default_profilepic" alt="User Image">
+                <img id="default_pic" class="pic default_profilepic" src="{{ asset('default_images/default.jpg') }}" alt="User Image">
                 @endif
             </div>
             @if(Auth::id() == $user->id || Auth::guard('admin')->user())
-            <div style="display:none" id="image_form"class="relative flex items-center min-h-screen justify-center overflow-hidden">
+            <div style="display:none" id="image_form" class="relative flex items-center min-h-screen justify-center overflow-hidden">
                 <form action="{{ route('user.photo', $user->username) }}" method="POST" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <label class="block mb-4">
@@ -62,11 +62,11 @@
                 </div>
                 @if (isset($average))
                 <div class="average-rating">
-                    Average Rating: {{ $average }} &#11088
+                    Average Rating: {{ $average }} &#11088;
                 </div>
                 @else
                 <div class="average-rating">
-                    Average Rating: 0 &#11088
+                    Average Rating: 0 &#11088;
                 </div>
                 @endif
                 <div class="profile-usertitle-description">
@@ -107,7 +107,7 @@
                 <form style="display:none" id="add-balance-form" action="{{ route('user.balance', $user->username) }}" method="POST">
                     <meta name="csrf-token" content="{{ csrf_token() }}" />
                     @method('PUT')
-                    <label for="balance">Amount</label>
+                    <label for="balance-input">Amount</label>
                     <input type="number" name="balance" id="balance-input" placeholder="Balance" required min="1">
                     <button id="add" type="submit" class="btn btn-primary">Add</button>
                 </form>
@@ -119,7 +119,7 @@
                 <form style="display:none" id="review-form" method="POST" action="{{ route('review.create', $user->username) }}">
                     {{ csrf_field() }}
                     <label for="rating">Rating</label>
-                    <input id="rating" type="number" name="rating" value="5" min="1" max="5" required autofocus>
+                    <input id="rating" type="number" name="rating" value="5" min="1" max="5" required>
                     @if ($errors->has('rating'))
                     <span class="error">
                         {{ $errors->first('rating') }}
@@ -127,7 +127,7 @@
                     @endif
 
                     <label for="comment">Review</label>
-                    <textarea id="comment" name="comment" autofocus></textarea>
+                    <textarea id="comment" name="comment"></textarea>
                     @if ($errors->has('review'))
                     <span class="error">
                         {{ $errors->first('review') }}
@@ -141,7 +141,7 @@
         </section>
 
         @if (Auth::check() && Auth::id() == $user->id)
-            <form id="delete-user"action="{{ route('user.delete', $user->username) }}" method="POST">
+            <form id="delete-user" action="{{ route('user.delete', $user->username) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger">Delete Account</button>
