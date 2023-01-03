@@ -28,6 +28,14 @@
     border-radius: 5px;
 }
 
+#chatboxContent{
+    height: 40em;
+}
+
+#chatbox{
+    width: 25em;
+}
+
 #chatboxContent::-webkit-scrollbar-thumb {
     border-radius: 5px;
 }

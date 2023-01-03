@@ -383,6 +383,10 @@ body > main {
     gap: 2em;
 }
 
+.fixed-options #login{
+    color: white;
+}
+
 .navbar-container {
     display: grid !important;
     grid-template-columns: auto 1fr auto;
