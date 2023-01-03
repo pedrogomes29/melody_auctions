@@ -20,4 +20,4 @@ RUN apt-get update && apt-get install -y cron
 CMD sh /docker_run.sh
 
 
-CMD  cd /var/www/; php artisan schedule:work &
+CMD  php /var/www/artisan schedule:work &
