@@ -1,9 +1,9 @@
-<div id="{{$notification->auction->id}}"class = "sec {{$notification->beenread?'':'new'}}">
+<div id="{{$notification->auction->id}}" class = "sec {{$notification->beenread?'':'new'}}">
     <div class = "notificationPhoto">
     @if($notification->auction->photo!=="")
-        <img class="auctionPhoto" src="{{ asset($notification->auction->photo)}}"></img>
+        <img class="auctionPhoto" src="{{ asset($notification->auction->photo)}}" alt="Auction Photo"/>
     @else
-        <img class="auctionPhoto"src="{{ asset('default_images/auction_default.svg' )}}"></img>
+        <img class="auctionPhoto" src="{{ asset('default_images/auction_default.svg' )}}" alt="Auction Photo"/>
     @endif
     </div>
     @switch($notification->type)
