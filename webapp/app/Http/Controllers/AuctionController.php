@@ -227,6 +227,16 @@ class AuctionController extends Controller
         $success = true;
         $auction = Auction::find($auctionId);
 
+        if ($request->input('name')==''){
+            $errors[] = 'Auction name is required';
+            $success = false;
+        }
+
+        if ($request->input('description')==''){
+            $errors[] = 'Auction description is required';
+            $success = false;
+        }
+
         $validated = $request->validate([
             'name' => 'required|max:50',
             'description' => 'required',
@@ -239,6 +249,8 @@ class AuctionController extends Controller
             $errors[] = 'Auction has been cancelled';
             $success = false;
         }
+
+
 
         $auction->name = $request->input('name');
         $auction->description = $request->input('description');
@@ -282,6 +294,13 @@ class AuctionController extends Controller
             $auction->enddate = $inputEndDate; 
         }
 
+
+        if ($auction->startdate > $auction->enddate){
+            $errors[] = 'The end date must be after the start date';
+            $success = false;
+        }
+
+        
         
         if ($success){
             $auction->save();
