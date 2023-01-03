@@ -115,3 +115,16 @@
 .hidden {
     display: none;
 }
+
+
+@media (max-width: 600px) {
+
+    #auction_information{
+        display: flex;
+        flex-direction: column;
+    }
+
+    #auction_information{
+        width: 100%;
+    }
+}
