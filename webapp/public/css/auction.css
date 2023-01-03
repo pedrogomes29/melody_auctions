@@ -30,7 +30,11 @@
 
 #chatboxContent{
     height: 40em;
+    overflow-y: scroll;
 }
+
+
+
 
 #chatbox{
     width: 25em;
@@ -67,7 +71,8 @@
 }
 .msg-pfp {
     width: 45px;
-    height: 100%;
+    height: 45px;
+    object-fit: cover;
 }
 
 .another-person-text {
