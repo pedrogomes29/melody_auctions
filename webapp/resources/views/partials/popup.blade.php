@@ -7,12 +7,23 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        @yield('popup-body')
+        @include('partials.auction_edit', ['auction' => $auction, 'admin' => Auth::guard('admin')->user()])
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         
-        @yield('popup-footer')
+        @if (Auth::guard('admin')->user())
+        <button data-csrf="{{csrf_token()}}" data-auction="/auction/{{$auction->id}}/admin" onclick="adminDeleteAuction(this)" class="btn btn-danger">Delete</button>   @else 
+        <button data-csrf="{{csrf_token()}}" data-auction="/auction/{{$auction->id}}" onclick="deleteAuction(this)" class="btn btn-danger">Delete</button>
+        @endif 
+
+        <div class="text-center">
+          @if (Auth::guard('admin')->user())
+            <button type="submit" onclick="adminUpdateAuction(this)" class="btn btn-warning">Update</button>
+          @else
+            <button type="submit" onclick="updateAuction(this)" class="btn btn-warning">Update</button>
+          @endif
+        </div>
       </div>
     </div>
   </div>

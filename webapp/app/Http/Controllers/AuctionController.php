@@ -104,7 +104,7 @@ class AuctionController extends Controller
                 // order by date
                 $auctions->orderBy('enddate', 'DESC');
             elseif($order === '4')
-                $auctions->orderBy('rating'); // TODO
+                $auctions->orderBy('rating'); 
             else if( $order === '0' && $useSearch )
                 $auctions->orderByRaw('ts_rank(tsvectors, to_tsquery(\'english\', ?)) DESC,name', [$search.':*']);
             else if( $order === '0')

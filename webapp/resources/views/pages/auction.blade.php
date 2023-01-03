@@ -174,27 +174,11 @@ use App\Models\Manufactor;
           </section>
         </section>
       </section>
+
       @include('partials.messages', ['messages' => $messages])
+
       @include('partials.popup', ['POPUP_ID' => "edit_popup", 'POPUP_TITLE_ID' => "edit_popup_title", 'POPUP_TITLE' => "Edit Auction"])
-      
-      @section('popup-body')
-        @include('partials.auction_edit', ['auction' => $auction, 'admin' => Auth::guard('admin')->user()])
-      @endsection
-
-      @section('popup-footer')
-        @if (Auth::guard('admin')->user())
-        <button data-csrf="{{csrf_token()}}" data-auction="/auction/{{$auction->id}}/admin" onclick="adminDeleteAuction(this)" class="btn btn-danger">Delete</button>   @else 
-        <button data-csrf="{{csrf_token()}}" data-auction="/auction/{{$auction->id}}" onclick="deleteAuction(this)" class="btn btn-danger">Delete</button>
-        @endif 
-
-        <div class="text-center">
-          @if (Auth::guard('admin')->user())
-            <button type="submit" onclick="adminUpdateAuction(this)" class="btn btn-warning">Update</button>
-          @else
-            <button type="submit" onclick="updateAuction(this)" class="btn btn-warning">Update</button>
-          @endif
-        </div>
-      @endsection
+    
       
 
     </div>
