@@ -36,7 +36,6 @@ class NewBid implements ShouldBroadcast
         $this->bidder = is_null($user)?'DELETED USER':$user->username;
         $this->bid_id = $bid->id;
         $this->users = $this->auction->followers()->where('id', '<>', Auth::id())->get();
-        $this->users->push(AuthenticatedUser::find($this->auction->owner_id));
     }
 
 
