@@ -101,7 +101,8 @@ body header {
 .auction .owner_info img {
     width: 3em;
     margin-right: 1em;
-    height: auto;
+    height: 3em;
+    object-fit: cover;
 }
 
 #auction_information {
