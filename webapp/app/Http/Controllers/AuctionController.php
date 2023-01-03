@@ -615,7 +615,7 @@ class AuctionController extends Controller
     }
     public static function notifyEndedFunctions(){
         
-        $endedAuctions = Auction::where('enddate','<',now())
+        $endedAuctions = Auction::where('enddate','<=',now())
                                 ->where('already_notified_ended',false)->get();
 
         foreach ($endedAuctions as $auction) {
