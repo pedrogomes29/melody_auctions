@@ -21,6 +21,6 @@ class ReviewController extends Controller
         $review->rating = $request->rating;
         $review->comment = $request->comment;
         $review->save();
-        return redirect()->route('user.reviews', ['username' => $username]);
+        return redirect()->route('user', ['username' => $username]);
     }
 }
