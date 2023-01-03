@@ -29,6 +29,7 @@ class NewMessage implements ShouldBroadcast
             $user_details['photo'] = '';
             $this->user = $user_details;
         }else{
+            unset($user->password);
             $this->user = $user;
 
         }
