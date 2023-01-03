@@ -6,7 +6,7 @@ info:
   description: 'Web Resources Specification (A7) for MelodyAuctions'
 
 servers:
-- url: http://lbaw2211.lbaw.fe.up.pt/
+- url: https://lbaw2211.lbaw.fe.up.pt/
   description: Production server
 
 externalDocs:
@@ -214,6 +214,7 @@ paths:
                 302Failure:
                   description: 'Failed to delete user. Redirect to user profile.'
                   value: '/users/{username}'
+    
     put:
       operationId: R108
       summary: 'R108: Edit user'
@@ -275,7 +276,51 @@ paths:
                 302Failure:
                   description: 'Failed update user. Redirect to user profile.'
                   value: '/users/{username}'
-  
+
+    post:
+      operationId: R109
+      summary: 'R109: Update user image'
+      description: 'Update user image. Access: PUB'
+      tags:
+        - 'M01: Authentication and Profile'
+      parameters:
+        - in: query
+          name: username
+          description: id of the user
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                _token:   
+                  type: string
+                  description: CSRF Token
+              required:
+                - image
+                - _token
+      responses:
+        '302':
+          description: 'Redirect after processing the new user photo.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Image Upload successfully. Redirect to user profile.'
+                  value: '/users/{username}'
+                302Failure:
+                  description: 'Failed update user image. Redirect to user profile.'
+                  value: '/users/{username}'
+
   /api/user:
     get:
       operationId: R109
@@ -339,6 +384,177 @@ paths:
         '401':
           description: 'Unauthorized.'
 
+
+  /api/user/{username}/bids:
+    get:
+      operationId: R111
+      summary: 'R111: Get user bids'
+      description: 'Get user bids. Access: PUB'
+      tags:
+        - 'M01: Authentication and Profile'
+      parameters:
+        - in: query
+          name: username
+          description: id of the user to be desplayed
+          schema:
+            type: string
+          required: true
+      responses:
+        '200': 
+          description: 'Ok. Return json object with user bids.'
+          content:
+            application/json:
+                schema:
+                  type: object
+                  properties:
+                    order:
+                      type: string
+                    sort:
+                      type: string
+
+  /login-google:
+    get:
+      operationId: R112
+      summary: 'R112: Google Login'
+      description: 'Login with google. Access: PUB'
+      tags:
+        - 'M01: Authentication and Profile'
+      responses:
+        '302':
+          description: 'Redirect after processing the new user information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to main page.'
+                  value: '/'
+                302Failure:
+                  description: 'Failed authentication. Redirect to login form.'
+                  value: '/login'
+
+  /auth/google/callback:
+    get:
+      operationId: R113
+      summary: 'R113: Google Callback'
+      description: 'Callback from google. Access: PUB'
+      tags:
+        - 'M01: Authentication and Profile'
+      responses:
+        '302':
+          description: 'Redirect after processing the new user information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to main page.'
+                  value: '/'
+                302Failure:
+                  description: 'Failed authentication. Redirect to login form.'
+                  value: '/login'
+
+  /forgot-password:
+    get:
+      operationId: R114
+      summary: 'R114: Forgot Password Form'
+      description: 'Provide forgot password form. Access: PUB'
+      tags:
+        - 'M01: Authentication and Profile'
+      responses:
+        '200':
+          description: 'Ok. Show forgot password UI'
+        '302':
+          description: 'Redirect because user is not authorized  '
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Failure:
+                  description: 'Unauthorized. You need to be an admin'
+                  value: '/login'
+    post:
+      operationId: R115
+      summary: 'R115: Forgot Password'
+      description: 'Forgot password. Access: PUB'
+      tags:
+        - 'M01: Authentication and Profile'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                _token:   
+                  type: string
+                  description: CSRF Token
+              required:
+                - _token
+                - email
+      responses:
+        '200': 
+          description: 'Ok. Email sent.'
+        '302':
+          description: 'Errors.'
+    
+  /reset-password/{token}:
+    get:
+      operationId: R116
+      summary: 'R116: Reset Password Form'
+      description: 'Provide reset password form. Access: PUB'
+      tags:
+        - 'M01: Authentication and Profile'
+      parameters:
+        - in: query
+          name: token
+          description: id of the user to be desplayed
+          schema:
+            type: string
+            format: uuid
+          required: true
+
+        - in: query
+          name: email
+          description: email of the user 
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Ok. Show reset password UI'
+  
+  /reset-password:
+    post:
+      operationId: R117
+      summary: 'R117: Reset Password'
+      description: 'Reset password. Access: PUB'
+      tags:
+        - 'M01: Authentication and Profile'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                token:
+                  type: string
+              required:
+                - email
+                - password
+                - token
+      responses:
+        '200': 
+          description: 'Ok.'
 
 # M02: Auctions
 
@@ -413,7 +629,6 @@ paths:
                   description: CSRF Token
               required:
                 - _token
-                - photo
     
       responses:
         '302':
@@ -429,6 +644,119 @@ paths:
                 302Failure:
                   description: 'Failed update. Redirect to auction UI.'
                   value: '/auction/{id}/edit'
+
+  /auction/{id}/defaultImage:
+    post:
+      operationId: R212
+      summary: 'R212: Update auction photo'
+      description: 'Update auction photo. Access: ADM'
+      tags:
+        - 'M02: Auctions'
+      parameters:
+        - in: query
+          name: id
+          description: id of the auction whose photo is to be changed
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                _token:   
+                  type: string
+                  description: CSRF Token
+              required:
+                - _token
+    
+      responses:
+        '200':
+          description: 'Updated Photo'
+        '403':
+          description: 'You must be an admin'
+          headers:
+            response:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+
+  /auction/{id}/admin:
+    put:
+      operationId: R213
+      summary: 'R213: Auction Update Admin'
+      description: 'Processes the auction update form. Access: ADM'
+      tags:
+        - 'M02: Auctions'
+      parameters:
+        - in: query
+          name: id
+          description: id of the auction to be edited
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                _token:   
+                  type: string
+                  description: CSRF Token
+              required:
+                - title
+                - description
+                - _token
+      responses:
+        '200':
+          description: 'Updated'
+        '403':
+          description: 'Unauthorized'
+          headers:
+            response:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+    delete:
+      operationId: R214
+      summary: 'R214: Auction Delete'
+      description: 'Delete the auction. Access: ADM'
+      tags:
+        - 'M02: Auctions'
+      parameters:
+        - in: query
+          name: id
+          description: id of the auction to be deleted
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'Deleted'
+        '403':
+          description: 'Unauthorized'
+          headers:
+            response:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
 
   /auction/{id}:
     get:
@@ -453,7 +781,7 @@ paths:
     put:
       operationId: R204
       summary: 'R204: Auction Update'
-      description: 'Processes the auction update form . Access: OWN ADM'
+      description: 'Processes the auction update form . Access: OWN'
       tags:
         - 'M02: Auctions'
       parameters:
@@ -753,7 +1081,7 @@ paths:
   /user/{username}/auction:
     get:
       parameters:
-        - in: query
+        - in: path
           name: username
           description: username whose auctions are to be shown
           schema:
@@ -843,71 +1171,68 @@ paths:
                           </a>'
         '404':
           description: 'Auction Not Found'
-           
 
-# M04: Notifications, Follows, Reviews
-
-  /api/notification/{n}:
-    get:
-      operationId: R401
-      summary: 'R401: Latests Notifications '
-      description: 'Show the Lastests n Notification. Access: USR'
+  /api/auction/{auctionId}/message:
+    post:
+      operationId: R303
+      summary: 'R303: Send message to auction owner'
+      description: 'Authenticated user sends a message to the auction owner. Access: USR'
       tags:
-        - 'M04: Notifications, Follows, Reviews'
+        - 'M03: Bids'
       parameters:
-        - in: query
-          name: n 
-          description: number of notifications to be shown
+        - in: path
+          name: auctionId
           schema:
             type: integer
           required: true 
+          description: Numeric ID of the auction to send message
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                text:         
+                  type: string
+                  description: Message to send
+                _token:   
+                  type: string
+                  description: CSRF Token
+              required:
+                - message
+                - _token
+      
       responses:
         '200':
-          description: 'Ok. Send latests notifications'
-          content:
-            application/json:
-                schema:
-                  type: object
-                  properties:
-                    date:
-                      type: string
-                    description:
-                      type: string
-                    auctionId:
-                      type: integer
-                    bidId:
-                      type: integer
+          description: 'Successfully sent message'
         '401':
-          description: 'Unauthorized. You need to login first'
+          description: 'You must be logged in to send a message'        
 
-  
-  /user/{username}/review:
-    get:
-      operationId: R402
-      summary: 'R402: View user reviews'
-      description: 'Show the individual user reviews. Access: USR'
+# M04: Notifications, Follows, Reviews
+
+  /api/notifications/{userId}:
+    put:
+      operationId: R401
+      summary: 'R401: Mark notifications as read'
+      description: 'Mark notifications as read. Access: USR'
       tags:
         - 'M04: Notifications, Follows, Reviews'
       parameters:
-        - in: query
-          name: username
-          description: username of the reviews to be shown
+        - in: path
+          name: userId
+          description: id of the user whose notifications are to be marked as read
           schema:
-            type: string
-          required: true 
+            type: integer
+          required: true
       responses:
         '200':
-          description: 'Ok. Show user reviews'
-        '302':
-          description: 'Redirect because user is not authorized  '
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Failure:
-                  description: 'Unauthorized. You need to be an admin'
-                  value: '/login'  
+          description: 'Ok. Marked Notifications as read'
+        '500':
+          description: 'Error marking notifications as read'
+      
+  
+  /user/{username}/review:
     post:
       operationId: R403
       summary: 'R403: Create user review'
@@ -1009,7 +1334,6 @@ paths:
           description: 'Something unexpected happened'
 
 
-  /user/{username}/follow:
     get:
       operationId: R406
       summary: 'R406: View auctions that user follows'
@@ -1028,7 +1352,7 @@ paths:
           description: 'Ok. Show auctions being followed UI'
 # M05: Admin Area and Reports
     
-  /admin/{id}:
+  /admin/{admin_username}:
     get:
       operationId: R501
       summary: 'R501: Admin Page'
@@ -1037,8 +1361,8 @@ paths:
         - 'M05: Admin Area and Reports'
       parameters:
         - in: query
-          name: id
-          description: id of the admin whose page is to be shown
+          name: admin_username
+          description: username of the admin whose page is to be shown
           schema:
             type: integer
           required: true 
@@ -1055,157 +1379,20 @@ paths:
                 302Failure:
                   description: 'Unauthorized. You need to be an admin'
                   value: '/admin/login'
-  
-  /admin/{adminid}/auctions/{auctionid}:
-    get:
-      operationId: R502
-      summary: 'R502: Admin Auction Page'
-      description: 'Admin page to manage the web aplication. Access: ADM'
-      tags:
-        - 'M05: Admin Area and Reports'
-      parameters:
-        - in: query
-          name: adminid
-          description: id of the admin
-          schema:
-            type: integer
-          required: true 
-        - in: query
-          name: auctionid
-          description: id of the auction
-          schema:
-            type: integer
-          required: true   
-      responses:
-        '200':
-          description: 'Ok. Show admin auction page'
-        '302':
-          description: 'Redirect because user is not authorized  '
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Failure:
-                  description: 'Unauthorized. You need to be an admin'
-                  value: '/admin/login'
     
-    put:
-      operationId: R506
-      summary: 'R506: Admin Edit Auction'
-      description: 'Admin edit auction. Access: ADM'
-      tags:
-        - 'M05: Admin Area and Reports'
-      parameters:
-        - in: query
-          name: adminid
-          description: id of the admin
-          schema:
-            type: integer
-          required: true 
-        - in: query
-          name: auctionid
-          description: id of the auction
-          schema:
-            type: integer
-          required: true  
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                description:
-                  type: string
-                _token:   
-                  type: string
-                  description: CSRF Token
-              required:
-                - title
-                - description
-                - _token
-      responses:
-        '302':
-          description: 'Redirect after processing the new auction information.'
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Success:
-                  description: 'Successful edit of auction. Redirect to admins auction edit UI .'
-                  value: '/auctions/{auctionid}/auctions/{auctionid}'
-                302Failure:
-                  description: 'Failed edit of auction. Redirect to admin auction page.'
-                  value: '/admin/{adminid}/auctions/{auctionid}'
-    delete: 
-      operationId: R507
-      summary: 'R507: Admin Delete Auction'
-      description: 'Admin delete auction. Access: ADM'
-      tags:
-        - 'M05: Admin Area and Reports'
-      parameters:
-        - in: query
-          name: adminid
-          description: id of the admin
-          schema:
-            type: integer
-          required: true 
-        - in: query
-          name: auctionid
-          description: id of the auction
-          schema:
-            type: integer
-          required: true 
-      requestBody:
-        required: true
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                _token:   
-                  type: string
-                  description: CSRF Token
-              required:
-                - _token
-      responses:
-        '302':
-          description: 'Redirect after processing the new auction information.'
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302Success:
-                  description: 'Successful delete of auction. Redirect to admins auction page .'
-                  value: '/admin/{adminid}/auctions'
-                302Failure:
-                  description: 'Failed delete of auction. Redirect to admin auction page.'
-                  value: '/admin/{adminid}/auctions/{auctionid}'
-  /admin/{adminid}/auctions/{auctionid}/default_image:
     post:
-      operationId: R508
-      summary: 'R508: Admin Set Default Image'
-      description: 'Admin set default image. Access: ADM'
+      operationId: R502
+      summary: 'R502: Close report'
+      description: 'Close a report. Access: ADM'
       tags:
         - 'M05: Admin Area and Reports'
       parameters:
         - in: query
-          name: adminid
-          description: id of the admin
+          name: admin_username
+          description: username of the admin 
           schema:
             type: integer
-          required: true 
-        - in: query
-          name: auctionid
-          description: id of the auction
-          schema:
-            type: integer
-          required: true 
+          required: true
       requestBody:
         required: true
         content:
@@ -1213,34 +1400,36 @@ paths:
             schema:
               type: object
               properties:
-                imageid:
+                reportid:
                   type: integer
                 _token:   
                   type: string
                   description: CSRF Token
               required:
-                - imageid
+                - reportid
                 - _token
       responses:
         '302':
-          description: 'Redirect after processing the new auction information.'
+          description: 'Redirect after close report.'
           headers:
             Location:
               schema:
                 type: string
               examples:
                 302Success:
-                  description: 'Successful set default image of auction. Redirect to admins auction edit UI .'
-                  value: '/admin/{adminid}/auctions/{auctionid}'
+                  description: 'Successful closing of report. Redirect to report.'
+                  value: '/admin/login'
                 302Failure:
-                  description: 'Failed set default image of auction. Redirect to admin auction page.'
-                  value: '/admin/{adminid}/auctions/{auctionid}'
+                  description: 'Failed closing of report. Redirect to report.'
+                  value: '/admin/login'
     
+
+  
 
   /admin/report:
     get:
-      operationId: R502
-      summary: 'R502: Get reports Page'
+      operationId: R505
+      summary: 'R505: Get reports Page'
       description: 'Get Reports Page. Access: ADM'
       tags:
         - 'M05: Admin Area and Reports'
@@ -1297,8 +1486,8 @@ paths:
 
   /admin/report/{id}:
     get:
-      operationId: R504
-      summary: 'R504: Show Report Page'
+      operationId: R506
+      summary: 'R506: Show Report Page'
       description: 'Show page of a single report. Access: ADM'
       tags:
         - 'M05: Admin Area and Reports'
@@ -1327,8 +1516,8 @@ paths:
         '404':
           description: 'Report Not Found'
     put:
-      operationId: R503
-      summary: 'R503: Edit report page'
+      operationId: R507
+      summary: 'R507: Edit report page'
       description: 'Updates the state of the report. Access: ADM'
       tags:
         - 'M05: Admin Area and Reports'
@@ -1370,10 +1559,82 @@ paths:
                   description: 'Unauthorized. You need to be an admin'
                   value: '/admin/login'
 
+  /admin/login:
+    get:
+      operationId: R508
+      summary: 'R508: Get Admin Login Page'
+      description: 'Get Admin Login Page. Access: PUB'
+      tags:
+        - 'M05: Admin Area and Reports'
+      responses:
+        '200':
+          description: 'Ok. Show login page'
+
+    post:
+      operationId: R509
+      summary: 'R509: Admin Login'
+      description: 'Admin Login. Access: ADM'
+      tags:
+        - 'M05: Admin Area and Reports'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                _token:   
+                  type: string
+                  description: CSRF Token
+              required:
+                - username
+                - password
+                - _token
+      responses:
+        '302':
+          description: 'Redirect after processing the login information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful login. Redirect to admin home page.'
+                  value: '/admin/{id}'
+                302Failure:
+                  description: 'Failed login. Whoops! invalid email and password.'
+                  value: '/admin/login'
+
+  /admin/logout:
+    post:
+      operationId: R510
+      summary: 'R510: Admin Logout'
+      description: 'Admin Logout. Access: ADM'
+      tags:
+        - 'M05: Admin Area and Reports'
+      responses:
+        '302':
+          description: 'Redirect after processing the logout information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful logout. Redirect to admin login page.'
+                  value: '/home'
+                302Failure:
+                  description: 'Failed logout. Redirect to admin home page.'
+                  value: '/admin/login'
+
   /user/{username}/report:
     post:
-      operationId: R505
-      summary: 'R505: Report user'
+      operationId: R511
+      summary: 'R511: Report user'
       description: 'Report a user. Access: USR'
       tags:
         - 'M05: Admin Area and Reports'
@@ -1413,6 +1674,184 @@ paths:
                 302Failure:
                   description: 'Failed report of user. Redirect to user profile.'
                   value: '/users/{username}'
+  /category/create:
+    get:
+      operationId: R512
+      summary: 'R512: Category Creation Form'
+      description: 'Provide new category creation form. Access: ADM'
+      tags:
+        - 'M05: Admin Area and Reports'
+      responses:
+        '200':
+          description: 'Ok. Show category creation UI'
+        '302':
+          description: 'Redirect because the user is not authorized '
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Failure:
+                  description: 'Unauthorized. You need to be an admin'
+                  value: '/'
+
+  /category/{id}/edit:
+    get:
+      operationId: R513
+      summary: 'R513: Category Update Form'
+      description: 'Provide new category update form. Access: ADM'
+      tags:
+        - 'M05: Admin Area and Reports'
+      parameters:
+        - in: query
+          name: id
+          description: id of the category to be edited
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: 'Ok. Show category edit UI'
+        '302':
+          description: 'Redirect because the user is not authorized '
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Failure:
+                  description: 'Unauthorized. You need to be an admin'
+                  value: '/'
+    
+
+
+  /category/{id}:
+    put:
+      operationId: R514
+      summary: 'R514: Category Update'
+      description: 'Processes the category update form. Access: OWN'
+      tags:
+        - 'M05: Admin Area and Reports'
+      parameters:
+        - in: query
+          name: id
+          description: id of the category to be edited
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                photo:
+                  type: string
+                  format: binary
+                _token:   
+                  type: string
+                  description: CSRF Token
+              required:
+                - _token
+                - name
+      responses:
+        '401':
+          description: 'Unauthorized.'
+        '302':
+          description: 'Redirect after processing the new auction.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful update. Redirect to admin dashboard.'
+                  value: '/admin/{username}'
+
+    delete:
+      operationId: R515
+      summary: 'R515: Category Deletion'
+      description: 'Delete Category. Access: ADM'
+      tags:
+        - 'M05: Admin Area and Reports'
+      parameters:
+        - in: query
+          name: id
+          description: id of the category to be deleted
+          schema:
+            type: integer
+          required: true
+      
+      requestBody:
+              required: true
+              content:
+                application/x-www-form-urlencoded:
+                  schema:
+                    type: object
+                    properties:
+                      _token:   
+                        type: string
+                        description: CSRF Token
+                    required:
+                      - _token
+      responses:
+        '401':
+          description: 'Unauthorized.'
+        '302':
+          description: 'Redirect after deleting auction.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful deletion. Redirect to admin dashboard'
+                  value: '/admin/{username}'
+      
+  /category:
+    post:
+      operationId: R516
+      summary: 'R516: Category Creation'
+      description: 'Processes the new category creation form submission. Access: ADM'
+      tags:
+        - 'M05: Admin Area and Reports'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                photo:
+                  type: string
+                  format: binary
+                _token:   
+                  type: string
+                  description: CSRF Token
+              required:
+                - name
+                - photo
+                - _token
+
+      responses:
+        '401':
+          description: 'Unauthorized.'
+        '302':
+          description: 'Redirect after creating auction.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful creation. Redirect to admin dashboard'
+                  value: '/admin/{username}'
+
 
   
   
@@ -1428,18 +1867,8 @@ paths:
       responses:
         '200':
           description: 'Ok. Show log-in UI'
-  /FAQ:
-    get:
-      operationId: R602
-      summary: 'R602: FAQ'
-      description: 'Frequently Asked Questions Page. Access: PUB'
-      tags:
-        - 'M06: Static/Home pages'
-      responses:
-        '200':
-          description: 'Ok. Show log-in UI'
 
-  /about:
+  /about-us:
     get:
       operationId: R603
       summary: 'R603: About'
@@ -1470,3 +1899,5 @@ paths:
       responses:
         '200':
           description: 'Ok. Show log-in UI'
+
+  

@@ -21,11 +21,10 @@ use App\Models\Manufactor;
           id: {{$auction->id}}
       }
     </script>
-
-
 @endsection
 
 @section('content')
+
   <article class='auction'>
     <header class="border-bottom pb-4">
       <div class="container">
@@ -176,7 +175,7 @@ use App\Models\Manufactor;
         </section>
       </section>
       @include('partials.messages', ['messages' => $messages])
-      @extends('partials.popup', ['POPUP_ID' => "edit_popup", 'POPUP_TITLE_ID' => "edit_popup_title", 'POPUP_TITLE' => "Edit Auction"])
+      @include('partials.popup', ['POPUP_ID' => "edit_popup", 'POPUP_TITLE_ID' => "edit_popup_title", 'POPUP_TITLE' => "Edit Auction"])
       
       @section('popup-body')
         @include('partials.auction_edit', ['auction' => $auction, 'admin' => Auth::guard('admin')->user()])
@@ -208,5 +207,7 @@ use App\Models\Manufactor;
     </section>
 
 
+  
   </article>
+
 @endsection
