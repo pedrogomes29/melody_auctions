@@ -86,7 +86,8 @@ class AuctionController extends Controller
                                                         CASE WHEN CURRENT_TIMESTAMP < startdate
                                                             THEN 1
                                                             ELSE 0
-                                                        END AS uninitiated');
+                                                        END AS uninitiated,                                
+                                                        (Select avg(rating) from reviews where reviewed_id = auctions.owner_id) as rating');
             if($order === '1')
                 // order by price low to high
                 $auctions->orderByRaw('CASE WHEN currentPrice IS NULL
@@ -103,8 +104,7 @@ class AuctionController extends Controller
                 // order by date
                 $auctions->orderBy('enddate', 'DESC');
             elseif($order === '4')
-                // order by owner rating
-                $auctions->orderBy('enddate'); // TODO
+                $auctions->orderBy('rating'); // TODO
             else if( $order === '0' && $useSearch )
                 $auctions->orderByRaw('ts_rank(tsvectors, to_tsquery(\'english\', ?)) DESC,name', [$search.':*']);
             else if( $order === '0')
@@ -378,11 +378,6 @@ class AuctionController extends Controller
         if ($auction->notStarted()){
             $image_path = AuctionController::uploadImage($request);
             
-            error_log("updatePhoto");
-            /*$file = $request->file('photo');
-            $image_path= date('YmdHi').$file->getClientOriginalName();
-            $file->move(public_path('images/auction'), $image_path);
-            */
             $auction->photo = $image_path;
             $auction->save();
             return response('Updated Photo', 200);

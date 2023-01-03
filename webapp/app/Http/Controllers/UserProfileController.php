@@ -112,13 +112,9 @@ class UserProfileController extends Controller
     }
 
     public function getBids(Request $request,  $username){
-        error_log("getBids1 " . $username);
         $user = AuthenticatedUser::where('username',$username)->firstOrFail();
-        error_log("getBids2");
         $order = $request->input('order') ?? 'date';
-        error_log("getBids3");
         $sort = $request->input('sort') ?? 'desc';
-        error_log("getBids4");
         // return parcial page bids
 
         return view('partials.profile.bids', ['user'=>$user,'bids' => $user->bids($order, $sort, 10), 'order' => $order, 'sort' => $sort]);
@@ -134,17 +130,23 @@ class UserProfileController extends Controller
         $user->delete();
         return redirect()->route('login');
     }
+
+    public function uploadImage($request ){
+
+        $file = $request->file('image')->store('image', 'public');
+
+        return $file;
+        
+    }
+
     public function store(Request $request, $username)
     {
         $this->validate($request, [
             'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
         ]);
-        // TROCAMOS PQ NO SERVIDOR DE LBAW APAGA AS FOTOS DE 30 EM 30 MIN
-        $image_path = 'storage/'.$request->file('image')->store('image', 'public');
         
-        /*$file = $request->file('image');
-        $image_path= date('YmdHi').$file->getClientOriginalName();
-        $file->move(public_path('images/profile'), $image_path);*/
+        $image_path = $this->uploadImage($request);
+        
 
         $user = AuthenticatedUser::where('username',$username)->firstOrFail();
         $user->photo = $image_path;

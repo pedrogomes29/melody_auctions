@@ -10,6 +10,7 @@
         {{ csrf_field() }}
         <div class="img-preview-container">
             <div class="text-center ">
+                
                 @if ($auction->photo!='')
                     <img class="img-thumbnail " src="{{ asset($auction->photo) }}" alt="Auction Photo">
                 @else

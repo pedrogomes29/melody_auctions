@@ -11,7 +11,13 @@
             {{ csrf_field() }}
             <div class="text-center">
                 @if ($auction->photo)
-                    <img class="img-thumbnail " src="{{ asset( $auction->photo) }}" alt="Auction Photo">
+                    <?php
+                        $auction_photo_path = 'default_image/default_auction.jpg';
+                        if (!is_null($auction->photo) && !empty(trim($auction->photo)) && file_exists(public_path($auction->photo))) {
+                            $auction_photo_path = $auction->photo;
+                        }
+                    ?>
+                    <img class="img-thumbnail " src="{{ asset( $auction_photo_path) }}" alt="Auction Photo">
                 @else
                     <img class="img-thumbnail " src="{{ asset('default_image/default_auction.jpg') }}" alt="Auction Photo">
                 @endif

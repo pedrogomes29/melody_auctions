@@ -33,8 +33,16 @@
         <section class="profile-sidebar">
             <!-- SIDEBAR USERPIC -->
             <div id= "prof_pic" class="profile-userpic">
+
+                <?php
+                    $auction_photo_path = 'default_images/default.jpg';
+                    if (!is_null($user->photo) && !empty(trim($user->photo)) && file_exists(public_path($user->photo))) {
+                        $user_photo = $user->photo;
+                    }
+                ?>
+
                 @if ($user->photo)
-                <img id="real_pic" class="pic" src="{{ asset($user->photo) }}" class="profilepic" alt="User Image">
+                <img id="real_pic" class="pic" src="{{ asset($user_photo) }}" class="profilepic" alt="User Image">
                 @else
                 <img id="default_pic" class="pic default_profilepic" src="{{ asset('default_images/default.jpg') }}" alt="User Image">
                 @endif

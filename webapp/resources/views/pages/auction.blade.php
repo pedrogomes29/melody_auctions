@@ -68,7 +68,7 @@ use App\Models\Manufactor;
         <div class="container">
 
         <?php
-                $auction_photo_path = '/images/default_auction.jpg';
+                $auction_photo_path = 'default_image/default_auction.jpg';
                 if (!is_null($auction->photo) && !empty(trim($auction->photo)) && file_exists(public_path($auction->photo))) {
                     $auction_photo_path = $auction->photo;
                 }
