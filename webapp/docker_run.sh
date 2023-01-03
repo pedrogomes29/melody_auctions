@@ -9,7 +9,6 @@ php artisan clear-compiled
 php artisan config:clear
 php artisan cache:clear
 php artisan storage:link
-php artisan schedule:work &
 
 php-fpm8.1 -D
 

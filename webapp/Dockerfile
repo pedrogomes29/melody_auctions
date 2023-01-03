@@ -12,6 +12,10 @@ COPY ./etc/nginx/default.conf /etc/nginx/sites-enabled/default
 COPY .env /var/www/.env
 COPY docker_run.sh /docker_run.sh
 
+RUN crontab -l | { echo "* * * * * cd /var/www && php artisan schedule:run >> /dev/null"; } | crontab -
+
+# Run the command on container startup
+CMD cron
 
 # Start command
 CMD sh /docker_run.sh
