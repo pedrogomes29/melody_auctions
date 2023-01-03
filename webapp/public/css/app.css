@@ -372,47 +372,49 @@ body > main {
     position: relative;
 }
 
+#notificationsBellContainer:hover {
+    cursor: pointer;
+}
+
 /* nav bar  */
 
-.fixed-options{
+.fixed-options {
     display: flex;
     gap: 2em;
 }
 
-.navbar-container{
-    display: grid!important;
+.navbar-container {
+    display: grid !important;
     grid-template-columns: auto 1fr auto;
 }
 
-.navbar-container .navbar-brand{
+.navbar-container .navbar-brand {
     grid-column: 1;
     grid-row: 1;
 }
 
-
-.navbar-container .navbar-collapse{
+.navbar-container .navbar-collapse {
     grid-column: 2;
     grid-row: 1;
 }
 
-.navbar-container .fixed-options{
+.navbar-container .fixed-options {
     grid-column: 3;
-    grid-row: 1;    
+    grid-row: 1;
     margin-left: auto;
 }
 
-@media (max-width: 992px){
-    .navbar-container .fixed-options{
+@media (max-width: 992px) {
+    .navbar-container .fixed-options {
         grid-column: 2;
     }
 
-
-    .navbar-container .navbar-collapse{
+    .navbar-container .navbar-collapse {
         grid-column: 1 / span 2;
         grid-row: 2;
     }
 
-    #notifications{
+    #notifications {
         right: 0;
     }
 }
@@ -421,7 +423,7 @@ body > main {
     margin: 0;
 }
 
-.navbar-container .navbar-toggler{
+.navbar-container .navbar-toggler {
     margin: auto;
 }
 .link {

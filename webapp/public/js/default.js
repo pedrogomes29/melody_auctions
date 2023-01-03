@@ -118,10 +118,12 @@ window.onclick = function (event) {
             dropdown_menu.classList.remove("show");
     }
 
-    if (!event.target.matches("#notificationsBellContainer *, #notificationsContainer *,#notificationsBellContainer,#notificationsContainer")) {
-        console.log(event.target);
+    if (
+        !event.target.matches(
+            "#notificationsBellContainer *, #notificationsContainer *,#notificationsBellContainer,#notificationsContainer"
+        )
+    )
         markNotificationsAsReadDOM();
-    }
 };
 
 window.onscroll = function () {
@@ -135,7 +137,14 @@ window.onscroll = function () {
 };
 
 async function markNotificationsAsReadDOM() {
-    
+    if (
+        document
+            .getElementById("notificationsContainer")
+            .classList.contains("showNotifications")
+    )
+        document
+            .getElementById("notificationsContainer")
+            .classList.remove("showNotifications");
     window.setTimeout(function () {
         const auctionNotifications = document.querySelectorAll(".sec");
         [].forEach.call(auctionNotifications, function (auctionNotification) {
@@ -295,5 +304,3 @@ function updateNotificationTimeSince() {
 function chooseNotification(event) {
     window.location.href = "/auction/" + event.currentTarget.id;
 }
-
-

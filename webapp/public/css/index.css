@@ -31,7 +31,8 @@
     bottom: 0;
     right: 0;
     margin: auto;
-    max-width: 3em;
+    width: fit-content;
+    text-align: center;
     max-height: 1em;
     z-index: 20;
     color: white;
