@@ -8,12 +8,12 @@ use App\Models\Manufactor;
 @endsection
 
 @section('scripts')
-    <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
-    <script type="text/javascript" src="{{ asset('js/auction.js') }}" defer> </script>
-    <script type="text/javascript" src="{{ asset('js/follow.js') }}" defer> </script>
+    <script src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
+    <script src="{{ asset('js/auction.js') }}" defer> </script>
+    <script src="{{ asset('js/follow.js') }}" defer> </script>
     <script src="https://js.pusher.com/7.2/pusher.min.js" defer></script>
-    <script type="text/javascript" src="{{ asset('js/ws_bid.js') }}" defer> </script>
-    <script type="text/javascript" src="{{ asset('js/auction_compilled.js') }}" defer> </script>
+    <script src="{{ asset('js/ws_bid.js') }}" defer> </script>
+    <script src="{{ asset('js/auction_compilled.js') }}" defer> </script>
 
     
     <script>
@@ -54,13 +54,13 @@ use App\Models\Manufactor;
             @else
               <img src="{{ asset('default_images/default.jpg') }}" alt="Profile picture" class="rounded-circle" width="50" height="50">
             @endif
-            &#64{{ (is_null($auction->owner)?'DELETE USER': $auction->owner->username) }}
+            &#64;{{ (is_null($auction->owner)?'DELETE USER': $auction->owner->username) }}
           </a>
         </div>
       </div>
     </header>
-    <img onclick="openChat()" class="messageIcon"src="{{ asset('default_images/message-icon.svg') }}" alt="message" class="message-icon">
-    <main class="auctionExposition">
+    <img onclick="openChat()" class="messageIcon message-icon" src="{{ asset('default_images/message-icon.svg') }}" alt="message" >
+    <div class="auctionExposition">
 
 
       <section id="auction_information" class="w-100">
@@ -74,7 +74,7 @@ use App\Models\Manufactor;
             ?>
 
 
-          <img id="auction_img" class=".img-fluid mx-auto d-block border border-dark" src="{{asset($auction_photo_path)}}">
+          <img id="auction_img" class=".img-fluid mx-auto d-block border border-dark" src="{{asset($auction_photo_path)}}" alt="Auction image">
         </div>
         <section id="details">
 
@@ -197,7 +197,7 @@ use App\Models\Manufactor;
       @endsection
       
 
-    </main>
+    </div>
 
     <section class="auctionInfo container">
       <h2>Manufactor</h2>

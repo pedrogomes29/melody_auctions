@@ -70,7 +70,10 @@ class CategoryController extends Controller
         ]);
         $category = Category::find($id);
         $category->name = $request->input('name');
-        $category->photo = $request->file('photo')->store('image', 'public');;
+        
+        if($request->hasFile('photo'))
+            $category->photo = $request->file('photo')->store('image', 'public');;
+        
         $category->save();
         return redirect()->route('adminDashboard', Auth::guard('admin')->user()->username);
     }

@@ -35,7 +35,7 @@
             <div id= "prof_pic" class="profile-userpic">
 
                 <?php
-                    $auction_photo_path = 'default_images/default.jpg';
+                    $user_photo = 'default_images/default.jpg';
                     if (!is_null($user->photo) && !empty(trim($user->photo)) && file_exists(public_path($user->photo))) {
                         $user_photo = $user->photo;
                     }
