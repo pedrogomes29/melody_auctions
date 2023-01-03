@@ -66,7 +66,7 @@ use App\Models\Manufactor;
 
       <section id="auction_information" class="w-100">
         <div class="container">
-          <img id="auction_img" class=".img-fluid mx-auto d-block border border-dark" src="{{ empty(trim($auction->photo)) ? URL('/images/default_auction.jpg') : Storage::disk('public')->url($auction->photo) }}">
+          <img id="auction_img" class=".img-fluid mx-auto d-block border border-dark" src="{{ empty(trim($auction->photo)) ? URL('/images/default_auction.jpg') : asset($auction->photo) }}">
         </div>
         <section id="details">
 
