@@ -61,7 +61,6 @@ Route::get('user/{username}','UserProfileController@showUserProfile')->name('use
 Route::put('user/{username}','UserProfileController@updateUserProfile')->name('user.update');
 Route::delete('user/{username}','UserProfileController@deleteUserProfile')->name('user.delete');
 Route::post('user/{username}','UserProfileController@store')->name('user.photo');
-Route::get('/user/{username}/auction','UserProfileController@showUserAuctions')->name('user.auction');
 //User Profile API
 Route::put('api/user/{username}/balance','UserProfileController@updateUserBalance')->name('user.balance');
 Route::get('/api/user/{username}/bids', 'UserProfileController@getBids');
@@ -85,10 +84,6 @@ Route::delete('api/follow', 'FollowController@destroy')->name('follow.destroy');
 Route::get('admin/{admin_username}', 'AdminController@show')->name('adminDashboard');
 Route::post('admin/{admin_username}', 'AdminController@closeReport')->name('closeReport');
 
-// Follows
-Route::get('user/{username}/follow', 'FollowController@showFollows')->name('user.follows');
-
-
 // bids
 Route::post('api/auction/{auction_id}/bid', 'BidController@create')->where('auction_id', '[0-9]+')->name('bid.create');
 Route::get('api/auction/{auction_id}/bid', 'AuctionController@bids')->where('auction_id', '[0-9]+')->name('bid.list');
@@ -105,7 +100,6 @@ Route::delete('category/{id}', 'CategoryController@destroy')->middleware('admina
 Route::post('user/{username}/report', 'ReportController@store')->name('report.create');
 
 // Reviews
-Route::get('user/{username}/reviews', 'ReviewController@showReviews')->name('user.reviews');
 Route::post('/user/{username}/review', 'ReviewController@create')->name('review.create');
 
 

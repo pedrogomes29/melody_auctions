@@ -1,11 +1,3 @@
-@extends('layouts.app')
-@section('scripts')
-    <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
-@endsection
-@section('styles')
-    <link rel="stylesheet" href="{{ asset('css/review.css') }}">
-@endsection
-@section('content')
 <section class="user-reviews" id="user-reviews">
         @foreach ($reviews as $review)
         <article class="review">
@@ -24,4 +16,5 @@
             <p>{{ $review->comment }}</p>
         </article>
         @endforeach
-@endsection
+
+</section>

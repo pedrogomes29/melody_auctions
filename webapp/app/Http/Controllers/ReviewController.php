@@ -10,11 +10,6 @@ use App\Policies\AuthenticatedUserPolicy;
 
 class ReviewController extends Controller
 {
-    public function showReviews($username){
-        $userID = AuthenticatedUser::where('username', $username)->firstOrFail()->id;
-        $reviews = Review::where('reviewed_id', $userID)->get();
-        return view('pages.userReviews', ['reviews' => $reviews]);
-    }
 
     public function create(Request $request, $username){
         $this->authorize('create', Review::class);

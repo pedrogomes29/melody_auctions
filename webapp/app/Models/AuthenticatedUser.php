@@ -22,6 +22,11 @@ class AuthenticatedUser extends Authenticatable
     }
     public function reviews(){
         return $this->hasMany(Review::class,'reviewer_id');
+        
+    }
+
+    public function reviewsReceived(){
+        return $this->hasMany(Review::class,'reviewed_id');
     }
 
 

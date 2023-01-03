@@ -8,9 +8,12 @@
     <script type="text/javascript" src="{{ asset('js/bids.js') }}" defer> </script>
     <script type="text/javascript" src="{{ asset('js/edit.js') }}" defer></script>
     <script type="text/javascript" src="{{ asset('js/review.js') }}" defer> </script>
+
 @endsection
 @section('styles')
     <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/review.css') }}">
+
 @endsection
 @section('content')
 <section class="user-profile d-flex ">
@@ -95,8 +98,6 @@
                 <button type="submit" class="btn btn-primary">Report</button>
             </form>
                 
-            <a href="{{route('user.reviews', $user->username)}}"> <button id="showReviews" class="btn btn-primary">Show User Reviews</button></a>
-
             @if(Auth::id() == $user->id)
             <div id="balance">
                 <h2 id="current_balance">
@@ -155,6 +156,7 @@
         <div class="nav nav-tabs mb-2" id="nav-tab" role="tablist">
             <button class="nav-link active text-dark" id="nav-auctions-tab" hash="auctions" data-bs-toggle="tab" data-bs-target="#nav-auctions" type="button" role="tab" aria-controls="nav-auctions" aria-selected="true">Auctions owned</button>
             <button class="nav-link text-dark" id="nav-followed-tab" hash="follows" data-bs-toggle="tab" data-bs-target="#nav-followed" type="button" role="tab" aria-controls="nav-followed" aria-selected="false">Followed Auctions</button>
+            <button class="nav-link text-dark" id="nav-reviews-tab" hash="reviews" data-bs-toggle="tab" data-bs-target="#nav-reviews" type="button" role="tab" aria-controls="nav-reviews" aria-selected="false">User Reviews</button>
             
             @if(Auth::id() == $user->id || Auth::guard('admin')->user())
                 <button class="nav-link text-dark" id="nav-edit-tab" hash="edit" data-bs-toggle="tab" data-bs-target="#nav-edit" type="button" role="tab" aria-controls="nav-edit" aria-selected="false">Edit Profile</button>
@@ -168,6 +170,9 @@
             </div>
             <div class="tab-pane fade" id="nav-followed" role="tabpanel" hash="follows" aria-labelledby="nav-followed-tab" tabindex="0">
                 @include('partials.profile.follows', ['auctions' => $user->followed_auctions])
+            </div>
+            <div class="tab-pane fade" id="nav-reviews" role="tabpanel" hash="reviews" aria-labelledby="nav-reviews-tab" tabindex="0">
+                @include('partials.profile.reviews', ['reviews' => $user->reviewsReceived])
             </div>
             
             @if(Auth::id() == $user->id || Auth::guard('admin')->user())
