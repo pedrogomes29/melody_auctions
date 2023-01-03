@@ -24,12 +24,12 @@
 
     <!-- Scripts -->
 
-    <script type="text/javascript">
+    <script>
         // Fix for Firefox autofocus CSS bug
         // See: http://stackoverflow.com/questions/18943276/html-5-autofocus-messes-up-css-loading/18945951#18945951
     </script>
-    <script type="text/javascript" src="{{ asset('js/default.js') }}" defer></script>
-    <script type="text/javascript" src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/default.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}" defer></script>
     @if($loggedIn && !$isAdmin)
       <script>
         window.User = {
@@ -48,14 +48,12 @@
       @endif
       <header class="navbar navbar-expand-lg bg-light rounded" >
         <div class="container-fluid navbar-container">
-        <img class="navbar-brand"
+        <img class="navbar-brand m-3"
             src= "{{ asset('default_images/logo_high.svg') }}"
             id="logo"
             height="60"
             width="150"
-            class="m-3"
-            alt="Melody auctions Logo"
-          />
+            alt="Melody auctions Logo"/>
           
           <div class="fixed-options" >
 
@@ -68,13 +66,13 @@
                 </div>
               @endif
                   <div id= "{{ $isAdmin?'admin':'user' }}-profile" class="{{$identificator}} profile-userpic me-3">
-                    <img class="rounded-circle h6 " src="{{ asset($profilePic) }}" class="profilepic" alt="User Image">
+                    <img class="rounded-circle h6 profilepic" src="{{ asset($profilePic) }}" alt="User Image">
                   </div>
             @else
                   
                 <a id="login" class="button me-5" href="{{ url('/login') }}"> Log in </a>
             @endif
-            <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbarsExample09" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
           
@@ -96,7 +94,7 @@
                 <div class="d-flex flex-row flex-grow-1 m-top">
                   <div class="d-flex flex-row flex-grow-1">
                     <div class="flex-grow-1 m-auto">
-                      <input id="search_bar" class="form-control border-end-0 border rounded-pill" type="search" value=@yield('searchContent')>
+                      <input id="search_bar" class="form-control border-end-0 border rounded-pill" type="search" value="@yield('searchContent')">
                       <div id="search_results" class="mx-3">
                         <div class="dropdown-menu bx-3">
                         </div>

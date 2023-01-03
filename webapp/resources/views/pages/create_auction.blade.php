@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('scripts')
-    <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
+    <script src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
       <h1> Create new Auction</h1>
     </header>
 
-    <main>
+    <div>
 
       <form class="form-create" method="post" action="{{ url('auction') }}" onsubmit="return form_create_auction(this)" enctype="multipart/form-data">
 
@@ -82,7 +82,7 @@
 
           <div class="input-group mb-3">
             <span class="input-group-text">€</span>
-            <input required name="startvalue" type="number" step="0.01" min="0.01" value ="0" class="form-control" name="start_value" aria-label="Euro amount (with dot and two decimal places)">
+            <input required name="startvalue" type="number" step="0.01" min="0.01" value ="0" class="form-control" id="start_value" aria-label="Euro amount (with dot and two decimal places)">
           </div> 
           
         </div>
@@ -93,7 +93,7 @@
 
           <div class="input-group mb-3">
             <span class="input-group-text">€</span>
-            <input required name="minbiddiff" type="number" step="0.01" min="0.01" value ="0" class="form-control" name="minbiddiff" aria-label="Euro amount (with dot and two decimal places)">
+            <input required name="minbiddiff" type="number" step="0.01" min="0.01" value ="0" class="form-control" id="minbiddiff" aria-label="Euro amount (with dot and two decimal places)">
           </div>
         </div>
 
@@ -103,7 +103,7 @@
 
       
 
-    </main>
+    </div>
 
   </article>
 @endsection

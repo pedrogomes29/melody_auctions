@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('scripts')
-    <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
+    <script src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
 @endsection
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/about.css') }}">
@@ -15,7 +15,7 @@
   
   <div class="row">
       <div class="profile">
-        <img src="{{asset('images/202004598.jpg')}}"" alt="Afonso">
+        <img src="{{asset('images/202004598.jpg')}}" alt="Afonso">
         <div class="container">
           <h2>Afonso Baldo</h2>
           <p class="title">Founder/Developer</p>
@@ -24,28 +24,28 @@
       </div>
   
       <div class="profile">
-        <img src="{{asset('images/202007227.jpg')}}"" alt="Afonso">
+        <img src="{{asset('images/202007227.jpg')}}" alt="João">
         <div class="container">
           <h2>João Reis</h2>
           <p class="title">Founder/Developer</p>
-          <p><a href="mailto:up202007227@up.pt"style="color: black">up202007227@up.pt</a></p>
+          <p><a href="mailto:up202007227@up.pt" style="color: black">up202007227@up.pt</a></p>
         </div>
       </div>
   
       <div class="profile">
-        <img src="{{asset('images/202006322.jpg')}}"" alt="Afonso">
+        <img src="{{asset('images/202006322.jpg')}}" alt="Pedro">
         <div class="container">
           <h2>Pedro Gomes</h2>
           <p class="title">Founder/Developer</p>
-          <p><a href="mailto:up202006322@up.pt"style="color: black">up202006322@up.pt</a></p>
+          <p><a href="mailto:up202006322@up.pt" style="color: black">up202006322@up.pt</a></p>
         </div>
       </div>
       <div class="profile">
-        <img src="{{asset('images/202008252.jpg')}}"" alt="Afonso">
+        <img src="{{asset('images/202008252.jpg')}}" alt="Rui">
         <div class="container">
           <h2>Rui Pires</h2>
           <p class="title">Founder/Developer</p>
-          <p><a href="mailto:up202008252@up.pt"style="color: black">up202008252@up.pt</a></p>
+          <p><a href="mailto:up202008252@up.pt" style="color: black">up202008252@up.pt</a></p>
         </div>
       </div>
   </div>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('scripts')
-    <script type="text/javascript" src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
+    <script src="{{ asset('js/generic_search_bar.js') }}" defer> </script>
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
       <h1> Create a new Category</h1>
     </header>
 
-    <main>
+    <section>
 
       <form class="form-create" method="post" action="{{ route('category.store')}}" enctype="multipart/form-data">
 
@@ -31,7 +31,7 @@
             </div>
         </div>
       </form>
-    </main>
+    </section>
 
   </article>
 @endsection

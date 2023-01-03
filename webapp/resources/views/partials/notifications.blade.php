@@ -1,5 +1,5 @@
 <div  id="notificationsContainer">
-    <div id = "notBtn" href = "#">
+    <div id = "notBtn">
         <!--Number supports double digets and automaticly hides itself when there is nothing between divs -->
         <div id = "notifications">
             <div class = "display">

@@ -13,10 +13,10 @@
 <section class="adminInfo">
     <header class="m-4">
       <h1 class="ms-1">
-          &#64{{ $admin->username }}
+          &#64;{{ $admin->username }}
       </h1>
       @if(Auth::guard('admin')->user())
-            <form id="logout"action="{{ route('adminLogout') }}" method="POST">
+            <form id="logout" action="{{ route('adminLogout') }}" method="POST">
                 @csrf
                 <button type="submit" class="btn btn-danger">Logout</button>         
             </form>

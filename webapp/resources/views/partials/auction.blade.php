@@ -2,9 +2,9 @@
 
 <article class="auction-card " id="auction-{{$auction->id}}" >
     @if(trim($auction->photo)!=="")
-        <img class="image" src="{{ asset($auction->photo)}}"/>
+        <img class="image" src="{{ asset($auction->photo)}}" alt="auction photo"/>
     @else
-        <img class="image" src="{{ asset('default_images/auction_default.svg' )}}"/>
+        <img class="image" src="{{ asset('default_images/auction_default.svg' )}}" alt="auction photo"/>
     @endif
 
     <section class="auction-card-text">
@@ -43,10 +43,10 @@
             Auction cancelled
             
         @else
-            Auction ended<p class="local-date"> {{$auction->date}}</p>
+            Auction ended <p class="local-date">{{$auction->date}}</p>
         @endif
         </p>
-    <section>
+    </section>
 </article>
 
 
