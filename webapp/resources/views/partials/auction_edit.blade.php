@@ -48,7 +48,7 @@
         </div>
         <div class="form-group">
         <label for="auctionDescription">Auction Description</label>
-        <textarea  name="description" id="auctionDescription" cols="30" rows="10" >{{$auction->description}}</textarea> 
+        <textarea required name="description" id="auctionDescription" cols="30" rows="10" >{{$auction->description}}</textarea> 
         </div>
         @if (!$admin)
         <div class="form-group">
