@@ -119,12 +119,13 @@
 
 @media (max-width: 600px) {
 
-    #auction_information{
+    .auction #auction_information{
         display: flex;
         flex-direction: column;
     }
 
-    #auction_information{
+    #auction_information #bid_auction,
+    #auction_information #details{
         width: 100%;
     }
 }
