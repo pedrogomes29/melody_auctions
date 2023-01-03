@@ -66,7 +66,16 @@ use App\Models\Manufactor;
 
       <section id="auction_information" class="w-100">
         <div class="container">
-          <img id="auction_img" class=".img-fluid mx-auto d-block border border-dark" src="{{ empty(trim($auction->photo)) ? URL('/images/default_auction.jpg') : asset($auction->photo) }}">
+
+        <?php
+                $auction_photo_path = '/images/default_auction.jpg';
+                if (!is_null($auction->photo) && !empty(trim($auction->photo)) && file_exists(public_path($auction->photo))) {
+                    $auction_photo_path = $auction->photo;
+                }
+            ?>
+
+
+          <img id="auction_img" class=".img-fluid mx-auto d-block border border-dark" src="{{asset($auction_photo_path)}}">
         </div>
         <section id="details">
 
