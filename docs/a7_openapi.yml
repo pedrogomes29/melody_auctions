@@ -602,8 +602,8 @@ paths:
 
   /auction/{id}/updatePhoto:
     post:
-      operationId: R211
-      summary: 'R211: Update auction photo'
+      operationId: R203
+      summary: 'R203: Update auction photo'
       description: 'Update auction photo. Access: OWN ADM'
       tags:
         - 'M02: Auctions'
@@ -647,8 +647,8 @@ paths:
 
   /auction/{id}/defaultImage:
     post:
-      operationId: R212
-      summary: 'R212: Update auction photo'
+      operationId: R204
+      summary: 'R204: Update auction photo'
       description: 'Update auction photo. Access: ADM'
       tags:
         - 'M02: Auctions'
@@ -688,8 +688,8 @@ paths:
 
   /auction/{id}/admin:
     put:
-      operationId: R213
-      summary: 'R213: Auction Update Admin'
+      operationId: R205
+      summary: 'R205: Auction Update Admin'
       description: 'Processes the auction update form. Access: ADM'
       tags:
         - 'M02: Auctions'
@@ -732,8 +732,8 @@ paths:
                     type: string
                     description: Error message
     delete:
-      operationId: R214
-      summary: 'R214: Auction Delete'
+      operationId: R206
+      summary: 'R206: Auction Delete'
       description: 'Delete the auction. Access: ADM'
       tags:
         - 'M02: Auctions'
@@ -760,8 +760,8 @@ paths:
 
   /auction/{id}:
     get:
-      operationId: R205
-      summary: 'R203: View auction'
+      operationId: R207
+      summary: 'R207: View auction'
       description: 'Show the individual auction. Access: PUB'
       tags:
         - 'M02: Auctions'
@@ -779,8 +779,8 @@ paths:
         '404':
           description: 'Auction Not found'
     put:
-      operationId: R204
-      summary: 'R204: Auction Update'
+      operationId: R208
+      summary: 'R208: Auction Update'
       description: 'Processes the auction update form . Access: OWN'
       tags:
         - 'M02: Auctions'
@@ -845,8 +845,8 @@ paths:
                   value: '/auction/{id}/edit'
 
     delete:
-      operationId: R204
-      summary: 'R205: Delete auction'
+      operationId: R209
+      summary: 'R209: Delete auction'
       description: 'Delete auction. Access: OWN ADM'
       tags:
         - 'M02: Auctions'
@@ -887,8 +887,8 @@ paths:
       
   /auction:
     get:
-      operationId: R206
-      summary: 'R206: View auctions'
+      operationId: R210
+      summary: 'R210: View auctions'
       description: 'Show auctions. Access: PUB'
       tags:
         - 'M02: Auctions'
@@ -933,8 +933,8 @@ paths:
         '200':
           description: 'Ok. Show view Auctions UI'
     post:
-      operationId: R207
-      summary: 'R207: Auction Creation'
+      operationId: R211
+      summary: 'R211: Auction Creation'
       description: 'Processes the new auction creation form submission. Access: OWN'
       tags:
         - 'M02: Auctions'
@@ -992,8 +992,8 @@ paths:
 
   /api/auction_json:
     get:
-      operationId: R208
-      summary: 'R208: Search Auctions JSON API'
+      operationId: R212
+      summary: 'R213: Search Auctions JSON API'
       description: 'Searches for auctions and returns the results as JSON. Access: PUB'
       tags:
         - 'M02: Auctions'
@@ -1022,8 +1022,8 @@ paths:
 
   /api/auction_html:
     get:
-      operationId: R209
-      summary: 'R209: Search Auctions HTML API'
+      operationId: R213
+      summary: 'R213: Search Auctions HTML API'
       description: 'Searches for auctions and returns the results as HTML. Access: PUB'
       tags:
         - 'M02: Auctions'
@@ -1087,8 +1087,8 @@ paths:
           schema:
             type: string
           required: true
-      operationId: R210
-      summary: 'R210: View user auctions'
+      operationId: R214
+      summary: 'R214: View user auctions'
       description: 'Show user auctions. Access: USR'
       tags:
         - 'M02: Auctions'
@@ -1234,8 +1234,8 @@ paths:
   
   /user/{username}/review:
     post:
-      operationId: R403
-      summary: 'R403: Create user review'
+      operationId: R402
+      summary: 'R402: Create user review'
       description: 'Create a review for the user. Access: USR'
       tags:
         - 'M04: Notifications, Follows, Reviews'
@@ -1281,8 +1281,8 @@ paths:
 
   /api/follow:
     post:
-      operationId: R404
-      summary: 'R404: Follow an auction'
+      operationId: R403
+      summary: 'R403: Follow an auction'
       description: 'Authenticated user follows an auction. Access: USR'
       tags:
         - 'M04: Notifications, Follows, Reviews'
@@ -1307,8 +1307,8 @@ paths:
         '500':
           description: 'Something unexpected happened'
     delete:
-      operationId: R405
-      summary: 'R405: Stop following an auction'
+      operationId: R404
+      summary: 'R404: Stop following an auction'
       description: 'Authenticated user stops following an auction. Access: USR'
       tags:
         - 'M04: Notifications, Follows, Reviews'
@@ -1335,8 +1335,8 @@ paths:
 
 
     get:
-      operationId: R406
-      summary: 'R406: View auctions that user follows'
+      operationId: R405
+      summary: 'R405: View auctions that user follows'
       description: 'Show the auctions that the user follows. Access: USR'
       tags:
         - 'M04: Notifications, Follows, Reviews'
@@ -1428,8 +1428,8 @@ paths:
 
   /admin/report:
     get:
-      operationId: R505
-      summary: 'R505: Get reports Page'
+      operationId: R503
+      summary: 'R503: Get reports Page'
       description: 'Get Reports Page. Access: ADM'
       tags:
         - 'M05: Admin Area and Reports'
@@ -1486,8 +1486,8 @@ paths:
 
   /admin/report/{id}:
     get:
-      operationId: R506
-      summary: 'R506: Show Report Page'
+      operationId: R504
+      summary: 'R504: Show Report Page'
       description: 'Show page of a single report. Access: ADM'
       tags:
         - 'M05: Admin Area and Reports'
@@ -1516,8 +1516,8 @@ paths:
         '404':
           description: 'Report Not Found'
     put:
-      operationId: R507
-      summary: 'R507: Edit report page'
+      operationId: R505
+      summary: 'R505: Edit report page'
       description: 'Updates the state of the report. Access: ADM'
       tags:
         - 'M05: Admin Area and Reports'
@@ -1561,8 +1561,8 @@ paths:
 
   /admin/login:
     get:
-      operationId: R508
-      summary: 'R508: Get Admin Login Page'
+      operationId: R506
+      summary: 'R506: Get Admin Login Page'
       description: 'Get Admin Login Page. Access: PUB'
       tags:
         - 'M05: Admin Area and Reports'
@@ -1571,8 +1571,8 @@ paths:
           description: 'Ok. Show login page'
 
     post:
-      operationId: R509
-      summary: 'R509: Admin Login'
+      operationId: R507
+      summary: 'R507: Admin Login'
       description: 'Admin Login. Access: ADM'
       tags:
         - 'M05: Admin Area and Reports'
@@ -1611,8 +1611,8 @@ paths:
 
   /admin/logout:
     post:
-      operationId: R510
-      summary: 'R510: Admin Logout'
+      operationId: R508
+      summary: 'R508: Admin Logout'
       description: 'Admin Logout. Access: ADM'
       tags:
         - 'M05: Admin Area and Reports'
@@ -1633,8 +1633,8 @@ paths:
 
   /user/{username}/report:
     post:
-      operationId: R511
-      summary: 'R511: Report user'
+      operationId: R509
+      summary: 'R509: Report user'
       description: 'Report a user. Access: USR'
       tags:
         - 'M05: Admin Area and Reports'
@@ -1676,8 +1676,8 @@ paths:
                   value: '/users/{username}'
   /category/create:
     get:
-      operationId: R512
-      summary: 'R512: Category Creation Form'
+      operationId: R510
+      summary: 'R510: Category Creation Form'
       description: 'Provide new category creation form. Access: ADM'
       tags:
         - 'M05: Admin Area and Reports'
@@ -1697,8 +1697,8 @@ paths:
 
   /category/{id}/edit:
     get:
-      operationId: R513
-      summary: 'R513: Category Update Form'
+      operationId: R511
+      summary: 'R511: Category Update Form'
       description: 'Provide new category update form. Access: ADM'
       tags:
         - 'M05: Admin Area and Reports'
@@ -1727,8 +1727,8 @@ paths:
 
   /category/{id}:
     put:
-      operationId: R514
-      summary: 'R514: Category Update'
+      operationId: R512
+      summary: 'R512: Category Update'
       description: 'Processes the category update form. Access: OWN'
       tags:
         - 'M05: Admin Area and Reports'
@@ -1772,8 +1772,8 @@ paths:
                   value: '/admin/{username}'
 
     delete:
-      operationId: R515
-      summary: 'R515: Category Deletion'
+      operationId: R513
+      summary: 'R513: Category Deletion'
       description: 'Delete Category. Access: ADM'
       tags:
         - 'M05: Admin Area and Reports'
@@ -1813,8 +1813,8 @@ paths:
       
   /category:
     post:
-      operationId: R516
-      summary: 'R516: Category Creation'
+      operationId: R514
+      summary: 'R514: Category Creation'
       description: 'Processes the new category creation form submission. Access: ADM'
       tags:
         - 'M05: Admin Area and Reports'
@@ -1870,8 +1870,8 @@ paths:
 
   /about-us:
     get:
-      operationId: R603
-      summary: 'R603: About'
+      operationId: R602
+      summary: 'R602: About'
       description: 'About page. Access: PUB'
       tags:
         - 'M06: Static/Home pages'
@@ -1881,8 +1881,8 @@ paths:
 
   /:
     get:
-      operationId: R604
-      summary: 'R604: Home page'
+      operationId: R603
+      summary: 'R603: Home page'
       description: 'Home page. Access: PUB'
       tags:
         - 'M06: Static/Home pages'
@@ -1891,8 +1891,8 @@ paths:
           description: 'Ok. Show log-in UI'
   /home:
     get:
-      operationId: R605
-      summary: 'R605: Home page'
+      operationId: R604
+      summary: 'R604: Home page'
       description: 'Home page. Access: PUB'
       tags:
         - 'M06: Static/Home pages'
