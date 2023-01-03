@@ -2,7 +2,7 @@
 
 <article class="auction-card " id="auction-{{$auction->id}}" >
     @if(trim($auction->photo)!=="")
-        <img class="image" src="{{ asset($auction->photo)}}"/>
+        <img class="image" src="{{ Storage::disk('public')->url($auction->photo)}}"/>
     @else
         <img class="image" src="{{ asset('default_images/auction_default.svg' )}}"/>
     @endif

@@ -441,16 +441,12 @@ class AuctionController extends Controller
     }
     
     public static function uploadImage($request ){
-        //TODO resize img
-       
-        /*$file = $request->file('photo');
-        $image_path= date('YmdHi').$file->getClientOriginalName();
-        $file->move(public_path('images/auction'), $image_path);
 
-        return 'images/auction/'.$image_path;*/
+        $file = $request->file('photo')->store('image', 'public');
+        error_log($file);
 
-        //TROCAMOS PQ NO SERVIDOR DE LBAW APAGA AS FOTOS DE 30 EM 30 MIN
-        return 'storage/' . $request->file('photo')->store('image', 'public');
+        return $file;
+        
     }
 
     /**

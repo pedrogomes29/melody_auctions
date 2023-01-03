@@ -6,7 +6,7 @@ info:
   description: 'Web Resources Specification (A7) for MelodyAuctions'
 
 servers:
-- url: https://lbaw2211.lbaw.fe.up.pt/
+- url: http://lbaw2211.lbaw.fe.up.pt/
   description: Production server
 
 externalDocs:
@@ -599,7 +599,7 @@ paths:
           name: order
           description: Order to be used displaying auctions
           schema:
-            type: string
+            type: integer
           required: false
       responses:
         '200':
@@ -736,6 +736,12 @@ paths:
           schema:
             type: string
           required: false
+        - in: query
+          name: offset
+          description: Offset of the auctions to be displayed
+          schema:
+            type: integer
+          required: false
       responses:
         '200':
           description: 'Ok. Return html with auctions found'
@@ -743,26 +749,6 @@ paths:
             text/html:
                 schema:
                   format: html
-                  example: '<div class="row row-cols-1 row-cols-md-3 g-4 flex-grow-1">
-                              <div class="col">
-                                <div class="card m-5"  id="auction-12" >
-                                    <p class="countdown card-text ms-4 mt-4 p-2 h5"> </p>
-                                    <p hidden class="enddate">1999-01-08 04:05:06</p>
-                                    <div class="text-center">
-                                      <img src="example_img"/>
-                                    </div>
-                                    <div class="card-body">
-                                        <h3 class="card-title text-center">piano</h3>
-                                        <p class="card-text font-weight-bold h4">Current Bid</p>
-                                        <p class="card-text h5">120€</p>
-                                    </div>
-                                </div>
-                              </div>
-                            <div>
-                            <div id="auctions-footer">
-                              <button id="load-more" type="button">Load more</button>
-                              <footer class="ms-4 h3 mt-5">Showing 10 of 50 results</footer>
-                            </div>'
     
   /user/{username}/auction:
     get:
@@ -1468,6 +1454,16 @@ paths:
     get:
       operationId: R604
       summary: 'R604: Home page'
+      description: 'Home page. Access: PUB'
+      tags:
+        - 'M06: Static/Home pages'
+      responses:
+        '200':
+          description: 'Ok. Show log-in UI'
+  /home:
+    get:
+      operationId: R605
+      summary: 'R605: Home page'
       description: 'Home page. Access: PUB'
       tags:
         - 'M06: Static/Home pages'
